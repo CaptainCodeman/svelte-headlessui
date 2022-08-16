@@ -1,10 +1,8 @@
 import type { Behavior } from "./behavior"
 import { hasOwnProperty } from "./properties"
 
-export function setRole(role: string): Behavior {
-  return node => {
-    if (hasOwnProperty(node, 'role')) {
-      node.role = role
-    }
+export const setRole = (role: string): Behavior => node => {
+  if (hasOwnProperty(node, 'role')) {
+    node.role = role
   }
 }

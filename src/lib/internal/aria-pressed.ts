@@ -1,16 +1,15 @@
-import type { Behavior } from "./behavior"
-import type { Readable, Writable } from 'svelte/store'
+import { derived, type Readable } from 'svelte/store'
+import { setAriaAttributeBoolean } from './aria-attribute'
+import type { Behavior } from './behavior'
 
 export interface Pressable {
   pressed: boolean
 }
 
-export function ariaPressed(store: Readable<Pressable>): Behavior {
-  return node => store.subscribe(state => {
-    node.setAttribute('aria-pressed', state.pressed.toString())
-  })
+export const defaultPressable: Pressable = {
+  pressed: false
 }
 
-export function togglePressed(store: Writable<Pressable>) {
-  return () => store.update(state => ({ ...state, pressed: !state.pressed }))
-}
+export const setAriaPressed = setAriaAttributeBoolean('aria-pressed')
+
+export const reflectAriaPressed = (store: Readable<Pressable>): Behavior => node => derived(store, $store => $store.pressed).subscribe(setAriaPressed(node))

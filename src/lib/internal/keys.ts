@@ -2,6 +2,7 @@
 export const enum Keys {
   Space = ' ',
   Enter = 'Enter',
+  Esc = 'Esc',
   Escape = 'Escape',
   Backspace = 'Backspace',
 
@@ -12,6 +13,8 @@ export const enum Keys {
 
   Home = 'Home',
   End = 'End',
+  Up = 'Up',
+  Down = 'Down',
 
   PageUp = 'PageUp',
   PageDown = 'PageDown',

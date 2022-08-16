@@ -1,3 +1,2 @@
-export function isCharacter(value: string) {
-  return /^[A-Za-z0-9]$/.test(value)
-}
+// is single, printable character
+export const isCharacter = (value: string) => /^\S$/.test(value)

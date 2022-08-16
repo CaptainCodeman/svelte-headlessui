@@ -1,16 +1,15 @@
 import type { Behavior } from "./behavior"
-import type { Readable, Writable } from 'svelte/store'
+import { derived, type Readable } from 'svelte/store'
+import { setAriaAttributeBoolean } from "./aria-attribute"
 
 export interface Checkable {
   checked: boolean
 }
 
-export function ariaChecked(store: Readable<Checkable>): Behavior {
-  return node => store.subscribe(state => {
-    node.setAttribute('aria-checked', state.checked.toString())
-  })
+export const defaultCheckable: Checkable = {
+  checked: false
 }
 
-export function toggleChecked(store: Writable<Checkable>) {
-  return () => store.update(state => ({ ...state, checked: !state.checked }))
-}
+export const setAriaChecked = setAriaAttributeBoolean('aria-checked')
+
+export const reflectAriaChecked = (store: Readable<Checkable>): Behavior => node => derived(store, $store => $store.checked).subscribe(setAriaChecked(node))

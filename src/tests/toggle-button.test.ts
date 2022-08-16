@@ -1,11 +1,11 @@
-import { fireEvent, getByTestId, render } from "@testing-library/svelte";
+import { fireEvent, getByRole, getByTestId, render } from "@testing-library/svelte";
 import Control from './toggle-button.svelte'
 
 test('something', async () => {
-  const { container, getByText } = render(Control, { label: 'Play Music' });
+  const { container, getByRole } = render(Control, { label: 'Play Music' });
 
   let pre = getByTestId(container, 'debug')
-  let button = getByText('My Button')
+  let button = getByRole('button')
 
   expect(pre).toBeInTheDocument()
   expect(pre).toHaveTextContent(`{ "label": "Play Music", "pressed": false }`)

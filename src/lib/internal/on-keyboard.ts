@@ -1,51 +1,36 @@
 import type { Writable } from "svelte/store"
 import type { Behavior } from "./behavior"
 import { isCharacter } from "./is-character"
+import type { List } from "./list"
 
-export interface Searchable {
+export interface Searchable extends List {
   query: string
 }
 
 type SearchFn = (query: string) => void
 
 export function onKeyboard(fn: SearchFn): Behavior {
-  return node => {
-    let timeout: number
-    let query = ''
+  let timeout: number
+  let query = ''
 
-    function handler(event: KeyboardEvent) {
-      if (isCharacter(event.key)) {
-        if (timeout) {
-          clearTimeout(timeout)
-        }
-
-        // const searchable = state.activeIndex >= 0
-        //   ? state.values
-        //     .slice(state.activeIndex + 1)
-        //     .concat(state.values.slice(0, state.activeIndex + 1))
-        //   : state.values
-
-        query += event.key
-        fn(query)
-        // state.search += event.key
-        // const re = new RegExp(`^${state.search}`, 'i')
-        // // TODO: exclude disabled
-        // const found = searchable.findIndex(x => x.value.match(re))
-
-        // if (found > -1) {
-        //   select((found + state.activeIndex + 1) % state.values.length)
-        // }
-
-        timeout = window.setTimeout(() => {
-          timeout = 0
-          query = ''
-          fn(query)
-        }, 350) // TODO: configurable timeout?
+  const handler = (event: KeyboardEvent) => {
+    if (isCharacter(event.key)) {
+      if (timeout) {
+        clearTimeout(timeout)
       }
+
+      query += event.key
+      fn(query)
+
+      timeout = window.setTimeout(() => {
+        timeout = 0
+        query = ''
+      }, 350)
     }
+  }
 
+  return node => {
     node.addEventListener('keydown', handler)
-
     return () => node.removeEventListener('keydown', handler)
   }
 }

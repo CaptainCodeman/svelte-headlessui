@@ -1,16 +1,11 @@
 import type { Behavior } from "./behavior"
-import type { Readable } from 'svelte/store'
+import { derived, type Readable } from 'svelte/store'
+import { setAriaAttributeString } from "./aria-attribute"
 
 export interface Labelable {
-  label: string
+  label?: string
 }
 
-export function ariaLabel(store: Readable<Labelable>): Behavior {
-  return node => store.subscribe(state => {
-    if (state.label) {
-      node.setAttribute('aria-label', state.label)
-    } else {
-      node.removeAttribute('aria-label')
-    }
-  })
-}
+export const setAriaLabel = setAriaAttributeString('aria-label')
+
+export const reflectAriaLabel = (store: Readable<Labelable>): Behavior => node => derived(store, $store => $store.label).subscribe(setAriaLabel(node))

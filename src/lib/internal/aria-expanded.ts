@@ -1,16 +1,11 @@
-import type { Behavior } from "./behavior"
-import type { Readable, Writable } from 'svelte/store'
+import { derived, type Readable } from 'svelte/store'
+import { setAriaAttributeBoolean } from './aria-attribute'
+import type { Behavior } from './behavior'
 
 export interface Expandable {
   expanded: boolean
 }
 
-export function ariaExpanded(store: Readable<Expandable>): Behavior {
-  return node => store.subscribe(state => {
-    node.setAttribute('aria-expanded', state.expanded.toString())
-  })
-}
+export const setAriaExpanded = setAriaAttributeBoolean('aria-expanded')
 
-export function toggleExpanded(store: Writable<Expandable>) {
-  return () => store.update(state => ({ ...state, expanded: !state.expanded }))
-}
+export const reflectAriaExpanded = (store: Readable<Expandable>): Behavior => node => derived(store, $store => $store.expanded).subscribe(setAriaExpanded(node))

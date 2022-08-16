@@ -1,8 +1,3 @@
-import type { Behavior } from "./behavior"
+import { listener, terminateEvent } from "./events"
 
-export function onClick(fn: () => void): Behavior {
-  return node => {
-    node.addEventListener('click', fn)
-    return () => node.removeEventListener('click', fn)
-  }
-}
+export const onClick = (fn: (event: Event) => void) => (node: HTMLElement) => listener(node, 'click', terminateEvent(fn))

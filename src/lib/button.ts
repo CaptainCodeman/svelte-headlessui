@@ -1,54 +1,66 @@
-import { writable, type Writable } from "svelte/store";
-import { ariaLabel, type Labelable } from "./internal/aria-label";
-import { ariaPressed, togglePressed, type Pressable } from "./internal/aria-pressed";
+import { writable } from "svelte/store";
+import { defaultPressable, reflectAriaPressed, type Pressable } from "./internal/aria-pressed";
 import { applyBehaviors } from "./internal/behavior";
-import { onKeyboard } from "./internal/on-keyboard";
 import { onClick } from "./internal/on-click";
 import { onSpaceEnter } from "./internal/on-space-enter";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
+import { ensureID } from "./internal/new-id";
+import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 
 // really a toggle button
+export interface Button extends Pressable, Labelable { }
 
-export interface Button extends Labelable, Pressable { }
+function createStateStore(init?: Partial<Button>) {
+  let state: Button = {
+    ...defaultPressable,
+    ...init,
+  }
 
-const defaultState: Button = {
-  label: '',
-  pressed: false,
+  const { subscribe, set } = writable(state)
+
+  const update = (part: Partial<Button>) => {
+    set(state = { ...state, ...part })
+  }
+
+  const press = () => update({ pressed: true })
+  const release = () => update({ pressed: false })
+  const toggle = () => state.pressed ? release() : press()
+
+  return {
+    subscribe,
+    press,
+    release,
+    toggle,
+  }
 }
 
-export const createButtonBehaviors = (store: Writable<Button>) => {
-  const toggle = togglePressed(store)
+export function createButton(init?: Partial<Button>) {
+  const state = createStateStore(init)
+  const prefix = 'headlessui-button'
 
-  return [
-    setType('button'),
-    setRole('button'),
-    setTabIndex(),
-    ariaLabel(store),
-    ariaPressed(store),
-    onClick(toggle),
-    onSpaceEnter(toggle),
-  ]
-}
-
-export function createButton(state: Partial<Button>) {
-  const store = writable({ ...defaultState, ...state })
-
+  // button
   function button(node: HTMLElement) {
-    const unsubscribe = applyBehaviors(node, createButtonBehaviors(store))
+    ensureID(node, prefix)
+
+    const destroy = applyBehaviors(node, [
+      setType('button'),
+      setRole('button'),
+      setTabIndex(),
+      reflectAriaPressed(state),
+      reflectAriaLabel(state),
+      onClick(state.toggle),
+      onSpaceEnter(state.toggle),
+    ])
 
     return {
-      destroy() {
-        unsubscribe && unsubscribe()
-      },
+      destroy,
     }
   }
 
-  const { subscribe } = store
-
   return {
-    state: { subscribe },
+    state,
     button,
   }
 }
