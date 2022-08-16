@@ -18,16 +18,16 @@ import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { onEscape } from "./internal/on-escape";
 import { onPointerOver } from "./internal/on-pointer-over";
 
-export interface Menu extends Labelable, Expandable, Controllable, List { }
+export interface Listbox extends Labelable, Expandable, Controllable, List { }
 
-export interface MenuState extends Menu {
+export interface ListboxState extends Listbox {
   button?: string
   menu?: string
 }
 
 // TODO: avoid this being exportable by using inline tests
-function createStateStore(init?: Partial<Menu>) {
-  let state: MenuState = {
+function createStateStore(init?: Partial<Listbox>) {
+  let state: ListboxState = {
     ...defaultList,
     ...defaultExpanded,
     ...init,
@@ -35,7 +35,7 @@ function createStateStore(init?: Partial<Menu>) {
 
   const { subscribe, set } = writable(state)
 
-  const update = (part: Partial<MenuState>) => {
+  const update = (part: Partial<ListboxState>) => {
     const { active } = part
     if (active !== undefined) {
       // if active is being set, also set value so it's in sync (UI can use either)
@@ -105,8 +105,8 @@ function createStateStore(init?: Partial<Menu>) {
   }
 }
 
-export function createMenu(init?: Partial<Menu>) {
-  const prefix = 'headlessui-menu'
+export function createListbox(init?: Partial<Listbox>) {
+  const prefix = 'headlessui-listbox'
   const state = createStateStore(init)
   let onSelect = () => { }
   const select = () => onSelect()
@@ -161,8 +161,6 @@ export function createMenu(init?: Partial<Menu>) {
     }
   }
 
-  // TODO: allow "any" type of value, as long as a text extractor is supplied (default function is treat as a string)
-  // NOTE: text value is required for searchability
   function item(node: HTMLElement, value?: string) {
     ensureID(node, prefix + 'item')
     state.item(node, value || node.textContent!.trim())
