@@ -8,59 +8,54 @@ import { setType } from "./internal/set-type";
 import { setHasPopup } from "./internal/set-has-popup";
 import { ensureID } from "./internal/new-id";
 import { onClickOutside } from "./internal/on-click-outside";
-import { reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
+import { defaultExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls'
 import { onPreviousNext } from "./internal/on-previous-next";
-import { Keys } from "./internal/keys";
 import { onKeyboard } from "./internal/on-keyboard";
+import { defaultList, type List } from "./internal/list";
+import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
+import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
+import { onEscape } from "./internal/on-escape";
+import { onPointerOver } from "./internal/on-pointer-over";
 
-export interface Menu extends Expandable, Controllable {
-  active: number
-  value: string
-  label: string
-}
+export interface Menu extends Labelable, Expandable, Controllable, List { }
 
 export interface MenuState extends Menu {
-  button?: HTMLElement
-  menu?: HTMLElement
-  items: { node: HTMLElement, value: string }[]
+  button?: string
+  menu?: string
 }
 
 // TODO: avoid this being exportable by using inline tests
 function createStateStore(init?: Partial<Menu>) {
   let state: MenuState = {
-    label: '',
-    active: -1,
-    value: '',
-    expanded: false,
-    items: [],
+    ...defaultList,
+    ...defaultExpanded,
     ...init,
   }
 
   const { subscribe, set } = writable(state)
 
   const update = (part: Partial<MenuState>) => {
-    // if active is being set, also set value
     const { active } = part
     if (active !== undefined) {
+      // if active is being set, also set value so it's in sync (UI can use either)
       part.value = active === -1 || state.items.length === 0 ? undefined : state.items[active].value
     }
     set(state = { ...state, ...part })
   }
 
-  const button = (node: HTMLElement) => update({ button: node })
-  const menu = (node: HTMLElement) => update({ menu: node, controls: node ? node.id : undefined })
-  const item = (node: HTMLElement, value: string) => update({ items: [...state.items, { node, value }] })
-  const value = (node: HTMLElement, value: string) => update({ items: state.items.map(item => item.node === node ? { ...item, value } : item) })
-  const remove = (node: HTMLElement) => update({ items: state.items.filter(item => item.node === node) })
+  // attaching elements to store
+  const button = (node: HTMLElement) => update({ button: node.id })
+  const menu = (node: HTMLElement) => update({ menu: node.id, controls: node ? node.id : undefined })
+  const item = (node: HTMLElement, value: string) => update({ items: [...state.items, { id: node.id, value }] })
+  const value = (node: HTMLElement, value: string) => update({ items: state.items.map(item => item.id === node.id ? { ...item, value } : item) })
+  const remove = (node: HTMLElement) => update({ items: state.items.filter(item => item.id === node.id) })
 
   const open = () => update({ expanded: true, active: 0 })
   const close = () => update({ expanded: false })
   const toggle = () => state.expanded ? close() : open()
 
-  // TODO: lots of these methods can become re-usable, based on "items" (?)
   const focus = (active: number) => update({ active })
-
   const first = () => focus(0)
   const previous = () => focus(state.active - 1)
   const next = () => focus(state.active + 1)
@@ -75,15 +70,18 @@ function createStateStore(init?: Partial<Menu>) {
         .concat(state.items.slice(0, state.active + 1))
 
     const re = new RegExp(`^${query}`, 'i')
-    // TODO: exclude disabled
-    const found = searchable.findIndex(x => x.value.match(re))
+    const found = searchable.findIndex(x => x.value.match(re))  // TODO: exclude disabled
 
     if (found > -1) {
       const index = (found + state.active + 1) % state.items.length
       focus(index)
     }
   }
-  const select = (node: HTMLElement) => focus(state.items.findIndex(item => item.node === node))
+  const select = (node: HTMLElement) => focus(state.items.findIndex(item => item.id === node.id))
+  const selected = () => {
+    const { active, value } = state
+    return { active, value }
+  }
 
   return {
     subscribe,
@@ -103,29 +101,34 @@ function createStateStore(init?: Partial<Menu>) {
     none,
     search,
     select,
+    selected,
   }
 }
 
 export function createMenu(init?: Partial<Menu>) {
-  const state = createStateStore(init)
   const prefix = 'headlessui-menu'
+  const state = createStateStore(init)
+  let onSelect = () => { }
+  const select = () => onSelect()
 
   // menubutton
   function button(node: HTMLElement) {
     ensureID(node, prefix + 'button')
     state.button(node)
 
-    // const toggle = expandedToggle(close)
-    const unsubscribe = applyBehaviors(node, [
+    onSelect = () => {
+      node.dispatchEvent(new CustomEvent('select', { detail: state.selected() }))
+      state.close()
+    }
+
+    const destroy = applyBehaviors(node, [
       setType('button'),
       setRole('button'),
       setHasPopup(),
-      setTabIndex(),
-      // ariaLabel(state),
+      setTabIndex(0),
+      reflectAriaLabel(state),
       reflectAriaExpanded(state),
       reflectAriaControls(state),
-      // ariaActiveDescendant(state),
-      // ariaControls(state),
       onClick(state.toggle),
       onSpaceEnter(state.toggle),
       onPreviousNext(state.first, state.last),
@@ -134,10 +137,7 @@ export function createMenu(init?: Partial<Menu>) {
     ])
 
     return {
-      destroy() {
-        // state.button(null)
-        unsubscribe && unsubscribe()
-      },
+      destroy,
     }
   }
 
@@ -147,27 +147,14 @@ export function createMenu(init?: Partial<Menu>) {
 
     node.tabIndex = 0
 
-    const unsubscribe = applyBehaviors(node, [
-      onClickOutside(state.close)
+    const destroy = applyBehaviors(node, [
+      onClickOutside(state.close),
+      onEscape(state.close),
+      reflectAriaActivedescendent(state),
     ])
 
-    node.addEventListener('keydown', e => {
-      switch (e.key) {
-        case Keys.Tab:
-          e.preventDefault()
-          e.stopPropagation()
-          break
-        case Keys.Escape:
-          state.close()
-          break
-      }
-    })
-
     return {
-      destroy() {
-        // state.menu(null)
-        unsubscribe && unsubscribe()
-      }
+      destroy,
     }
   }
 
@@ -175,19 +162,18 @@ export function createMenu(init?: Partial<Menu>) {
     ensureID(node, prefix + 'item')
     state.item(node, value || node.textContent!.trim())
 
-    node.tabIndex = -1
-
-    const select = () => state.select(node)
-    node.addEventListener('pointerover', select)
+    const destroy = applyBehaviors(node, [
+      setTabIndex(-1),
+      onClick(select),
+      onSpaceEnter(select),
+      onPointerOver(state.select),
+    ])
 
     return {
       update(value?: string) {
         state.value(node, value || node.textContent!.trim())
       },
-      destroy() {
-        state.remove(node)
-        node.removeEventListener('pointerover', select)
-      }
+      destroy,
     }
   }
 

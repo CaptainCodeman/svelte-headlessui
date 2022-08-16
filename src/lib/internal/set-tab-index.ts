@@ -1,6 +1,6 @@
 import type { Behavior } from "./behavior"
 
 // TODO: change based on disabled
-export const setTabIndex = (): Behavior => node => {
-  node.tabIndex = 0
+export const setTabIndex = (index: number = -1): Behavior => node => {
+  node.tabIndex = index
 }

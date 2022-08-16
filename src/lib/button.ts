@@ -47,7 +47,7 @@ export function createButton(init?: Partial<Button>) {
     const destroy = applyBehaviors(node, [
       setType('button'),
       setRole('button'),
-      setTabIndex(),
+      setTabIndex(0),
       reflectAriaPressed(state),
       reflectAriaLabel(state),
       onClick(state.toggle),

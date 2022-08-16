@@ -6,6 +6,10 @@ export interface Expandable {
   expanded: boolean
 }
 
+export const defaultExpanded: Expandable = {
+  expanded: false
+}
+
 export const setAriaExpanded = setAriaAttributeBoolean('aria-expanded')
 
 export const reflectAriaExpanded = (store: Readable<Expandable>): Behavior => node => derived(store, $store => $store.expanded).subscribe(setAriaExpanded(node))

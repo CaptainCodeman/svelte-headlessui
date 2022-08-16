@@ -12,44 +12,28 @@
 
 	// prettier-ignore
 	const groups = [
-		[{
-			icon: Edit,
-			text: `Edit`,
-		},{
-			icon: Duplicate,
-			text: `Duplicate`,
-		}],
-		[{
-			icon: Archive,
-			text: `Archive`,
-		}, {
-			icon: Move,
-			text: `Move`,
-		}],
-		[{
-			icon: Delete,
-			text: `Delete`,
-		}],
+		[
+			{ icon: Edit, text: `Edit` },
+			{ icon: Duplicate, text: `Duplicate` },
+		], [
+			{ icon: Archive, text: `Archive` },
+			{ icon: Move, text: `Move` },
+		], [
+			{ icon: Delete, text: `Delete` },
+		],
 	]
+
+	function onSelect(e: Event) {
+		console.log('select', (e as CustomEvent).detail)
+	}
 </script>
-
-<!-- <div class="state">
-	<button on:click={state.open}>Open</button>
-	<button on:click={state.close}>Close</button>
-	<button on:click={state.toggle}>Toggle</button>
-	<button on:click={state.first}>First</button>
-	<button on:click={state.previous}>Prev</button>
-	<button on:click={state.next}>Next</button>
-	<button on:click={state.last}>Last</button>
-</div>
-
-<hr class="my-8" /> -->
 
 <div class="flex w-full flex-col items-center justify-center">
 	<div class="relative top-16 w-56 text-right">
 		<div class="relative inline-block text-left">
 			<button
 				use:button
+				on:select={onSelect}
 				class="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
 			>
 				Options
@@ -93,11 +77,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- <pre class="text-xs text-white mt-4 whitespace-pre-wrap" data-testid="debug">{JSON.stringify($state)}</pre> -->
-
-<!-- <style lang="postcss">
-	.state button {
-		@apply m-1 rounded-md bg-indigo-600 text-white px-2 py-1 text-xs;
-	}
-</style> -->

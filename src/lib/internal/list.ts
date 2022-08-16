@@ -6,9 +6,11 @@ export interface ListItem {
 export interface List {
   items: ListItem[]
   active: number
+  value: string
 }
 
 export const defaultList: List = {
   items: [],
   active: -1,
+  value: ''
 }

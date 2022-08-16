@@ -45,7 +45,7 @@ export function createSwitch(init?: Partial<Switch>) {
     const destroy = applyBehaviors(node, [
       setType('button'),
       setRole('switch'),
-      setTabIndex(),
+      setTabIndex(0),
       reflectAriaLabel(state),
       reflectAriaChecked(state),
       onClick(state.toggle),
