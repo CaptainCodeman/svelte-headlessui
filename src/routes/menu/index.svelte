@@ -14,8 +14,6 @@
 		console.log('select', (e as CustomEvent).detail)
 	}
 
-	$: console.log($state)
-
 	// prettier-ignore
 	const groups = [
 		[
@@ -63,12 +61,7 @@
 									class="group flex rounded-md items-center w-full px-2 py-2 text-sm {active ? 'bg-violet-500 text-white' : 'text-gray-900'}"
 									use:item
 								>
-									<svelte:component
-										this={option.icon}
-										class="w-5 h-5 mr-2 {active
-											? '[&>path]:fill-[#8b5cf6] [&>rect]:fill-[#8b5cf6] [&>path]:stroke-[#c4b5fd] [&>rect]:stroke-[#c4b5fd]'
-											: '[&>path]:fill-[#ede9fe] [&>rect]:fill-[#ede9fe] [&>path]:stroke-[#a78bfa] [&>rect]:stroke-[#a78bfa]'}"
-									/>
+									<svelte:component this={option.icon} class="w-5 h-5 mr-2" {active} />
 									{option.text}
 								</button>
 							{/each}

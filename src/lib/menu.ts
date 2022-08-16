@@ -132,7 +132,6 @@ export function createMenu(init?: Partial<Menu>) {
       onClick(state.toggle),
       onSpaceEnter(state.toggle),
       onPreviousNext(state.last, state.first),
-      onKeyboard(state.search),
       // unselectWhenClosed(state),
     ])
 
@@ -148,10 +147,11 @@ export function createMenu(init?: Partial<Menu>) {
     const destroy = applyBehaviors(node, [
       setTabIndex(0),
       onClickOutside(state.close),
-      onEscape(state.close),
       onClick(select),
       onSpaceEnter(select),
+      onEscape(state.close),
       onPreviousNext(state.previous, state.next),
+      onKeyboard(state.search),
       focusOnExpanded(state),
       reflectAriaActivedescendent(state),
     ])
