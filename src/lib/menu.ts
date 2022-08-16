@@ -8,7 +8,7 @@ import { setType } from "./internal/set-type";
 import { setHasPopup } from "./internal/set-has-popup";
 import { ensureID } from "./internal/new-id";
 import { onClickOutside } from "./internal/on-click-outside";
-import { defaultExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
+import { defaultExpanded, reflectAriaExpanded, focusOnExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls'
 import { onPreviousNext } from "./internal/on-previous-next";
 import { onKeyboard } from "./internal/on-keyboard";
@@ -55,10 +55,10 @@ function createStateStore(init?: Partial<Menu>) {
   const close = () => update({ expanded: false })
   const toggle = () => state.expanded ? close() : open()
 
-  const focus = (active: number) => update({ active })
+  const focus = (active: number) => update({ expanded: true, active })
   const first = () => focus(0)
-  const previous = () => focus(state.active - 1)
-  const next = () => focus(state.active + 1)
+  const previous = () => focus(Math.max(state.active - 1, 0))
+  const next = () => focus(Math.min(state.active + 1, state.items.length - 1))
   const last = () => focus(state.items.length - 1)
   const none = () => focus(-1)
   const search = (query: string) => {
@@ -131,7 +131,7 @@ export function createMenu(init?: Partial<Menu>) {
       reflectAriaControls(state),
       onClick(state.toggle),
       onSpaceEnter(state.toggle),
-      onPreviousNext(state.first, state.last),
+      onPreviousNext(state.last, state.first),
       onKeyboard(state.search),
       // unselectWhenClosed(state),
     ])
@@ -145,11 +145,14 @@ export function createMenu(init?: Partial<Menu>) {
     ensureID(node, prefix)
     state.menu(node)
 
-    node.tabIndex = 0
-
     const destroy = applyBehaviors(node, [
+      setTabIndex(0),
       onClickOutside(state.close),
       onEscape(state.close),
+      onClick(select),
+      onSpaceEnter(select),
+      onPreviousNext(state.previous, state.next),
+      focusOnExpanded(state),
       reflectAriaActivedescendent(state),
     ])
 
@@ -164,8 +167,6 @@ export function createMenu(init?: Partial<Menu>) {
 
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
-      onClick(select),
-      onSpaceEnter(select),
       onPointerOver(state.select),
     ])
 

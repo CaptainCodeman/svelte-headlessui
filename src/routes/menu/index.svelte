@@ -10,6 +10,12 @@
 
 	const { state, button, menu, item } = createMenu({ label: 'Actions' })
 
+	function onSelect(e: Event) {
+		console.log('select', (e as CustomEvent).detail)
+	}
+
+	$: console.log($state)
+
 	// prettier-ignore
 	const groups = [
 		[
@@ -22,10 +28,6 @@
 			{ icon: Delete, text: `Delete` },
 		],
 	]
-
-	function onSelect(e: Event) {
-		console.log('select', (e as CustomEvent).detail)
-	}
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
