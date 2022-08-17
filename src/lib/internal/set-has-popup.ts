@@ -1,3 +1,6 @@
-import type { Behavior } from "./behavior"
+import { noopUnsubscribe, type Behavior } from "./behavior"
 
-export const setHasPopup = (): Behavior => node => node.setAttribute('aria-haspopup', 'true')
+export const setHasPopup = (): Behavior => node => {
+  node.setAttribute('aria-haspopup', 'true')
+  return noopUnsubscribe
+}
