@@ -8,7 +8,8 @@
 
 <nav>
 	<a href="/">Home</a>
-	<a href="/menu">Menu</a>
 	<a href="/listbox">Listbox</a>
+	<a href="/menu">Menu</a>
+	<a href="/switch">Switch</a>
 </nav>
 <main class="p-8"><slot /></main>
