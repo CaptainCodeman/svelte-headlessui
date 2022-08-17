@@ -1,14 +1,14 @@
 # Svelte Headless-UI
 
-Unofficial [HeadlessUI](https://headlessui.com/) inspired components for Svelte
+Ultra-small (3kb), unofficial, [HeadlessUI](https://headlessui.com/) inspired components for Svelte.
 
 ## What is this?
 
 A set of [`use:action` directives])(https://svelte.dev/docs#template-syntax-element-directives-use-action) for Svelte that make it easier to create rich, ARIA accessible components. If you want to port [TailwindUI](https://tailwindui.com/) components or other HTML sources to Svelte this may be for you.
 
-Rather than using slotted components, you are in complete control of providing the DOM and styling, and the `use:action` directives provide the behavior and ARIA attribute handling.
+Rather than using slotted components, you are in complete control of providing the DOM and styling, and the `use:action` directives provide the way for the behavior and ARIA attribute handling to hook into your elements.
 
-I believe this approach results in a smaller, simpler library.
+I believe this approach results in a smaller, simpler library. The library consists of common functions re-used by many components which account for under 6kb (uncompressed) with each component then around 1-4kb. Even including _all_ components in your app will only add around 3kb of gzipped JavaScript.
 
 ## Components
 
@@ -16,7 +16,7 @@ I hope to implement _all_ the HeadlessUI components, and whatever other [ARIA Pa
 
 - [x] Toggle (Button)
 - [-] Menu (DropDown)
-- [ ] Listbox (Select)
+- [-] Listbox (Select)
 - [ ] Combobox (Autocomplete)
 - [-] Switch (Toggle)
 - [ ] Disclosure
@@ -28,6 +28,6 @@ I hope to implement _all_ the HeadlessUI components, and whatever other [ARIA Pa
 
 ## Alternatives
 
-There is an existing project, [@rgossiaux/svelte-headlessui](https://svelte-headlessui.goss.io), that provides "a complete, full-featured, unofficial Svelte port of Headless UI, an unstyled, fully accessible UI component library" that aligns more closely with the [Offical Tailwind HeadlessUI](https://headlessui.com/) React and Vue packages.
+There is an existing project, [@rgossiaux/svelte-headlessui](https://svelte-headlessui.goss.io), that provides "a complete, full-featured, unofficial Svelte port of Headless UI, an unstyled, fully accessible UI component library" which aligns more closely with the [Offical Tailwind HeadlessUI](https://headlessui.com/) React and Vue packages in it's approach.
 
-Rather than allowing a legacy web framework to dictate the architecture, I wanted to try a different approach that took advantage of features that Svelte provides.
+Rather than allowing a legacy web framework to dictate the architecture, I wanted to try a "Svelte-first" approach that took advantage of features that Svelte provides.
