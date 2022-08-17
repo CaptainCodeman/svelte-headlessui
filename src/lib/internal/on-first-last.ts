@@ -1,26 +1,15 @@
-import type { Behavior } from "./behavior"
-import { Keys } from "./keys"
+import { Home, PageUp, End, PageDown, type KeyHandler } from "./keys"
 
-export function onFirstLast(fnFirst: () => void, fnLast: () => void): Behavior {
-  const handler = (event: KeyboardEvent) => {
-    switch (event.key) {
-      case Keys.Home:
-      case Keys.PageUp:
-        event.preventDefault()
-        event.stopPropagation()
-        fnFirst()
-        break
-      case Keys.End:
-      case Keys.PageDown:
-        event.preventDefault()
-        event.stopPropagation()
-        fnLast()
-        break
-    }
+export const onFirstLast = (fnFirst: () => void, fnLast: () => void): KeyHandler => key => {
+  switch (key) {
+    case Home:
+    case PageUp:
+      fnFirst()
+      return true
+    case End:
+    case PageDown:
+      fnLast()
+      return true
   }
-
-  return node => {
-    node.addEventListener('keydown', handler)
-    return () => node.removeEventListener('keydown', handler)
-  }
+  return false
 }

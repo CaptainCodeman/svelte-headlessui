@@ -4,6 +4,7 @@ import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { applyBehaviors } from "./internal/behavior";
 import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
+import { onKeydown } from "./internal/on-keydown";
 import { onSpaceEnter } from "./internal/on-space-enter";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
@@ -49,7 +50,9 @@ export function createSwitch(init?: Partial<Switch>) {
       reflectAriaLabel(state),
       reflectAriaChecked(state),
       onClick(state.toggle),
-      onSpaceEnter(state.toggle),
+      onKeydown(
+        onSpaceEnter(state.toggle),
+      ),
     ])
 
     return {

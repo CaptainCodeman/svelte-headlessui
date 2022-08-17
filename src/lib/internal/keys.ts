@@ -1,23 +1,23 @@
 // Ref: https://www.w3.org/TR/uievents-key/#named-key-attribute-values
-export const enum Keys {
-  Space = ' ',
-  Enter = 'Enter',
-  Esc = 'Esc',
-  Escape = 'Escape',
-  Backspace = 'Backspace',
+export const Space = ' '
+export const Enter = 'Enter'
+export const Esc = 'Esc'
+export const Escape = 'Escape'
+export const Backspace = 'Backspace'
 
-  ArrowLeft = 'ArrowLeft',
-  ArrowUp = 'ArrowUp',
-  ArrowRight = 'ArrowRight',
-  ArrowDown = 'ArrowDown',
+export const ArrowLeft = 'ArrowLeft'
+export const ArrowUp = 'ArrowUp'
+export const ArrowRight = 'ArrowRight'
+export const ArrowDown = 'ArrowDown'
 
-  Home = 'Home',
-  End = 'End',
-  Up = 'Up',
-  Down = 'Down',
+export const Home = 'Home'
+export const End = 'End'
+export const Up = 'Up'
+export const Down = 'Down'
 
-  PageUp = 'PageUp',
-  PageDown = 'PageDown',
+export const PageUp = 'PageUp'
+export const PageDown = 'PageDown'
 
-  Tab = 'Tab',
-}
+export const Tab = 'Tab'
+
+export type KeyHandler = (key: string) => boolean

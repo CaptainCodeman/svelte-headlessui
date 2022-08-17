@@ -1,6 +1,6 @@
 import type { Writable } from "svelte/store"
-import type { Behavior } from "./behavior"
 import { isCharacter } from "./is-character"
+import type { KeyHandler } from "./keys"
 import type { List } from "./list"
 
 export interface Searchable extends List {
@@ -9,29 +9,28 @@ export interface Searchable extends List {
 
 type SearchFn = (query: string) => void
 
-export function onKeyboard(fn: SearchFn): Behavior {
+export const onSearch = (fn: SearchFn): KeyHandler => {
   let timeout: number
   let query = ''
 
-  const handler = (event: KeyboardEvent) => {
-    if (isCharacter(event.key)) {
+  return key => {
+    if (isCharacter(key)) {
       if (timeout) {
         clearTimeout(timeout)
       }
 
-      query += event.key
+      query += key
       fn(query)
 
       timeout = window.setTimeout(() => {
         timeout = 0
         query = ''
       }, 350)
-    }
-  }
 
-  return node => {
-    node.addEventListener('keydown', handler)
-    return () => node.removeEventListener('keydown', handler)
+      return true
+    }
+
+    return false
   }
 }
 

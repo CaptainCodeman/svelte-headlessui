@@ -16,3 +16,5 @@ export const setAriaExpanded = setAriaAttributeBoolean('aria-expanded')
 export const reflectAriaExpanded = (store: Readable<Expandable>): Behavior => node => derived(store, $store => $store.expanded).subscribe(setAriaExpanded(node))
 
 export const focusOnExpanded = (store: Readable<Expandable>): Behavior => node => derived(store, $store => $store.expanded).subscribe(setFocus(node))
+
+export const focusOnClose = (store: Readable<Expandable>): Behavior => node => derived(store, $store => !$store.expanded).subscribe(setFocus(node))

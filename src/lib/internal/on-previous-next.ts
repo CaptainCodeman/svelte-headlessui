@@ -1,24 +1,13 @@
-import type { Behavior } from "./behavior"
-import { Keys } from "./keys"
+import { ArrowUp, ArrowDown, type KeyHandler } from "./keys"
 
-export function onPreviousNext(fnPrevious: () => void, fnNext: () => void): Behavior {
-  const handler = (event: KeyboardEvent) => {
-    switch (event.key) {
-      case Keys.ArrowUp:
-        event.preventDefault()
-        event.stopPropagation()
-        fnPrevious()
-        break
-      case Keys.ArrowDown:
-        event.preventDefault()
-        event.stopPropagation()
-        fnNext()
-        break
-    }
+export const onPreviousNext = (fnPrevious: () => void, fnNext: () => void): KeyHandler => key => {
+  switch (key) {
+    case ArrowUp:
+      fnPrevious()
+      return true
+    case ArrowDown:
+      fnNext()
+      return true
   }
-
-  return node => {
-    node.addEventListener('keydown', handler)
-    return () => node.removeEventListener('keydown', handler)
-  }
+  return false
 }

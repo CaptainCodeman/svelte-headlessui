@@ -9,7 +9,7 @@ import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
 import { onClickOutside } from "./internal/on-click-outside";
 import { onEscape } from "./internal/on-escape";
-import { onKeyboard } from "./internal/on-keyboard";
+import { onSearch } from "./internal/on-search";
 import { onPointerOver } from "./internal/on-pointer-over";
 import { onPreviousNext } from "./internal/on-previous-next";
 import { onSpaceEnter } from "./internal/on-space-enter";
@@ -17,6 +17,7 @@ import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
+import { onKeydown } from "./internal/on-keydown";
 
 export interface Listbox extends Labelable, Expandable, Controllable, List { }
 
@@ -130,8 +131,10 @@ export function createListbox(init?: Partial<Listbox>) {
       reflectAriaExpanded(state),
       reflectAriaControls(state),
       onClick(state.toggle),
-      onSpaceEnter(state.toggle),
-      onPreviousNext(state.last, state.first),
+      onKeydown(
+        onSpaceEnter(state.toggle),
+        onPreviousNext(state.last, state.first),
+      ),
       // unselectWhenClosed(state),
     ])
 
@@ -148,10 +151,12 @@ export function createListbox(init?: Partial<Listbox>) {
       setTabIndex(0),
       onClickOutside(state.close),
       onClick(select),
-      onSpaceEnter(select),
-      onEscape(state.close),
-      onPreviousNext(state.previous, state.next),
-      onKeyboard(state.search),
+      onKeydown(
+        onSpaceEnter(select),
+        onEscape(state.close),
+        onPreviousNext(state.previous, state.next),
+        onSearch(state.search),
+      ),
       focusOnExpanded(state),
       reflectAriaActivedescendent(state),
     ])

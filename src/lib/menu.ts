@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
-import { defaultExpanded, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
+import { defaultExpanded, focusOnExpanded, focusOnClose, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { applyBehaviors } from "./internal/behavior";
 import { defaultList, type List } from "./internal/list";
@@ -9,7 +9,8 @@ import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
 import { onClickOutside } from "./internal/on-click-outside";
 import { onEscape } from "./internal/on-escape";
-import { onKeyboard } from "./internal/on-keyboard";
+import { onSearch } from "./internal/on-search";
+import { onKeydown } from "./internal/on-keydown";
 import { onPointerOver } from "./internal/on-pointer-over";
 import { onPreviousNext } from "./internal/on-previous-next";
 import { onSpaceEnter } from "./internal/on-space-enter";
@@ -17,6 +18,8 @@ import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
+import { noop } from "./internal/noop";
+import { onTab } from "./internal/on-tab";
 
 export interface Menu extends Labelable, Expandable, Controllable, List { }
 
@@ -132,9 +135,11 @@ export function createMenu(init?: Partial<Menu>) {
       reflectAriaExpanded(state),
       reflectAriaControls(state),
       onClick(state.toggle),
-      onSpaceEnter(state.toggle),
-      onPreviousNext(state.last, state.first),
-      // unselectWhenClosed(state),
+      onKeydown(
+        onSpaceEnter(state.toggle),
+        onPreviousNext(state.last, state.first),
+      ),
+      focusOnClose(state),
     ])
 
     return {
@@ -150,10 +155,13 @@ export function createMenu(init?: Partial<Menu>) {
       setTabIndex(0),
       onClickOutside(state.close),
       onClick(select),
-      onSpaceEnter(select),
-      onEscape(state.close),
-      onPreviousNext(state.previous, state.next),
-      onKeyboard(state.search),
+      onKeydown(
+        onSpaceEnter(select),
+        onEscape(state.close),
+        onPreviousNext(state.previous, state.next),
+        onTab(noop),
+        onSearch(state.search),
+      ),
       focusOnExpanded(state),
       reflectAriaActivedescendent(state),
     ])
