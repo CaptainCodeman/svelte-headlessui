@@ -1,22 +1,22 @@
 import { writable } from "svelte/store";
+import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
+import { reflectAriaControls, type Controllable } from './internal/aria-controls';
+import { defaultExpanded, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
+import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { applyBehaviors } from "./internal/behavior";
+import { defaultList, type List } from "./internal/list";
+import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
+import { onClickOutside } from "./internal/on-click-outside";
+import { onEscape } from "./internal/on-escape";
+import { onKeyboard } from "./internal/on-keyboard";
+import { onPointerOver } from "./internal/on-pointer-over";
+import { onPreviousNext } from "./internal/on-previous-next";
 import { onSpaceEnter } from "./internal/on-space-enter";
+import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
-import { setHasPopup } from "./internal/set-has-popup";
-import { ensureID } from "./internal/new-id";
-import { onClickOutside } from "./internal/on-click-outside";
-import { defaultExpanded, reflectAriaExpanded, focusOnExpanded, type Expandable } from "./internal/aria-expanded";
-import { reflectAriaControls, type Controllable } from './internal/aria-controls'
-import { onPreviousNext } from "./internal/on-previous-next";
-import { onKeyboard } from "./internal/on-keyboard";
-import { defaultList, type List } from "./internal/list";
-import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
-import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
-import { onEscape } from "./internal/on-escape";
-import { onPointerOver } from "./internal/on-pointer-over";
 
 export interface Menu extends Labelable, Expandable, Controllable, List { }
 
@@ -82,6 +82,8 @@ function createStateStore(init?: Partial<Menu>) {
     const { active, value } = state
     return { active, value }
   }
+
+  // TODO: split into internal / external, so only public API methods (and state) are exported
 
   return {
     subscribe,

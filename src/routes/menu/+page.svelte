@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { createMenu } from '$lib/menu'
 	import Transition from 'svelte-transition'
-	import Archive from './_Archive.svelte'
-	import ChevronDown from './_ChevronDown.svelte'
-	import Delete from './_Delete.svelte'
-	import Duplicate from './_Duplicate.svelte'
-	import Edit from './_Edit.svelte'
-	import Move from './_Move.svelte'
+	import Archive from './Archive.svelte'
+	import ChevronDown from './ChevronDown.svelte'
+	import Delete from './Delete.svelte'
+	import Duplicate from './Duplicate.svelte'
+	import Edit from './Edit.svelte'
+	import Move from './Move.svelte'
 
 	const { state, button, menu, item } = createMenu({ label: 'Actions' })
 

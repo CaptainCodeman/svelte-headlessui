@@ -1,13 +1,13 @@
 import { writable } from "svelte/store";
+import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { defaultPressable, reflectAriaPressed, type Pressable } from "./internal/aria-pressed";
 import { applyBehaviors } from "./internal/behavior";
+import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
 import { onSpaceEnter } from "./internal/on-space-enter";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
-import { ensureID } from "./internal/new-id";
-import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 
 // really a toggle button
 export interface Button extends Pressable, Labelable { }
