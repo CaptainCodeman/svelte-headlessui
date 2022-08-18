@@ -6,6 +6,7 @@ import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { applyBehaviors } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
+import { keyFirstLast } from "./internal/key-first-last";
 import { keyPreviousNext } from "./internal/key-previous-next";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
@@ -162,6 +163,7 @@ export function createMenu(init?: Partial<Menu>) {
       onKeydown(
         keySpaceEnter(select),
         keyEscape(state.close),
+        keyFirstLast(state.first, state.last),
         keyPreviousNext(state.previous, state.next),
         keyTab(noop),
         keyCharacter(state.search),
