@@ -89,7 +89,7 @@ function createStateStore(init?: Partial<Menu>) {
     return { active, value }
   }
 
-  // TODO: split into internal / external, so only public API methods (and state) are exported
+  // TODO: split into internal / external, so only public API methods (and state) are exported to users
 
   return {
     subscribe,
@@ -121,8 +121,7 @@ export function createMenu(init?: Partial<Menu>) {
 
   // menubutton
   function button(node: HTMLElement) {
-    ensureID(node, prefix + 'button')
-    state.button(node)
+    state.button(ensureID(node, prefix))
 
     onSelect = () => {
       node.dispatchEvent(new CustomEvent('select', { detail: state.selected() }))
@@ -151,8 +150,7 @@ export function createMenu(init?: Partial<Menu>) {
   }
 
   function menu(node: HTMLElement) {
-    ensureID(node, prefix)
-    state.menu(node)
+    state.menu(ensureID(node, prefix))
 
     const destroy = applyBehaviors(node, [
       setTabIndex(0),
@@ -180,8 +178,7 @@ export function createMenu(init?: Partial<Menu>) {
   // TODO: allow "any" type of value, as long as a text extractor is supplied (default function is treat as a string)
   // NOTE: text value is required for searchability
   function item(node: HTMLElement, value?: string) {
-    ensureID(node, prefix + 'item')
-    state.item(node, value || node.textContent!.trim())
+    state.item(ensureID(node, prefix), value || node.textContent!.trim())
 
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
