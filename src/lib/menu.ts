@@ -158,7 +158,7 @@ export function createMenu(init?: Partial<Menu>) {
       setTabIndex(0),
       onClickOutside(state.close),
       onClick(select),
-      onPointerMoveChild('[role="menuitem"', state.select),
+      onPointerMoveChild('[role="menuitem"]', state.select),
       onPointerOut(() => state.focus(-1)),
       onKeydown(
         keySpaceEnter(select),
