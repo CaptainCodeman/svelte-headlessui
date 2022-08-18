@@ -2,10 +2,10 @@ import { writable } from "svelte/store";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { defaultPressable, reflectAriaPressed, type Pressable } from "./internal/aria-pressed";
 import { applyBehaviors } from "./internal/behavior";
+import { keySpaceEnter } from "./internal/key-space-enter";
 import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
 import { onKeydown } from "./internal/on-keydown";
-import { onSpaceEnter } from "./internal/on-space-enter";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
@@ -53,7 +53,7 @@ export function createButton(init?: Partial<Button>) {
       reflectAriaLabel(state),
       onClick(state.toggle),
       onKeydown(
-        onSpaceEnter(state.toggle),
+        keySpaceEnter(state.toggle),
       )
     ])
 

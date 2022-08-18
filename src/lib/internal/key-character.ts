@@ -9,7 +9,7 @@ export interface Searchable extends List {
 
 type SearchFn = (query: string) => void
 
-export const onSearch = (fn: SearchFn): KeyHandler => {
+export const keyCharacter = (fn: SearchFn): KeyHandler => {
   let timeout: number
   let query = ''
 

@@ -1,11 +1,11 @@
 import { writable } from "svelte/store";
-import { reflectAriaChecked, defaultCheckable, type Checkable } from "./internal/aria-checked";
+import { defaultCheckable, reflectAriaChecked, type Checkable } from "./internal/aria-checked";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { applyBehaviors } from "./internal/behavior";
+import { keySpaceEnter } from "./internal/key-space-enter";
 import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
 import { onKeydown } from "./internal/on-keydown";
-import { onSpaceEnter } from "./internal/on-space-enter";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
@@ -51,7 +51,7 @@ export function createSwitch(init?: Partial<Switch>) {
       reflectAriaChecked(state),
       onClick(state.toggle),
       onKeydown(
-        onSpaceEnter(state.toggle),
+        keySpaceEnter(state.toggle),
       ),
     ])
 

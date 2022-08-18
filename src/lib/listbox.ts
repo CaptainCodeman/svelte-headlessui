@@ -4,20 +4,20 @@ import { reflectAriaControls, type Controllable } from './internal/aria-controls
 import { defaultExpanded, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { applyBehaviors } from "./internal/behavior";
+import { keyCharacter } from "./internal/key-character";
+import { keyEscape } from "./internal/key-escape";
+import { keyPreviousNext } from "./internal/key-previous-next";
+import { keySpaceEnter } from "./internal/key-space-enter";
 import { defaultList, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
 import { onClickOutside } from "./internal/on-click-outside";
-import { onEscape } from "./internal/on-escape";
-import { onSearch } from "./internal/on-search";
-import { onPointerOver } from "./internal/on-pointer-over";
-import { onPreviousNext } from "./internal/on-previous-next";
-import { onSpaceEnter } from "./internal/on-space-enter";
+import { onKeydown } from "./internal/on-keydown";
+import { onPointerMove } from "./internal/on-pointer-move";
 import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
-import { onKeydown } from "./internal/on-keydown";
 
 export interface Listbox extends Labelable, Expandable, Controllable, List { }
 
@@ -132,8 +132,8 @@ export function createListbox(init?: Partial<Listbox>) {
       reflectAriaControls(state),
       onClick(state.toggle),
       onKeydown(
-        onSpaceEnter(state.toggle),
-        onPreviousNext(state.last, state.first),
+        keySpaceEnter(state.toggle),
+        keyPreviousNext(state.last, state.first),
       ),
       // unselectWhenClosed(state),
     ])
@@ -152,10 +152,10 @@ export function createListbox(init?: Partial<Listbox>) {
       onClickOutside(state.close),
       onClick(select),
       onKeydown(
-        onSpaceEnter(select),
-        onEscape(state.close),
-        onPreviousNext(state.previous, state.next),
-        onSearch(state.search),
+        keySpaceEnter(select),
+        keyEscape(state.close),
+        keyPreviousNext(state.previous, state.next),
+        keyCharacter(state.search),
       ),
       focusOnExpanded(state),
       reflectAriaActivedescendent(state),
@@ -172,7 +172,7 @@ export function createListbox(init?: Partial<Listbox>) {
 
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
-      onPointerOver(state.select),
+      onPointerMove(state.select),
     ])
 
     return {

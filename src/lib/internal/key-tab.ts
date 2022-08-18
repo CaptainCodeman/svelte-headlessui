@@ -1,6 +1,6 @@
 import { Tab, type KeyHandler } from "./keys"
 
-export const onTab = (fn: () => void): KeyHandler => key => {
+export const keyTab = (fn: () => void): KeyHandler => key => {
   switch (key) {
     case Tab:
       fn()

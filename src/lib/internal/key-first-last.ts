@@ -1,6 +1,6 @@
 import { Home, PageUp, End, PageDown, type KeyHandler } from "./keys"
 
-export const onFirstLast = (fnFirst: () => void, fnLast: () => void): KeyHandler => key => {
+export const keyFirstLast = (fnFirst: () => void, fnLast: () => void): KeyHandler => key => {
   switch (key) {
     case Home:
     case PageUp:

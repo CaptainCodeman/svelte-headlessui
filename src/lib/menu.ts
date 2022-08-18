@@ -1,25 +1,25 @@
 import { writable } from "svelte/store";
 import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
-import { defaultExpanded, focusOnExpanded, focusOnClose, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
+import { defaultExpanded, focusOnClose, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { applyBehaviors } from "./internal/behavior";
+import { keyCharacter } from "./internal/key-character";
+import { keyEscape } from "./internal/key-escape";
+import { keyPreviousNext } from "./internal/key-previous-next";
+import { keySpaceEnter } from "./internal/key-space-enter";
+import { keyTab } from "./internal/key-tab";
 import { defaultList, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
+import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
 import { onClickOutside } from "./internal/on-click-outside";
-import { onEscape } from "./internal/on-escape";
-import { onSearch } from "./internal/on-search";
 import { onKeydown } from "./internal/on-keydown";
-import { onPointerOver } from "./internal/on-pointer-over";
-import { onPreviousNext } from "./internal/on-previous-next";
-import { onSpaceEnter } from "./internal/on-space-enter";
+import { onPointerMoveChild, onPointerOut } from "./internal/on-pointer-move";
 import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
-import { noop } from "./internal/noop";
-import { onTab } from "./internal/on-tab";
 
 export interface Menu extends Labelable, Expandable, Controllable, List { }
 
@@ -80,7 +80,9 @@ function createStateStore(init?: Partial<Menu>) {
       focus(index)
     }
   }
-  const select = (node: HTMLElement) => focus(state.items.findIndex(item => item.id === node.id))
+
+  const select = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id) : -1)
+
   const selected = () => {
     const { active, value } = state
     return { active, value }
@@ -136,8 +138,8 @@ export function createMenu(init?: Partial<Menu>) {
       reflectAriaControls(state),
       onClick(state.toggle),
       onKeydown(
-        onSpaceEnter(state.toggle),
-        onPreviousNext(state.last, state.first),
+        keySpaceEnter(state.toggle),
+        keyPreviousNext(state.last, state.first),
       ),
       focusOnClose(state),
     ])
@@ -155,12 +157,14 @@ export function createMenu(init?: Partial<Menu>) {
       setTabIndex(0),
       onClickOutside(state.close),
       onClick(select),
+      onPointerMoveChild('[role="menuitem"', state.select),
+      onPointerOut(() => state.focus(-1)),
       onKeydown(
-        onSpaceEnter(select),
-        onEscape(state.close),
-        onPreviousNext(state.previous, state.next),
-        onTab(noop),
-        onSearch(state.search),
+        keySpaceEnter(select),
+        keyEscape(state.close),
+        keyPreviousNext(state.previous, state.next),
+        keyTab(noop),
+        keyCharacter(state.search),
       ),
       focusOnExpanded(state),
       reflectAriaActivedescendent(state),
@@ -179,7 +183,7 @@ export function createMenu(init?: Partial<Menu>) {
 
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
-      onPointerOver(state.select),
+      setRole('menuitem'),
     ])
 
     return {
