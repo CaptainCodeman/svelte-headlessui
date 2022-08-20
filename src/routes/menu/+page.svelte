@@ -8,7 +8,7 @@
 	import Edit from './Edit.svelte'
 	import Move from './Move.svelte'
 
-	const { state, button, menu, item } = createMenu({ label: 'Actions' })
+	const menu = createMenu({ label: 'Actions' })
 
 	function onSelect(e: Event) {
 		console.log('select', (e as CustomEvent).detail)
@@ -32,7 +32,7 @@
 	<div class="relative top-16 w-56 text-right">
 		<div class="relative inline-block text-left">
 			<button
-				use:button
+				use:menu.button
 				on:select={onSelect}
 				class="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
 			>
@@ -41,7 +41,7 @@
 			</button>
 
 			<Transition
-				show={$state.expanded}
+				show={$menu.expanded}
 				enter="transition ease-out duration-100"
 				enterFrom="transform opacity-0 scale-95"
 				enterTo="transform opacity-100 scale-100"
@@ -50,16 +50,16 @@
 				leaveTo="transform opacity-0 scale-95"
 			>
 				<div
-					use:menu
+					use:menu.items
 					class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 				>
 					{#each groups as group}
 						<div class="px-1 py-1">
 							{#each group as option}
-								{@const active = $state.value === option.text}
+								{@const active = $menu.value === option.text}
 								<button
+									use:menu.item
 									class="group flex rounded-md items-center w-full px-2 py-2 text-sm {active ? 'bg-violet-500 text-white' : 'text-gray-900'}"
-									use:item
 								>
 									<svelte:component this={option.icon} class="w-5 h-5 mr-2" {active} />
 									{option.text}
@@ -72,3 +72,5 @@
 		</div>
 	</div>
 </div>
+
+<!-- <pre class="text-xs whitespace-pre-wrap p-4 mt-16">{JSON.stringify($menu)}</pre> -->

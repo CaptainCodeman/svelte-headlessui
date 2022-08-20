@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
 import { defaultExpanded, focusOnClose, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
@@ -10,7 +10,7 @@ import { keyFirstLast } from "./internal/key-first-last";
 import { keyPreviousNext } from "./internal/key-previous-next";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { defaultList, type List } from "./internal/list";
+import { defaultList, removeOnDestroy, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -22,51 +22,61 @@ import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
 
-export interface Menu extends Labelable, Expandable, Controllable, List { }
-
-export interface MenuState extends Menu {
+export interface Menu extends Labelable, Expandable, Controllable, List {
   button?: string
   menu?: string
 }
 
-// TODO: avoid this being exportable by using inline tests
-function createStateStore(init?: Partial<Menu>) {
-  let state: MenuState = {
+export function createMenu(init?: Partial<Menu>) {
+  // prefix for generating unique IDs
+  const prefix = 'headlessui-menu'
+
+  // internal state for component
+  let state: Menu = {
     ...defaultList,
     ...defaultExpanded,
     ...init,
   }
 
-  const { subscribe, set } = writable(state)
+  // wrap with store for reactivity
+  const store = writable(state)
 
-  const update = (part: Partial<MenuState>) => {
-    const { active } = part
-    if (active !== undefined) {
-      // if active is being set, also set value so it's in sync (UI can use either)
-      part.value = active === -1 || state.items.length === 0 ? undefined : state.items[active].value
-    }
-    set(state = { ...state, ...part })
-  }
+  // update state and notify store of changes for reactivity
+  const update = (part: Partial<Menu>) => store.set(state = { ...state, ...part })
 
-  // attaching elements to store
-  const button = (node: HTMLElement) => update({ button: node.id })
-  const menu = (node: HTMLElement) => update({ menu: node.id, controls: node ? node.id : undefined })
-  const item = (node: HTMLElement, value: string) => update({ items: [...state.items, { id: node.id, value }] })
-  const value = (node: HTMLElement, value: string) => update({ items: state.items.map(item => item.id === node.id ? { ...item, value } : item) })
-  const remove = (node: HTMLElement) => update({ items: state.items.filter(item => item.id === node.id) })
+  // return selected value (based on active state)
+  const value = () => state.active === -1 || state.items.length === 0 ? undefined : state.items[state.active].value
 
+  // open the menu and set first item active
   const open = () => update({ expanded: true, active: 0 })
-  const close = () => update({ expanded: false })
+
+  // close the menu
+  const close = () => update({ expanded: false, active: -1 })
+
+  // toggle open / closed state
   const toggle = () => state.expanded ? close() : open()
 
-  const focus = (active: number) => update({ expanded: true, active })
+  // set focused (active) item (open if not expanded) only if changed
+  const focus = (active: number) => state.active !== active && update({ expanded: true, active })
+
+  // set focus (active) to first
   const first = () => focus(0)
+
+  // set focus (active) to previous
   const previous = () => focus(Math.max(state.active - 1, 0))
+
+  // set focus (active) to next
   const next = () => focus(Math.min(state.active + 1, state.items.length - 1))
+
+  // set focus (active) to last
   const last = () => focus(state.items.length - 1)
+
+  // clear focus
   const none = () => focus(-1)
+
+  // TODO: make re-usable
+  // search for query value starting from the current position and looping round, set first found to active
   const search = (query: string) => {
-    // search for item from current position on, looping round items, set active to item found
     const searchable = state.active === -1
       ? state.items
       : state.items
@@ -82,50 +92,29 @@ function createStateStore(init?: Partial<Menu>) {
     }
   }
 
-  const select = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id) : -1)
+  // set the focus based on the HTMLElement passed which will be a menuitem element or null
+  const focusNode = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id) : -1)
 
-  const selected = () => {
-    const { active, value } = state
-    return { active, value }
-  }
-
-  // TODO: split into internal / external, so only public API methods (and state) are exported to users
-
-  return {
-    subscribe,
-    button,
-    menu,
-    item,
-    value,
-    remove,
-    open,
-    close,
-    toggle,
-    focus,
-    first,
-    previous,
-    next,
-    last,
-    none,
-    search,
-    select,
-    selected,
-  }
-}
-
-export function createMenu(init?: Partial<Menu>) {
-  const prefix = 'headlessui-menu'
-  const state = createStateStore(init)
+  // "two stage" dispatch is because button may be added last, but we want to wire behaviors to the method
   let onSelect = () => { }
   const select = () => onSelect()
 
   // menubutton
   function button(node: HTMLElement) {
-    state.button(ensureID(node, prefix))
+    ensureID(node, prefix)
+    update({ button: node.id })
 
+    // TODO: create a behavior that can be passed an event generator function, use with items select
+    // to raise event from the 'controller'
     onSelect = () => {
-      node.dispatchEvent(new CustomEvent('select', { detail: state.selected() }))
-      state.close()
+      const event = new CustomEvent('select', {
+        detail: {
+          active: state.active,
+          value: value(),
+        }
+      })
+      node.dispatchEvent(event)
+      close()
     }
 
     const destroy = applyBehaviors(node, [
@@ -133,15 +122,15 @@ export function createMenu(init?: Partial<Menu>) {
       setRole('button'),
       setHasPopup(),
       setTabIndex(0),
-      reflectAriaLabel(state),
-      reflectAriaExpanded(state),
-      reflectAriaControls(state),
-      onClick(state.toggle),
+      reflectAriaLabel(store),
+      reflectAriaExpanded(store),
+      reflectAriaControls(store),
+      onClick(toggle),
       onKeydown(
-        keySpaceEnter(state.toggle),
-        keyPreviousNext(state.last, state.first),
+        keySpaceEnter(toggle),
+        keyPreviousNext(last, first),
       ),
-      focusOnClose(state),
+      focusOnClose(store),
     ])
 
     return {
@@ -149,25 +138,26 @@ export function createMenu(init?: Partial<Menu>) {
     }
   }
 
-  function menu(node: HTMLElement) {
-    state.menu(ensureID(node, prefix))
+  function items(node: HTMLElement) {
+    ensureID(node, prefix)
+    update({ menu: node.id, controls: node ? node.id : undefined })
 
     const destroy = applyBehaviors(node, [
       setTabIndex(0),
-      onClickOutside(state.close),
+      onClickOutside(close),
       onClick(select),
-      onPointerMoveChild('[role="menuitem"]', state.select),
-      onPointerOut(() => state.focus(-1)),
+      onPointerMoveChild('[role="menuitem"]', focusNode),
+      onPointerOut(none),
       onKeydown(
         keySpaceEnter(select),
-        keyEscape(state.close),
-        keyFirstLast(state.first, state.last),
-        keyPreviousNext(state.previous, state.next),
+        keyEscape(close),
+        keyFirstLast(first, last),
+        keyPreviousNext(previous, next),
         keyTab(noop),
-        keyCharacter(state.search),
+        keyCharacter(search),
       ),
-      focusOnExpanded(state),
-      reflectAriaActivedescendent(state),
+      focusOnExpanded(store),
+      reflectAriaActivedescendent(store),
     ])
 
     return {
@@ -178,25 +168,33 @@ export function createMenu(init?: Partial<Menu>) {
   // TODO: allow "any" type of value, as long as a text extractor is supplied (default function is treat as a string)
   // NOTE: text value is required for searchability
   function item(node: HTMLElement, value?: string) {
-    state.item(ensureID(node, prefix), value || node.textContent!.trim())
+    ensureID(node, prefix)
+    update({ items: [...state.items, { id: node.id, value: value || node.textContent!.trim() }] })
 
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
       setRole('menuitem'),
+      removeOnDestroy(store),
     ])
 
     return {
       update(value?: string) {
-        state.value(node, value || node.textContent!.trim())
+        update({ items: state.items.map(item => item.id === node.id ? { ...item, value: value || node.textContent!.trim() } : item) })
       },
       destroy,
     }
   }
 
+  // expose a subset of our state, derive the selected value
+  const { subscribe } = derived(store, $state => {
+    const { active, expanded } = $state
+    return { active, expanded, value: value() }
+  })
+
   return {
-    state,
+    subscribe,
     button,
-    menu,
+    items,
     item,
   }
 }
