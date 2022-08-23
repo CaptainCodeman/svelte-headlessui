@@ -22,6 +22,7 @@ import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
 
+// TODO: add "value" selector, to pick text value off list item objects
 export interface Menu extends Labelable, Expandable, Controllable, List {
   button?: string
   menu?: string

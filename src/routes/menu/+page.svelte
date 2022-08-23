@@ -72,5 +72,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- <pre class="text-xs whitespace-pre-wrap p-4 mt-16">{JSON.stringify($menu)}</pre> -->
