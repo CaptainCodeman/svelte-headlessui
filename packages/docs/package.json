@@ -16,7 +16,8 @@
     "@types/react": "^17.0.45",
     "preact": "^10.7.3",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "svelte-headlessui": "workspace:*"
   },
   "devDependencies": {
     "@astrojs/mdx": "^0.10.0",
