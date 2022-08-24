@@ -49,7 +49,7 @@ export function createMenu(init?: Partial<Menu>) {
   const value = () => state.active === -1 || state.items.length === 0 ? undefined : state.items[state.active].value
 
   // open the menu and set first item active
-  const open = () => update({ expanded: true, active: 0 })
+  const open = () => update({ expanded: true })
 
   // close the menu
   const close = () => update({ expanded: false, active: -1 })
@@ -108,14 +108,14 @@ export function createMenu(init?: Partial<Menu>) {
     // TODO: create a behavior that can be passed an event generator function, use with items select
     // to raise event from the 'controller'
     onSelect = () => {
+      close()
       const event = new CustomEvent('select', {
         detail: {
-          active: state.active,
+          selected: state.active,
           value: value(),
         }
       })
       node.dispatchEvent(event)
-      close()
     }
 
     const destroy = applyBehaviors(node, [

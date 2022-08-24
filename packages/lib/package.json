@@ -1,7 +1,7 @@
 {
   "name": "svelte-headlessui",
   "description": "HeadlessUI components for Svelte",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "type": "module",
   "keywords": [
     "svelte",
@@ -11,6 +11,9 @@
     "tailwindcss",
     "tailwindui",
     "renderless"
+  ],
+  "files": [
+    "dist"
   ],
   "exports": {
     ".": "./dist/index.js"
@@ -71,6 +74,6 @@
     "vitest": "^0.22.0"
   },
   "dependencies": {
-    "svelte-transition": "^0.0.5"
+    "svelte-transition": "^0.0.6"
   }
 }

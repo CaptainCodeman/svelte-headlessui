@@ -3,6 +3,7 @@ import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
 import { defaultExpanded, focusOnClose, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
+import { reflectAriaSelected } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
@@ -26,6 +27,7 @@ import { setType } from "./internal/set-type";
 export interface Listbox extends Labelable, Expandable, Controllable, List {
   button?: string
   menu?: string
+  selected: number // active = highlighted, selected = checked
 }
 
 export function createListbox(init?: Partial<Listbox>) {
@@ -34,6 +36,7 @@ export function createListbox(init?: Partial<Listbox>) {
 
   // internal state for component
   let state: Listbox = {
+    selected: -1,
     ...defaultList,
     ...defaultExpanded,
     ...init,
@@ -46,19 +49,19 @@ export function createListbox(init?: Partial<Listbox>) {
   const update = (part: Partial<Listbox>) => store.set(state = { ...state, ...part })
 
   // return selected value (based on active state)
-  const value = () => state.active === -1 || state.items.length === 0 ? undefined : state.items[state.active].value
+  const value = () => state.selected === -1 || state.selected > state.items.length - 1 ? undefined : state.items[state.selected].value
 
   // open the menu and set first item active
-  const open = () => update({ expanded: true, active: 0 })
+  const open = () => update({ expanded: true, active: state.selected })
 
   // close the menu
-  const close = () => update({ expanded: false, active: -1 })
+  const close = () => update({ expanded: false })
 
   // toggle open / closed state
   const toggle = () => state.expanded ? close() : open()
 
-  // set focused (active) item (open if not expanded) only if changed
-  const focus = (active: number) => state.active !== active && update({ expanded: true, active })
+  // set focused (active) item only if changed
+  const focus = (active: number) => state.active !== active && update({ active })
 
   // set focus (active) to first
   const first = () => focus(0)
@@ -108,14 +111,14 @@ export function createListbox(init?: Partial<Listbox>) {
     // TODO: create a behavior that can be passed an event generator function, use with items select
     // to raise event from the 'controller'
     onSelect = () => {
+      update({ selected: state.active, expanded: false })
       const event = new CustomEvent('select', {
         detail: {
-          active: state.active,
+          selected: state.selected,
           value: value(),
         }
       })
       node.dispatchEvent(event)
-      close()
     }
 
     const destroy = applyBehaviors(node, [
@@ -129,7 +132,7 @@ export function createListbox(init?: Partial<Listbox>) {
       onClick(toggle),
       onKeydown(
         keySpaceEnter(toggle),
-        keyPreviousNext(last, first),
+        keyPreviousNext(toggle, toggle),
       ),
       focusOnClose(store),
     ])
@@ -147,7 +150,7 @@ export function createListbox(init?: Partial<Listbox>) {
       setTabIndex(0),
       onClickOutside(close),
       onClick(select),
-      onPointerMoveChild('[role="menuitem"]', focusNode),
+      onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),
       onKeydown(
         keySpaceEnter(select),
@@ -169,12 +172,14 @@ export function createListbox(init?: Partial<Listbox>) {
   // TODO: allow "any" type of value, as long as a text extractor is supplied (default function is treat as a string)
   // NOTE: text value is required for searchability
   function item(node: HTMLElement, value?: string) {
+    const index = state.items.length
     ensureID(node, prefix)
     update({ items: [...state.items, { id: node.id, value: value || node.textContent!.trim() }] })
 
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
-      setRole('menuitem'),
+      setRole('option'),
+      reflectAriaSelected(store, index),
       removeOnDestroy(store),
     ])
 
@@ -188,8 +193,8 @@ export function createListbox(init?: Partial<Listbox>) {
 
   // expose a subset of our state, derive the selected value
   const { subscribe } = derived(store, $state => {
-    const { active, expanded } = $state
-    return { active, expanded, value: value() }
+    const { active, expanded, selected } = $state
+    return { active, expanded, selected, value: value() }
   })
 
   return {

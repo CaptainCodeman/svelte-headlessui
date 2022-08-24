@@ -1,0 +1,10 @@
+{
+  "name": "svelte-headlessui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "Simon Green <simon@captaincodeman.com> (https://github.com/captaincodeman)",
+  "license": "ISC"
+}
