@@ -3,6 +3,7 @@ import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
 import { defaultExpanded, focusOnClose, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
+import { defaultSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
@@ -23,7 +24,7 @@ import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
 
 // TODO: add "value" selector, to pick text value off list item objects
-export interface Menu extends Labelable, Expandable, Controllable, List {
+export interface Menu extends Labelable, Expandable, Controllable, List, Selectable {
   button?: string
   menu?: string
 }
@@ -36,6 +37,7 @@ export function createMenu(init?: Partial<Menu>) {
   let state: Menu = {
     ...defaultList,
     ...defaultExpanded,
+    ...defaultSelected,
     ...init,
   }
 
@@ -58,7 +60,7 @@ export function createMenu(init?: Partial<Menu>) {
   const toggle = () => state.expanded ? close() : open()
 
   // set focused (active) item (open if not expanded) only if changed
-  const focus = (active: number) => state.active !== active && update({ expanded: true, active })
+  const focus = (active: number) => state.active !== active && update({ expanded: state.expanded || active > -1, active })
 
   // set focus (active) to first
   const first = () => focus(0)
@@ -108,11 +110,11 @@ export function createMenu(init?: Partial<Menu>) {
     // TODO: create a behavior that can be passed an event generator function, use with items select
     // to raise event from the 'controller'
     onSelect = () => {
-      close()
+      update({ expanded: false, selected: state.active })
       const event = new CustomEvent('select', {
         detail: {
-          selected: state.active,
-          value: value(),
+          selected: state.selected,
+          value: state.items[state.selected].value,
         }
       })
       node.dispatchEvent(event)

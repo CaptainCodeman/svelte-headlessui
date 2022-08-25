@@ -3,7 +3,7 @@ import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
 import { defaultExpanded, focusOnClose, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
-import { reflectAriaSelected } from "./internal/aria-selected";
+import { defaultSelected, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
@@ -24,10 +24,9 @@ import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
 
 // TODO: add "value" selector, to pick text value off list item objects
-export interface Listbox extends Labelable, Expandable, Controllable, List {
+export interface Listbox extends Labelable, Expandable, Controllable, List, Selectable {
   button?: string
   menu?: string
-  selected: number // active = highlighted, selected = checked
 }
 
 export function createListbox(init?: Partial<Listbox>) {
@@ -36,9 +35,9 @@ export function createListbox(init?: Partial<Listbox>) {
 
   // internal state for component
   let state: Listbox = {
-    selected: -1,
     ...defaultList,
     ...defaultExpanded,
+    ...defaultSelected,
     ...init,
   }
 

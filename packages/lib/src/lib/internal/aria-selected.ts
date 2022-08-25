@@ -7,7 +7,7 @@ export interface Selectable {
   selected: number
 }
 
-export const defaultSelectable: Selectable = {
+export const defaultSelected: Selectable = {
   selected: -1
 }
 
