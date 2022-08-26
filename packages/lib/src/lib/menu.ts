@@ -11,7 +11,7 @@ import { keyFirstLast } from "./internal/key-first-last";
 import { keyPreviousNext } from "./internal/key-previous-next";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { defaultList, removeOnDestroy, type List } from "./internal/list";
+import { defaultList, getItemValues, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -45,22 +45,22 @@ export function createMenu(init?: Partial<Menu>) {
   const store = writable(state)
 
   // update state and notify store of changes for reactivity
-  const update = (part: Partial<Menu>) => store.set(state = { ...state, ...part })
+  const set = (part: Partial<Menu>) => store.set(state = { ...state, ...part })
 
   // return selected value (based on active state)
   const value = () => state.active === -1 || state.items.length === 0 ? undefined : state.items[state.active].value
 
   // open the menu and set first item active
-  const open = () => update({ expanded: true })
+  const open = () => set({ expanded: true })
 
   // close the menu
-  const close = () => update({ expanded: false, active: -1 })
+  const close = () => set({ expanded: false, active: -1 })
 
   // toggle open / closed state
   const toggle = () => state.expanded ? close() : open()
 
   // set focused (active) item (open if not expanded) only if changed
-  const focus = (active: number) => state.active !== active && update({ expanded: state.expanded || active > -1, active })
+  const focus = (active: number) => state.active !== active && set({ expanded: state.expanded || active > -1, active })
 
   // set focus (active) to first
   const first = () => focus(0)
@@ -105,12 +105,12 @@ export function createMenu(init?: Partial<Menu>) {
   // menubutton
   function button(node: HTMLElement) {
     ensureID(node, prefix)
-    update({ button: node.id })
+    set({ button: node.id })
 
     // TODO: create a behavior that can be passed an event generator function, use with items select
     // to raise event from the 'controller'
     onSelect = () => {
-      update({ expanded: false, selected: state.active })
+      set({ expanded: false, selected: state.active })
       const event = new CustomEvent('select', {
         detail: {
           selected: state.selected,
@@ -143,9 +143,10 @@ export function createMenu(init?: Partial<Menu>) {
 
   function items(node: HTMLElement) {
     ensureID(node, prefix)
-    update({ menu: node.id, controls: node ? node.id : undefined })
+    set({ menu: node.id, controls: node ? node.id : undefined })
 
     const destroy = applyBehaviors(node, [
+      setRole('menu'),
       setTabIndex(0),
       onClickOutside(close),
       onClick(select),
@@ -170,9 +171,21 @@ export function createMenu(init?: Partial<Menu>) {
 
   // TODO: allow "any" type of value, as long as a text extractor is supplied (default function is treat as a string)
   // NOTE: text value is required for searchability
-  function item(node: HTMLElement, value?: string) {
+  function item(node: HTMLElement, options?: ItemOptions) {
     ensureID(node, prefix)
-    update({ items: [...state.items, { id: node.id, value: value || node.textContent!.trim() }] })
+
+    const update = (options?: ItemOptions) => {
+      const values = getItemValues(node, options)
+      const item = state.items.find(item => item.id === node.id)
+      if (item) {
+        Object.assign(item, values)
+      } else {
+        state.items.push({ id: node.id, ...values })
+      }
+      set({ items: state.items })
+    }
+
+    update(options)
 
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
@@ -181,9 +194,7 @@ export function createMenu(init?: Partial<Menu>) {
     ])
 
     return {
-      update(value?: string) {
-        update({ items: state.items.map(item => item.id === node.id ? { ...item, value: value || node.textContent!.trim() } : item) })
-      },
+      update,
       destroy,
     }
   }

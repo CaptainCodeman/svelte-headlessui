@@ -11,7 +11,7 @@ import { keyFirstLast } from "./internal/key-first-last";
 import { keyPreviousNext } from "./internal/key-previous-next";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { defaultList, removeOnDestroy, type List } from "./internal/list";
+import { defaultList, getItemValues, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -45,22 +45,22 @@ export function createListbox(init?: Partial<Listbox>) {
   const store = writable(state)
 
   // update state and notify store of changes for reactivity
-  const update = (part: Partial<Listbox>) => store.set(state = { ...state, ...part })
+  const set = (part: Partial<Listbox>) => store.set(state = { ...state, ...part })
 
   // return selected value (based on active state)
   const value = () => state.selected === -1 || state.selected > state.items.length - 1 ? undefined : state.items[state.selected].value
 
   // open the menu and set first item active
-  const open = () => update({ expanded: true, active: state.selected })
+  const open = () => set({ expanded: true, active: state.selected })
 
   // close the menu
-  const close = () => update({ expanded: false })
+  const close = () => set({ expanded: false })
 
   // toggle open / closed state
   const toggle = () => state.expanded ? close() : open()
 
   // set focused (active) item only if changed
-  const focus = (active: number) => state.active !== active && update({ active })
+  const focus = (active: number) => state.active !== active && set({ active })
 
   // set focus (active) to first
   const first = () => focus(0)
@@ -105,12 +105,12 @@ export function createListbox(init?: Partial<Listbox>) {
   // menubutton
   function button(node: HTMLElement) {
     ensureID(node, prefix)
-    update({ button: node.id })
+    set({ button: node.id })
 
     // TODO: create a behavior that can be passed an event generator function, use with items select
     // to raise event from the 'controller'
     onSelect = () => {
-      update({ selected: state.active, expanded: false })
+      set({ selected: state.active, expanded: false })
       const event = new CustomEvent('select', {
         detail: {
           selected: state.selected,
@@ -143,7 +143,7 @@ export function createListbox(init?: Partial<Listbox>) {
 
   function items(node: HTMLElement) {
     ensureID(node, prefix)
-    update({ menu: node.id, controls: node ? node.id : undefined })
+    set({ menu: node.id, controls: node ? node.id : undefined })
 
     const destroy = applyBehaviors(node, [
       setTabIndex(0),
@@ -170,22 +170,30 @@ export function createListbox(init?: Partial<Listbox>) {
 
   // TODO: allow "any" type of value, as long as a text extractor is supplied (default function is treat as a string)
   // NOTE: text value is required for searchability
-  function item(node: HTMLElement, value?: string) {
-    const index = state.items.length
+  function item(node: HTMLElement, options?: ItemOptions) {
     ensureID(node, prefix)
-    update({ items: [...state.items, { id: node.id, value: value || node.textContent!.trim() }] })
+
+    const update = (options?: ItemOptions) => {
+      const values = getItemValues(node, options)
+      const item = state.items.find(item => item.id === node.id)
+      if (item) {
+        Object.assign(item, values)
+      } else {
+        state.items.push({ id: node.id, ...values })
+      }
+      set({ items: state.items })
+    }
+
+    update(options)
 
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
       setRole('option'),
-      reflectAriaSelected(store, index),
       removeOnDestroy(store),
     ])
 
     return {
-      update(value?: string) {
-        update({ items: state.items.map(item => item.id === node.id ? { ...item, value: value || node.textContent!.trim() } : item) })
-      },
+      update,
       destroy,
     }
   }

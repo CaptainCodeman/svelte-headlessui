@@ -8,13 +8,13 @@ test('something', async () => {
   let button = getByRole('button')
 
   expect(pre).toBeInTheDocument()
-  expect(pre).toHaveTextContent(`{ "label": "Play Music", "pressed": false }`)
+  expect(pre).toHaveTextContent(`{ "pressed": false, "label": "Play Music" }`)
   expect(button).toBeInTheDocument()
   expect(button).toHaveAttribute('aria-label', 'Play Music')
   expect(button).toHaveAttribute('aria-pressed', 'false')
 
   await fireEvent.click(button)
 
-  expect(pre).toHaveTextContent(`{ "label": "Play Music", "pressed": true }`)
+  expect(pre).toHaveTextContent(`{ "pressed": true, "label": "Play Music" }`)
   expect(button).toHaveAttribute('aria-pressed', 'true')
 })
