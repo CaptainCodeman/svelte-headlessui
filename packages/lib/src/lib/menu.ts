@@ -1,6 +1,7 @@
 import { derived, writable } from "svelte/store";
 import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
+import { reflectAriaDisabled } from "./internal/aria-disabled";
 import { defaultExpanded, focusOnClose, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { defaultSelected, type Selectable } from "./internal/aria-selected";
@@ -11,7 +12,7 @@ import { keyFirstLast } from "./internal/key-first-last";
 import { keyPreviousNext } from "./internal/key-previous-next";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { defaultList, getItemValues, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
+import { defaultList, firstActive, getItemValues, lastActive, nextActive, previousActive, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -63,16 +64,16 @@ export function createMenu(init?: Partial<Menu>) {
   const focus = (active: number) => state.active !== active && set({ expanded: state.expanded || active > -1, active })
 
   // set focus (active) to first
-  const first = () => focus(0)
+  const first = () => focus(firstActive(state))
 
   // set focus (active) to previous
-  const previous = () => focus(Math.max(state.active - 1, 0))
+  const previous = () => focus(previousActive(state))
 
   // set focus (active) to next
-  const next = () => focus(Math.min(state.active + 1, state.items.length - 1))
+  const next = () => focus(nextActive(state))
 
   // set focus (active) to last
-  const last = () => focus(state.items.length - 1)
+  const last = () => focus(lastActive(state))
 
   // clear focus
   const none = () => focus(-1)
@@ -87,7 +88,7 @@ export function createMenu(init?: Partial<Menu>) {
         .concat(state.items.slice(0, state.active + 1))
 
     const re = new RegExp(`^${query}`, 'i')
-    const found = searchable.findIndex(x => x.value.match(re))  // TODO: exclude disabled
+    const found = searchable.findIndex(x => x.value.match(re) && !x.disabled)  // TODO: exclude disabled
 
     if (found > -1) {
       const index = (found + state.active + 1) % state.items.length
@@ -96,7 +97,7 @@ export function createMenu(init?: Partial<Menu>) {
   }
 
   // set the focus based on the HTMLElement passed which will be a menuitem element or null
-  const focusNode = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id) : -1)
+  const focusNode = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id && !item.disabled) : -1)
 
   // "two stage" dispatch is because button may be added last, but we want to wire behaviors to the method
   let onSelect = () => { }
@@ -190,6 +191,7 @@ export function createMenu(init?: Partial<Menu>) {
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
       setRole('menuitem'),
+      reflectAriaDisabled(store),
       removeOnDestroy(store),
     ])
 
