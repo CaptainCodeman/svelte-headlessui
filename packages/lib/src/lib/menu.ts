@@ -88,7 +88,7 @@ export function createMenu(init?: Partial<Menu>) {
         .concat(state.items.slice(0, state.active + 1))
 
     const re = new RegExp(`^${query}`, 'i')
-    const found = searchable.findIndex(x => x.value.match(re) && !x.disabled)  // TODO: exclude disabled
+    const found = searchable.findIndex(x => x.value.match(re) && !x.disabled)
 
     if (found > -1) {
       const index = (found + state.active + 1) % state.items.length

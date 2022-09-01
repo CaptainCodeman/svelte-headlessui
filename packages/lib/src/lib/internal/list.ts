@@ -31,7 +31,7 @@ export const removeOnDestroy = (store: Writable<List>): Behavior => node => {
 export function getItemValues(node: HTMLElement, options?: ItemOptions) {
   return {
     value: options?.value ?? node.textContent!.trim(),
-    disabled: options?.disabled ?? true
+    disabled: options?.disabled ?? false
   }
 }
 
@@ -52,7 +52,7 @@ export const previousActive = (state: List) => {
 // return index of next non-disabled item
 export const nextActive = (state: List) => {
   let x = state.active
-  while (x++ && x < state.items.length) {
+  while (++x && x < state.items.length) {
     if (!state.items[x].disabled) {
       return x
     }

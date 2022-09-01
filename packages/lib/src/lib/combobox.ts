@@ -17,6 +17,7 @@ import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
 import { onClickOutside } from "./internal/on-click-outside";
+import { onInput } from "./internal/on-input";
 import { onKeydown } from "./internal/on-keydown";
 import { onPointerMoveChild, onPointerOut } from "./internal/on-pointer-move";
 import { setHasPopup } from "./internal/set-has-popup";
@@ -25,28 +26,30 @@ import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
 
 // TODO: add "value" selector, to pick text value off list item objects
-export interface Listbox extends Labelable, Expandable, Controllable, List, Selectable {
+export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
   button?: string
   menu?: string
+  filter: string
 }
 
-export function createListbox(init?: Partial<Listbox>) {
+export function createCombobox(init?: Partial<Combobox>) {
   // prefix for generating unique IDs
-  const prefix = 'headlessui-listbox'
+  const prefix = 'headlessui-combobox'
 
   // internal state for component
-  let state: Listbox = {
+  let state: Combobox = {
     ...defaultList,
     ...defaultExpanded,
     ...defaultSelected,
     ...init,
+    filter: '',
   }
 
   // wrap with store for reactivity
   const store = writable(state)
 
   // update state and notify store of changes for reactivity
-  const set = (part: Partial<Listbox>) => store.set(state = { ...state, ...part })
+  const set = (part: Partial<Combobox>) => store.set(state = { ...state, ...part })
 
   // return selected value (based on active state)
   const value = () => state.selected === -1 || state.selected > state.items.length - 1 ? undefined : state.items[state.selected].value
@@ -61,7 +64,7 @@ export function createListbox(init?: Partial<Listbox>) {
   const toggle = () => state.expanded ? close() : open()
 
   // set focused (active) item only if changed
-  const focus = (active: number) => state.active !== active && set({ active })
+  const focus = (active: number) => state.active !== active && set({ active, expanded: true })
 
   // set focus (active) to first
   const first = () => focus(firstActive(state))
@@ -78,23 +81,7 @@ export function createListbox(init?: Partial<Listbox>) {
   // clear focus
   const none = () => focus(-1)
 
-  // TODO: make re-usable
-  // search for query value starting from the current position and looping round, set first found to active
-  const search = (query: string) => {
-    const searchable = state.active === -1
-      ? state.items
-      : state.items
-        .slice(state.active + 1)
-        .concat(state.items.slice(0, state.active + 1))
-
-    const re = new RegExp(`^${query}`, 'i')
-    const found = searchable.findIndex(x => x.value.match(re) && !x.disabled)
-
-    if (found > -1) {
-      const index = (found + state.active + 1) % state.items.length
-      focus(index)
-    }
-  }
+  const filter = (value: string) => set({ filter: value })
 
   // set the focus based on the HTMLElement passed which will be a menuitem element or null
   const focusNode = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id && !item.disabled) : -1)
@@ -102,6 +89,50 @@ export function createListbox(init?: Partial<Listbox>) {
   // "two stage" dispatch is because button may be added last, but we want to wire behaviors to the method
   let onSelect = () => { }
   const select = () => onSelect()
+
+  function input(node: HTMLElement) {
+    ensureID(node, prefix)
+    set({ button: node.id })
+
+    // TODO: create a behavior that can be passed an event generator function, use with items select
+    // to raise event from the 'controller'
+    onSelect = () => {
+      set({ selected: state.active, expanded: false })
+      const event = new CustomEvent('select', {
+        detail: {
+          selected: state.selected,
+          value: value(),
+        }
+      })
+      node.dispatchEvent(event)
+    }
+
+    const destroy = applyBehaviors(node, [
+      setType('text'),
+      setRole('combobox'),
+      // setHasPopup(),
+      setTabIndex(0),
+      reflectAriaLabel(store),
+      reflectAriaExpanded(store),
+      reflectAriaControls(store),
+      // onClick(toggle),
+      // selectAllOnFocus(), <--
+      onKeydown(
+        keySpaceEnter(select),
+        keyEscape(close),
+        keyFirstLast(first, last),
+        keyPreviousNext(previous, next),
+        keyTab(noop),
+        // keyCharacter(search),
+      ),
+      onInput(filter),
+      focusOnClose(store),
+    ])
+
+    return {
+      destroy,
+    }
+  }
 
   // menubutton
   function button(node: HTMLElement) {
@@ -125,16 +156,16 @@ export function createListbox(init?: Partial<Listbox>) {
       setType('button'),
       setRole('button'),
       setHasPopup(),
-      setTabIndex(0),
-      reflectAriaLabel(store),
+      setTabIndex(-1),
+      // reflectAriaLabel(store),
       reflectAriaExpanded(store),
       reflectAriaControls(store),
       onClick(toggle),
-      onKeydown(
-        keySpaceEnter(toggle),
-        keyPreviousNext(toggle, toggle),
-      ),
-      focusOnClose(store),
+      // onKeydown(
+      // keySpaceEnter(toggle),
+      // keyPreviousNext(toggle, toggle),
+      // ),
+      // focusOnClose(store),
     ])
 
     return {
@@ -148,20 +179,19 @@ export function createListbox(init?: Partial<Listbox>) {
 
     const destroy = applyBehaviors(node, [
       setRole('listbox'),
-      setTabIndex(0),
+      setTabIndex(-1),
       onClickOutside(close),
       onClick(select),
       onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),
-      onKeydown(
-        keySpaceEnter(select),
-        keyEscape(close),
-        keyFirstLast(first, last),
-        keyPreviousNext(previous, next),
-        keyTab(noop),
-        keyCharacter(search),
-      ),
-      focusOnExpanded(store),
+      // onKeydown(
+      //   keySpaceEnter(select),
+      //   keyEscape(close),
+      //   keyFirstLast(first, last),
+      //   keyPreviousNext(previous, next),
+      //   keyTab(noop),
+      //   keyCharacter(search),
+      // ),
       reflectAriaActivedescendent(store),
     ])
 
@@ -203,12 +233,13 @@ export function createListbox(init?: Partial<Listbox>) {
 
   // expose a subset of our state, derive the selected value
   const { subscribe } = derived(store, $state => {
-    const { active, expanded, selected } = $state
-    return { active, expanded, selected, value: value() }
+    const { active, expanded, selected, filter } = $state
+    return { active, expanded, selected, filter, value: value() }
   })
 
   return {
     subscribe,
+    input,
     button,
     items,
     item,

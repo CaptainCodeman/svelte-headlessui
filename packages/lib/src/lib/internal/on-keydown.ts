@@ -7,6 +7,7 @@ export function onKeydown(...handlers: KeyHandler[]): Behavior {
       if (handler(event.key)) {
         event.preventDefault()
         event.stopPropagation()
+        event.stopImmediatePropagation()
         return
       }
     }
