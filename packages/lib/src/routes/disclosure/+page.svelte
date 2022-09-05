@@ -2,8 +2,8 @@
 	import { createDisclosure } from '$lib/disclosure'
 	import ChevronUp from './ChevronUp.svelte'
 
-	const refund = createDisclosure({ label: 'Refund Policy' })
-	const support = createDisclosure({ label: 'Technical Support' })
+	const refund = createDisclosure({ label: 'Refund Policy', expanded: true })
+	const support = createDisclosure({ label: 'Technical Support', expanded: true })
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
