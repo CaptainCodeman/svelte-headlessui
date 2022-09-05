@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { defaultPressable, reflectAriaPressed, type Pressable } from "./internal/aria-pressed";
 import { applyBehaviors } from "./internal/behavior";
@@ -13,33 +13,24 @@ import { setType } from "./internal/set-type";
 // really a toggle button
 export interface Button extends Pressable, Labelable { }
 
-function createStateStore(init?: Partial<Button>) {
+export function createButton(init?: Partial<Button>) {
+  // prefix for generating unique IDs
+  const prefix = 'headlessui-button'
+
   let state: Button = {
     ...defaultPressable,
     ...init,
   }
 
-  const { subscribe, set } = writable(state)
+  // wrap with store for reactivity
+  const store = writable(state)
 
-  const update = (part: Partial<Button>) => {
-    set(state = { ...state, ...part })
-  }
+  // update state and notify store of changes for reactivity
+  const set = (part: Partial<Button>) => store.set(state = { ...state, ...part })
 
-  const press = () => update({ pressed: true })
-  const release = () => update({ pressed: false })
+  const press = () => set({ pressed: true })
+  const release = () => set({ pressed: false })
   const toggle = () => state.pressed ? release() : press()
-
-  return {
-    subscribe,
-    press,
-    release,
-    toggle,
-  }
-}
-
-export function createButton(init?: Partial<Button>) {
-  const state = createStateStore(init)
-  const prefix = 'headlessui-button'
 
   // button
   function button(node: HTMLElement) {
@@ -49,11 +40,11 @@ export function createButton(init?: Partial<Button>) {
       setType('button'),
       setRole('button'),
       setTabIndex(0),
-      reflectAriaPressed(state),
-      reflectAriaLabel(state),
-      onClick(state.toggle),
+      reflectAriaPressed(store),
+      reflectAriaLabel(store),
+      onClick(toggle),
       onKeydown(
-        keySpaceEnter(state.toggle),
+        keySpaceEnter(toggle),
       )
     ])
 
@@ -62,8 +53,14 @@ export function createButton(init?: Partial<Button>) {
     }
   }
 
+  // expose a subset of our state, derive the selected value
+  const { subscribe } = derived(store, $state => {
+    const { pressed } = $state
+    return { pressed }
+  })
+
   return {
-    state,
+    subscribe,
     button,
   }
 }

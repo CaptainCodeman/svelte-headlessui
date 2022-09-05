@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { createButton } from '$lib/button'
 
-	const { state, button } = createButton({ label: 'Play Music' })
+	const toggle = createButton({ label: 'Play Music' })
 </script>
 
 <button
-	class="text-white p-2 rounded-md outline-offset-2 {$state.pressed
+	class="text-white p-2 rounded-md outline-offset-2 {$toggle.pressed
 		? 'bg-gray-400 hover:bg-gray-500 focus:outline-gray-500'
 		: 'bg-green-600 hover:bg-green-700 focus:outline-green-700'}"
-	use:button
+	use:toggle.button
 >
-	{#if $state.pressed}
+	{#if $toggle.pressed}
 		<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 			<path stroke-linecap="round" stroke-linejoin="round" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
 		</svg>

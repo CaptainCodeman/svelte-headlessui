@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 import { defaultCheckable, reflectAriaChecked, type Checkable } from "./internal/aria-checked";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { applyBehaviors } from "./internal/behavior";
@@ -10,35 +10,27 @@ import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
 
+// TODO: rename "toggle" or "toggleSwitch", to avoid `const switch = createSwitch()`
 export interface Switch extends Labelable, Checkable { }
 
-function createStateStore(init?: Partial<Switch>) {
+export function createSwitch(init?: Partial<Switch>) {
+  // prefix for generating unique IDs
+  const prefix = 'headlessui-button'
+
   let state: Switch = {
     ...defaultCheckable,
     ...init,
   }
 
-  const { subscribe, set } = writable(state)
+  // wrap with store for reactivity
+  const store = writable(state)
 
-  const update = (part: Partial<Switch>) => {
-    set(state = { ...state, ...part })
-  }
+  // update state and notify store of changes for reactivity
+  const set = (part: Partial<Switch>) => store.set(state = { ...state, ...part })
 
-  const on = () => update({ checked: true })
-  const off = () => update({ checked: false })
+  const on = () => set({ checked: true })
+  const off = () => set({ checked: false })
   const toggle = () => state.checked ? off() : on()
-
-  return {
-    subscribe,
-    on,
-    off,
-    toggle,
-  }
-}
-
-export function createSwitch(init?: Partial<Switch>) {
-  const state = createStateStore(init)
-  const prefix = 'headlessui-switch'
 
   function button(node: HTMLElement) {
     ensureID(node, prefix)
@@ -47,11 +39,11 @@ export function createSwitch(init?: Partial<Switch>) {
       setType('button'),
       setRole('switch'),
       setTabIndex(0),
-      reflectAriaLabel(state),
-      reflectAriaChecked(state),
-      onClick(state.toggle),
+      reflectAriaLabel(store),
+      reflectAriaChecked(store),
+      onClick(toggle),
       onKeydown(
-        keySpaceEnter(state.toggle),
+        keySpaceEnter(toggle),
       ),
     ])
 
@@ -60,8 +52,14 @@ export function createSwitch(init?: Partial<Switch>) {
     }
   }
 
+  // expose a subset of our state, derive the selected value
+  const { subscribe } = derived(store, $state => {
+    const { checked } = $state
+    return { checked }
+  })
+
   return {
-    state,
+    subscribe,
     button,
   }
 }
