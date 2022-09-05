@@ -4,12 +4,6 @@
 	import Selector from './Selector.svelte'
 	import Check from './Check.svelte'
 
-	const combobox = createCombobox({ label: 'Actions', selected: 2 })
-
-	function onSelect(e: Event) {
-		console.log('select', (e as CustomEvent).detail)
-	}
-
 	// prettier-ignore
 	const people = [
     { name: 'Wade Cooper' },
@@ -20,11 +14,20 @@
     { name: 'Hellen Schmidt' },
   ]
 
+	const combobox = createCombobox({ label: 'Actions', selected: people[2] })
+
+	function onSelect(e: Event) {
+		console.log('select', (e as CustomEvent).detail)
+	}
+
 	$: filtered = people.filter(person => person.name.toLowerCase().replace(/\s+/g, '').includes($combobox.filter.toLowerCase().replace(/\s+/g, '')))
+
+	// $: console.log($combobox)
+	// $: console.log(filtered)
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
-	<div class="fixed top-16 w-72">
+	<div class="fixed top-56 w-72">
 		<div class="relative mt-1">
 			<button
 				on:select={onSelect}
@@ -33,7 +36,7 @@
 				<input
 					use:combobox.input
 					class="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-					value={people[$combobox.selected].name}
+					value={$combobox.selected.name}
 				/>
 				<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
 				<button use:combobox.button class="absolute inset-y-0 right-0 flex items-center pr-2" type="button">
@@ -46,11 +49,14 @@
 					use:combobox.items
 					class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
 				>
-					{#each filtered as person, i}
-						{@const active = $combobox.active === i}
-						{@const selected = $combobox.selected === i}
-						<li class="relative cursor-default select-none py-2 pl-10 pr-4 {active ? 'bg-teal-600 text-white' : 'text-gray-900'}" use:combobox.item>
-							<span class="block truncate {selected ? 'font-medium' : 'font-normal'}">{person.name}</span>
+					{#each filtered as value, i (value)}
+						{@const active = $combobox.active === value}
+						{@const selected = $combobox.selected === value}
+						<li
+							class="relative cursor-default select-none py-2 pl-10 pr-4 {active ? 'bg-teal-600 text-white' : 'text-gray-900'}"
+							use:combobox.item={{ value }}
+						>
+							<span class="block truncate {selected ? 'font-medium' : 'font-normal'}">{value.name} {active} {selected}</span>
 							{#if selected}
 								<span class="absolute inset-y-0 left-0 flex items-center pl-3 {active ? 'text-white' : 'text-teal-600'}">
 									<Check class="h-5 w-5" />

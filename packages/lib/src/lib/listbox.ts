@@ -4,7 +4,7 @@ import { reflectAriaControls, type Controllable } from './internal/aria-controls
 import { reflectAriaDisabled } from "./internal/aria-disabled";
 import { defaultExpanded, focusOnClose, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
-import { defaultSelected, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
+import { defaultSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
@@ -12,7 +12,7 @@ import { keyFirstLast } from "./internal/key-first-last";
 import { keyPreviousNext } from "./internal/key-previous-next";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { defaultList, firstActive, getItemValues, lastActive, nextActive, previousActive, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
+import { defaultList, firstActive, getItemValues, lastActive, nextActive, onDestroy, previousActive, removeItem, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -30,7 +30,7 @@ export interface Listbox extends Labelable, Expandable, Controllable, List, Sele
   menu?: string
 }
 
-export function createListbox(init?: Partial<Listbox>) {
+export function createListbox<T = any>(init?: Partial<Listbox>) {
   // prefix for generating unique IDs
   const prefix = 'headlessui-listbox'
 
@@ -48,11 +48,11 @@ export function createListbox(init?: Partial<Listbox>) {
   // update state and notify store of changes for reactivity
   const set = (part: Partial<Listbox>) => store.set(state = { ...state, ...part })
 
-  // return selected value (based on active state)
-  const value = () => state.selected === -1 || state.selected > state.items.length - 1 ? undefined : state.items[state.selected].value
+  // return active value
+  const active = () => state.active === -1 || state.items.length === 0 ? undefined : state.items[state.active].value
 
   // open the menu and set first item active
-  const open = () => set({ expanded: true, active: state.selected })
+  const open = () => set({ expanded: true, active: state.items.findIndex(x => x.value === state.selected) })
 
   // close the menu
   const close = () => set({ expanded: false })
@@ -99,6 +99,8 @@ export function createListbox(init?: Partial<Listbox>) {
   // set the focus based on the HTMLElement passed which will be a menuitem element or null
   const focusNode = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id && !item.disabled) : -1)
 
+  const remove = (node: HTMLElement) => set(removeItem(state, node))
+
   // "two stage" dispatch is because button may be added last, but we want to wire behaviors to the method
   let onSelect = () => { }
   const select = () => onSelect()
@@ -111,11 +113,12 @@ export function createListbox(init?: Partial<Listbox>) {
     // TODO: create a behavior that can be passed an event generator function, use with items select
     // to raise event from the 'controller'
     onSelect = () => {
-      set({ selected: state.active, expanded: false })
+      if (state.items[state.active].disabled) return
+      const selected = active()
+      set({ expanded: false, selected })
       const event = new CustomEvent('select', {
         detail: {
-          selected: state.selected,
-          value: value(),
+          selected,
         }
       })
       node.dispatchEvent(event)
@@ -179,6 +182,7 @@ export function createListbox(init?: Partial<Listbox>) {
       const values = getItemValues(node, options)
       const item = state.items.find(item => item.id === node.id)
       if (item) {
+        if (item.value === values.value && item.disabled === values.disabled) return
         Object.assign(item, values)
       } else {
         state.items.push({ id: node.id, ...values })
@@ -192,7 +196,7 @@ export function createListbox(init?: Partial<Listbox>) {
       setTabIndex(-1),
       setRole('option'),
       reflectAriaDisabled(store),
-      removeOnDestroy(store),
+      onDestroy(remove),
     ])
 
     return {
@@ -203,8 +207,8 @@ export function createListbox(init?: Partial<Listbox>) {
 
   // expose a subset of our state, derive the selected value
   const { subscribe } = derived(store, $state => {
-    const { active, expanded, selected } = $state
-    return { active, expanded, selected, value: value() }
+    const { expanded, selected } = $state
+    return { expanded, selected, active: active() }
   })
 
   return {

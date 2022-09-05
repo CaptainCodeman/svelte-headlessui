@@ -4,13 +4,13 @@ import type { Behavior } from './behavior'
 
 // TODO: enforce that it has to extend list (?)
 export interface Selectable {
-  selected: number
+  selected: any
 }
 
 export const defaultSelected: Selectable = {
-  selected: -1
+  selected: null
 }
 
 export const setAriaSelected = setAriaAttributeBoolean('aria-selected')
 
-export const reflectAriaSelected = (store: Readable<Selectable>, index: number): Behavior => node => derived(store, $store => $store.selected === index).subscribe(setAriaSelected(node))
+export const reflectAriaSelected = (store: Readable<Selectable>, value: any): Behavior => node => derived(store, $store => $store.selected === value).subscribe(setAriaSelected(node))

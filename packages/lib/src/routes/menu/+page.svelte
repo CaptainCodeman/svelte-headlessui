@@ -57,7 +57,7 @@
 						<div class="px-1 py-1">
 							{#each group as option}
 								{@const disabled = 'Archive' === option.text}
-								{@const active = $menu.value === option.text}
+								{@const active = $menu.active === option.text}
 								<button
 									use:menu.item={{ disabled }}
 									class="group flex rounded-md items-center w-full px-2 py-2 text-sm {active ? 'bg-violet-500 text-white' : 'text-gray-900'}"

@@ -12,7 +12,7 @@ import { keyFirstLast } from "./internal/key-first-last";
 import { keyPreviousNext } from "./internal/key-previous-next";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { defaultList, firstActive, getItemValues, lastActive, nextActive, previousActive, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
+import { defaultList, firstActive, getItemValues, lastActive, nextActive, onDestroy, previousActive, removeItem, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -51,11 +51,11 @@ export function createCombobox(init?: Partial<Combobox>) {
   // update state and notify store of changes for reactivity
   const set = (part: Partial<Combobox>) => store.set(state = { ...state, ...part })
 
-  // return selected value (based on active state)
-  const value = () => state.selected === -1 || state.selected > state.items.length - 1 ? undefined : state.items[state.selected].value
+  // return active value
+  const active = () => state.active === -1 || state.items.length === 0 ? undefined : state.active >= state.items.length ? state.items[state.active] : state.items[state.active].value
 
   // open the menu and set first item active
-  const open = () => set({ expanded: true, active: state.selected })
+  const open = () => set({ expanded: true, active: state.items.findIndex(x => x.value === state.selected) })
 
   // close the menu
   const close = () => set({ expanded: false })
@@ -81,10 +81,12 @@ export function createCombobox(init?: Partial<Combobox>) {
   // clear focus
   const none = () => focus(-1)
 
-  const filter = (value: string) => set({ filter: value })
+  const filter = (value: string) => set({ filter: value, expanded: true })
 
   // set the focus based on the HTMLElement passed which will be a menuitem element or null
   const focusNode = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id && !item.disabled) : -1)
+
+  const remove = (node: HTMLElement) => set(removeItem(state, node))
 
   // "two stage" dispatch is because button may be added last, but we want to wire behaviors to the method
   let onSelect = () => { }
@@ -97,11 +99,12 @@ export function createCombobox(init?: Partial<Combobox>) {
     // TODO: create a behavior that can be passed an event generator function, use with items select
     // to raise event from the 'controller'
     onSelect = () => {
-      set({ selected: state.active, expanded: false })
+      if (state.items[state.active].disabled) return
+      const selected = active()
+      set({ expanded: false, selected })
       const event = new CustomEvent('select', {
         detail: {
-          selected: state.selected,
-          value: value(),
+          selected,
         }
       })
       node.dispatchEvent(event)
@@ -138,19 +141,6 @@ export function createCombobox(init?: Partial<Combobox>) {
   function button(node: HTMLElement) {
     ensureID(node, prefix)
     set({ button: node.id })
-
-    // TODO: create a behavior that can be passed an event generator function, use with items select
-    // to raise event from the 'controller'
-    onSelect = () => {
-      set({ selected: state.active, expanded: false })
-      const event = new CustomEvent('select', {
-        detail: {
-          selected: state.selected,
-          value: value(),
-        }
-      })
-      node.dispatchEvent(event)
-    }
 
     const destroy = applyBehaviors(node, [
       setType('button'),
@@ -209,6 +199,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       const values = getItemValues(node, options)
       const item = state.items.find(item => item.id === node.id)
       if (item) {
+        if (item.value === values.value && item.disabled === values.disabled) return
         Object.assign(item, values)
       } else {
         state.items.push({ id: node.id, ...values })
@@ -222,7 +213,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       setTabIndex(-1),
       setRole('option'),
       reflectAriaDisabled(store),
-      removeOnDestroy(store),
+      onDestroy(remove),
     ])
 
     return {
@@ -233,8 +224,8 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   // expose a subset of our state, derive the selected value
   const { subscribe } = derived(store, $state => {
-    const { active, expanded, selected, filter } = $state
-    return { active, expanded, selected, filter, value: value() }
+    const { expanded, selected, filter } = $state
+    return { expanded, selected, filter, active: active() }
   })
 
   return {

@@ -12,7 +12,7 @@ import { keyFirstLast } from "./internal/key-first-last";
 import { keyPreviousNext } from "./internal/key-previous-next";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { defaultList, firstActive, getItemValues, lastActive, nextActive, previousActive, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
+import { defaultList, firstActive, getItemValues, lastActive, nextActive, onDestroy, previousActive, removeItem, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -49,7 +49,8 @@ export function createMenu(init?: Partial<Menu>) {
   const set = (part: Partial<Menu>) => store.set(state = { ...state, ...part })
 
   // return selected value (based on active state)
-  const value = () => state.active === -1 || state.items.length === 0 ? undefined : state.items[state.active].value
+  // TODO: change to 'active' when active changed to activeIndex
+  const active = () => state.active === -1 || state.items.length === 0 ? undefined : state.items[state.active].value
 
   // open the menu and set first item active
   const open = () => set({ expanded: true })
@@ -99,6 +100,8 @@ export function createMenu(init?: Partial<Menu>) {
   // set the focus based on the HTMLElement passed which will be a menuitem element or null
   const focusNode = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id && !item.disabled) : -1)
 
+  const remove = (node: HTMLElement) => set(removeItem(state, node))
+
   // "two stage" dispatch is because button may be added last, but we want to wire behaviors to the method
   let onSelect = () => { }
   const select = () => onSelect()
@@ -111,11 +114,12 @@ export function createMenu(init?: Partial<Menu>) {
     // TODO: create a behavior that can be passed an event generator function, use with items select
     // to raise event from the 'controller'
     onSelect = () => {
-      set({ expanded: false, selected: state.active })
+      if (state.items[state.active].disabled) return
+      const selected = active()
+      set({ expanded: false, selected })
       const event = new CustomEvent('select', {
         detail: {
-          selected: state.selected,
-          value: state.items[state.selected].value,
+          selected,
         }
       })
       node.dispatchEvent(event)
@@ -179,6 +183,7 @@ export function createMenu(init?: Partial<Menu>) {
       const values = getItemValues(node, options)
       const item = state.items.find(item => item.id === node.id)
       if (item) {
+        if (item.value === values.value && item.disabled === values.disabled) return
         Object.assign(item, values)
       } else {
         state.items.push({ id: node.id, ...values })
@@ -192,7 +197,7 @@ export function createMenu(init?: Partial<Menu>) {
       setTabIndex(-1),
       setRole('menuitem'),
       reflectAriaDisabled(store),
-      removeOnDestroy(store),
+      onDestroy(remove),
     ])
 
     return {
@@ -203,8 +208,8 @@ export function createMenu(init?: Partial<Menu>) {
 
   // expose a subset of our state, derive the selected value
   const { subscribe } = derived(store, $state => {
-    const { active, expanded } = $state
-    return { active, expanded, value: value() }
+    const { expanded } = $state
+    return { expanded, active: active() }
   })
 
   return {

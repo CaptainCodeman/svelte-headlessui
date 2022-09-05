@@ -21,7 +21,7 @@ I hope to implement _all_ the HeadlessUI components, and whatever other [ARIA Pa
 - [x] Toggle (Button)
 - [x] Menu (DropDown)
 - [x] Listbox (Select)
-- [ ] Combobox (Autocomplete)
+- [x] Combobox (Autocomplete)
 - [x] Switch (Toggle)
 - [ ] Disclosure
 - [ ] Dialog (Modal)

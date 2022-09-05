@@ -2,30 +2,40 @@ import type { Writable } from "svelte/store"
 import type { Behavior } from "./behavior"
 
 export interface ItemOptions {
-  value?: string
+  value?: any
   disabled?: boolean
 }
 
 export interface ListItem {
   id: string
-  value: string
+  value: any
   disabled: boolean
 }
 
 export interface List {
   items: ListItem[]
   active: number
-  value: string
 }
 
 export const defaultList: List = {
   items: [],
   active: -1,
-  value: ''
 }
 
-export const removeOnDestroy = (store: Writable<List>): Behavior => node => {
-  return () => store.update(state => ({ ...state, items: state.items.filter(item => item.id === node.id) }))
+export function onDestroy(fn: (node: HTMLElement) => void): Behavior {
+  return node => () => fn(node)
+}
+
+export const removeItem = (state: List, node: HTMLElement) => {
+  return {
+    items: state.items.filter(item => item.id !== node.id)
+  }
+}
+
+export const removeOnDestroy = (state: List, node: HTMLElement) => {
+  return {
+    items: state.items.filter(item => item.id !== node.id)
+  }
 }
 
 export function getItemValues(node: HTMLElement, options?: ItemOptions) {

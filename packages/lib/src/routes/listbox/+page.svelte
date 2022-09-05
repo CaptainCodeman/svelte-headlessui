@@ -4,11 +4,8 @@
 	import Selector from './Selector.svelte'
 	import Check from './Check.svelte'
 
-	const listbox = createListbox({ label: 'Actions', selected: 2 })
-
-	function onSelect(e: Event) {
-		console.log('select', (e as CustomEvent).detail)
-	}
+	type Person = { name: string }
+	type People = Person[]
 
 	// prettier-ignore
 	const people = [
@@ -19,17 +16,24 @@
     { name: 'Tanya Fox' },
     { name: 'Hellen Schmidt' },
   ]
+
+	// TODO: type list so 'selected' isn't 'any'
+	const listbox = createListbox<People>({ label: 'Actions', selected: people[2] })
+
+	function onSelect(e: Event) {
+		console.log('select', (e as CustomEvent).detail)
+	}
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
-	<div class="fixed top-16 w-72">
+	<div class="fixed top-56 w-72">
 		<div class="relative mt-1">
 			<button
 				use:listbox.button
 				on:select={onSelect}
 				class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
 			>
-				<span class="block truncate">{people[$listbox.selected].name}</span>
+				<span class="block truncate">{$listbox.selected.name}</span>
 				<span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
 					<Selector class="h-5 w-5 text-gray-400" />
 				</span>
@@ -40,14 +44,14 @@
 					use:listbox.items
 					class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
 				>
-					{#each people as person, i}
-						{@const active = $listbox.active === i}
-						{@const selected = $listbox.selected === i}
+					{#each people as value, i}
+						{@const active = $listbox.active === value}
+						{@const selected = $listbox.selected === value}
 						<li
 							class="relative cursor-default select-none py-2 pl-10 pr-4 {active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'}"
-							use:listbox.item
+							use:listbox.item={{ value }}
 						>
-							<span class="block truncate {selected ? 'font-medium' : 'font-normal'}">{person.name}</span>
+							<span class="block truncate {selected ? 'font-medium' : 'font-normal'}">{value.name}</span>
 							{#if selected}
 								<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
 									<Check class="h-5 w-5" />
