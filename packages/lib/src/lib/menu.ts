@@ -8,8 +8,8 @@ import { defaultSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
-import { keyFirstLast } from "./internal/key-first-last";
-import { keyPreviousNext } from "./internal/key-previous-next";
+import { keyHomeEnd } from "./internal/key-home-end";
+import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
 import { defaultList, firstActive, getItemValues, lastActive, nextActive, onDestroy, previousActive, removeItem, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
@@ -136,7 +136,7 @@ export function createMenu(init?: Partial<Menu>) {
       onClick(toggle),
       onKeydown(
         keySpaceEnter(toggle),
-        keyPreviousNext(last, first),
+        keyUpDown(last, first),
       ),
       focusOnClose(store),
     ])
@@ -160,8 +160,8 @@ export function createMenu(init?: Partial<Menu>) {
       onKeydown(
         keySpaceEnter(select),
         keyEscape(close),
-        keyFirstLast(first, last),
-        keyPreviousNext(previous, next),
+        keyHomeEnd(first, last),
+        keyUpDown(previous, next),
         keyTab(noop),
         keyCharacter(search),
       ),
