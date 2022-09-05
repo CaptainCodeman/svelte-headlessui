@@ -25,4 +25,3 @@
 		</svg>
 	{/if}
 </button>
-<pre class="text-xs mt-4" data-testid="debug">{JSON.stringify($state, null, 2)}</pre>

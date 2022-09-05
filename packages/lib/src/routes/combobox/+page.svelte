@@ -21,9 +21,6 @@
 	}
 
 	$: filtered = people.filter(person => person.name.toLowerCase().replace(/\s+/g, '').includes($combobox.filter.toLowerCase().replace(/\s+/g, '')))
-
-	// $: console.log($combobox)
-	// $: console.log(filtered)
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
@@ -73,6 +70,3 @@
 		</div>
 	</div>
 </div>
-
-<pre>{JSON.stringify($combobox, null, 2)}</pre>
-<pre>{JSON.stringify(filtered, null, 2)}</pre>

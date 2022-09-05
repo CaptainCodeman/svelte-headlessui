@@ -64,5 +64,3 @@
 		</div>
 	</div>
 </div>
-
-<pre>{JSON.stringify($listbox, null, 2)}</pre>
