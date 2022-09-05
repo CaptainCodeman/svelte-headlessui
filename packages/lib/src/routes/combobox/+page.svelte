@@ -53,7 +53,7 @@
 							class="relative cursor-default select-none py-2 pl-10 pr-4 {active ? 'bg-teal-600 text-white' : 'text-gray-900'}"
 							use:combobox.item={{ value }}
 						>
-							<span class="block truncate {selected ? 'font-medium' : 'font-normal'}">{value.name} {active} {selected}</span>
+							<span class="block truncate {selected ? 'font-medium' : 'font-normal'}">{value.name}</span>
 							{#if selected}
 								<span class="absolute inset-y-0 left-0 flex items-center pl-3 {active ? 'text-white' : 'text-teal-600'}">
 									<Check class="h-5 w-5" />
