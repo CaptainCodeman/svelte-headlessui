@@ -11,7 +11,7 @@ import { keyHomeEnd } from "./internal/key-home-end";
 import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { defaultList, firstActive, getItemValues, lastActive, nextActive, onDestroy, previousActive, removeItem, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
+import { defaultList, firstActive, getItemValues, lastActive, nextActive, onDestroy, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -47,7 +47,7 @@ export function createTabs(init?: Partial<Tabs>) {
 
   // return selected value (based on active state)
   // TODO: change to 'active' when active changed to activeIndex
-  const active = () => state.active === -1 || state.items.length === 0 ? undefined : state.items[state.active].value
+  const active = () => state.active === -1 || state.items.length === 0 ? undefined : state.active >= state.items.length ? state.items[state.active] : state.items[state.active].value
 
   // set focused (active) item (open if not expanded) only if changed
   const focus = (active: number) => state.active !== active && set({ active })

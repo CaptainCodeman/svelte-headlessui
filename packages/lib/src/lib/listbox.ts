@@ -12,7 +12,7 @@ import { keyHomeEnd } from "./internal/key-home-end";
 import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { defaultList, firstActive, getItemValues, lastActive, nextActive, onDestroy, previousActive, removeItem, removeOnDestroy, type ItemOptions, type List } from "./internal/list";
+import { active, defaultList, firstActive, getItemValues, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -26,8 +26,7 @@ import { setType } from "./internal/set-type";
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Listbox extends Labelable, Expandable, Controllable, List, Selectable {
-  button?: string
-  menu?: string
+  button?: HTMLElement
 }
 
 export function createListbox<T = any>(init?: Partial<Listbox>) {
@@ -47,9 +46,6 @@ export function createListbox<T = any>(init?: Partial<Listbox>) {
 
   // update state and notify store of changes for reactivity
   const set = (part: Partial<Listbox>) => store.set(state = { ...state, ...part })
-
-  // return active value
-  const active = () => state.active === -1 || state.items.length === 0 ? undefined : state.items[state.active].value
 
   // open the menu and set first item active
   const open = () => set({ expanded: true, active: state.items.findIndex(x => x.value === state.selected) })
@@ -101,28 +97,12 @@ export function createListbox<T = any>(init?: Partial<Listbox>) {
 
   const remove = (node: HTMLElement) => set(removeItem(state, node))
 
-  // "two stage" dispatch is because button may be added last, but we want to wire behaviors to the method
-  let onSelect = () => { }
-  const select = () => onSelect()
+  const select = () => set(onSelect(state, state.button))
 
   // menubutton
   function button(node: HTMLElement) {
     ensureID(node, prefix)
-    set({ button: node.id })
-
-    // TODO: create a behavior that can be passed an event generator function, use with items select
-    // to raise event from the 'controller'
-    onSelect = () => {
-      if (state.items[state.active].disabled) return
-      const selected = active()
-      set({ expanded: false, selected })
-      const event = new CustomEvent('select', {
-        detail: {
-          selected,
-        }
-      })
-      node.dispatchEvent(event)
-    }
+    set({ button: node })
 
     const destroy = applyBehaviors(node, [
       setType('button'),
@@ -147,7 +127,7 @@ export function createListbox<T = any>(init?: Partial<Listbox>) {
 
   function items(node: HTMLElement) {
     ensureID(node, prefix)
-    set({ menu: node.id, controls: node ? node.id : undefined })
+    set({ controls: node ? node.id : undefined })
 
     const destroy = applyBehaviors(node, [
       setRole('listbox'),
@@ -208,7 +188,7 @@ export function createListbox<T = any>(init?: Partial<Listbox>) {
   // expose a subset of our state, derive the selected value
   const { subscribe } = derived(store, $state => {
     const { expanded, selected } = $state
-    return { expanded, selected, active: active() }
+    return { expanded, selected, active: active($state) }
   })
 
   return {
