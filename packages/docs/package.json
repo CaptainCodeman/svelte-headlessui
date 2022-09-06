@@ -1,5 +1,5 @@
 {
-  "name": "@example/docs",
+  "name": "svelte-headlessui-docs",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -13,14 +13,15 @@
     "@algolia/client-search": "^4.13.1",
     "@docsearch/css": "^3.1.0",
     "@docsearch/react": "^3.1.0",
-    "@types/react": "^17.0.45",
+    "@types/react": "^18.0.18",
     "preact": "^10.7.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "svelte-headlessui": "workspace:*"
+    "svelte-headlessui": "workspace:*",
+    "svelte-transition": "^0.0.6"
   },
   "devDependencies": {
-    "@astrojs/mdx": "^0.10.0",
+    "@astrojs/mdx": "^0.11.1",
     "@astrojs/preact": "^1.0.2",
     "@astrojs/react": "^1.0.0",
     "@astrojs/svelte": "^1.0.0",
