@@ -257,7 +257,6 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   // expose a subset of our state, derive the selected value
   const { subscribe } = derived(store, $state => {
-    // console.log('active', $state.active, 'moved', $state.moved)
     const { expanded, selected, filter } = $state
     return { expanded, selected, filter, active: active($state) }
   })

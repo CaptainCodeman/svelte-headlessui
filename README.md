@@ -23,11 +23,11 @@ I hope to implement _all_ the HeadlessUI components, and whatever other [ARIA Pa
 - [x] Listbox (Select)
 - [x] Combobox (Autocomplete)
 - [x] Switch (Toggle)
-- [ ] Disclosure
-- [ ] Dialog (Modal)
-- [ ] Popover
+- [x] Disclosure
+- [x] Dialog (Modal)
+- [x] Popover
 - [ ] Radio Group
-- [ ] Tabs
+- [x] Tabs
 - [x] Transition: see separate [svelte-transition](https://www.npmjs.com/package/svelte-transition) package
 
 ## Alternatives
