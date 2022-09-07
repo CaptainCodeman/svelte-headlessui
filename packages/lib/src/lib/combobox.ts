@@ -12,7 +12,7 @@ import { keyHomeEnd } from "./internal/key-home-end";
 import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { active, defaultList, firstActive, getItemValues, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
+import { active, defaultList, firstActive, getItemValues, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List, type ListItem } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -24,11 +24,15 @@ import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
+import { reflectSelectedValueOnClose } from "./internal/value";
+import { tick } from "svelte";
+import { setDisabled } from "./internal/set-disabled";
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
   input?: HTMLElement
   filter: string
+  moved: boolean  // whether we have moved active or not (to reset when filtering)
 }
 
 export function createCombobox(init?: Partial<Combobox>) {
@@ -42,6 +46,7 @@ export function createCombobox(init?: Partial<Combobox>) {
     ...defaultSelected,
     ...init,
     filter: '',
+    moved: false,
   }
 
   // wrap with store for reactivity
@@ -51,7 +56,7 @@ export function createCombobox(init?: Partial<Combobox>) {
   const set = (part: Partial<Combobox>) => store.set(state = { ...state, ...part })
 
   // open the menu and set first item active
-  const open = () => set({ expanded: true, active: state.items.findIndex(x => x.value === state.selected) })
+  const open = () => set({ expanded: true })
 
   // close the menu
   const close = () => set({ expanded: false })
@@ -60,7 +65,7 @@ export function createCombobox(init?: Partial<Combobox>) {
   const toggle = () => state.expanded ? close() : open()
 
   // set focused (active) item only if changed
-  const focus = (active: number) => state.active !== active && set({ active, expanded: true })
+  const focus = (active: number) => state.active !== active && set({ active, moved: true })
 
   // set focus (active) to first
   const first = () => focus(firstActive(state))
@@ -77,14 +82,44 @@ export function createCombobox(init?: Partial<Combobox>) {
   // clear focus
   const none = () => focus(-1)
 
-  const filter = (value: string) => set({ filter: value, expanded: true })
+  const reset = () => {
+    set({ filter: '', expanded: false })
+  }
+
+  const filter = async (value: string) => {
+    // current active item
+    const current = state.active === -1
+      ? state.selected
+      : state.items[state.active].value
+
+    set({ filter: value, expanded: true })  // keep expanded or expand if filter is set
+
+    await tick()
+
+    // if we moved, try to keep current active, otherwise use selected, always fallback to first
+    const selectedIndex = state.items.findIndex(item => item.value === state.selected)
+    const currentIndex = state.items.findIndex(item => item.value === current)
+    const active = state.moved
+      ? currentIndex === -1
+        ? 0
+        : currentIndex
+      : selectedIndex === -1
+        ? currentIndex === -1
+          ? 0
+          : currentIndex
+        : selectedIndex
+
+    if (state.active !== active) {
+      set({ active })
+    }
+  }
 
   // set the focus based on the HTMLElement passed which will be a menuitem element or null
   const focusNode = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id && !item.disabled) : -1)
 
   const remove = (node: HTMLElement) => set(removeItem(state, node))
 
-  const select = () => set(onSelect(state, state.input))
+  const select = async () => set(onSelect(state, state.input))
 
   function input(node: HTMLElement) {
     ensureID(node, prefix)
@@ -98,10 +133,12 @@ export function createCombobox(init?: Partial<Combobox>) {
       reflectAriaLabel(store),
       reflectAriaExpanded(store),
       reflectAriaControls(store),
+      reflectSelectedValueOnClose(store, item => item?.name),
+      // reflectSelectedValue(), <== set input value when a selection is made
       // onClick(toggle),
       // selectAllOnFocus(), <--
       onKeydown(
-        keySpaceEnter(select),
+        keySpaceEnter(select),  // TODO: should be enter only
         keyEscape(close),
         keyHomeEnd(first, last),
         keyUpDown(previous, next),
@@ -110,6 +147,18 @@ export function createCombobox(init?: Partial<Combobox>) {
       ),
       onInput(filter),
       focusOnClose(store),
+      node => derived(store, state => state.expanded).subscribe(expanded => {
+        if (expanded) {
+          // when expanded, set active to selected if not set
+          if (state.active === -1) {
+            const index = state.items.findIndex(x => x.value === state.selected)
+            const active = index === -1 ? 0 : index
+            set({ active })
+          }
+          // always reset moved flag
+          set({ moved: false })
+        }
+      }),
     ])
 
     return {
@@ -125,7 +174,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       setType('button'),
       setRole('button'),
       setHasPopup(),
-      setTabIndex(-1),
+      // setTabIndex(-1),
       // reflectAriaLabel(store),
       reflectAriaExpanded(store),
       reflectAriaControls(store),
@@ -135,6 +184,11 @@ export function createCombobox(init?: Partial<Combobox>) {
       // keyPreviousNext(toggle, toggle),
       // ),
       // focusOnClose(store),
+      node => {
+        const setFocusToInput = () => state.input?.focus()
+        node.addEventListener('focus', setFocusToInput)
+        return () => node.removeEventListener('focus', setFocusToInput)
+      }
     ])
 
     return {
@@ -181,7 +235,7 @@ export function createCombobox(init?: Partial<Combobox>) {
         if (item.value === values.value && item.disabled === values.disabled) return
         Object.assign(item, values)
       } else {
-        state.items.push({ id: node.id, ...values })
+        state.items.push({ id: node.id, ...values }!)
       }
       set({ items: state.items })
     }
@@ -203,6 +257,7 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   // expose a subset of our state, derive the selected value
   const { subscribe } = derived(store, $state => {
+    // console.log('active', $state.active, 'moved', $state.moved)
     const { expanded, selected, filter } = $state
     return { expanded, selected, filter, active: active($state) }
   })
@@ -213,5 +268,6 @@ export function createCombobox(init?: Partial<Combobox>) {
     button,
     items,
     item,
+    reset,
   }
 }
