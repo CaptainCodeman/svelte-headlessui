@@ -9,13 +9,14 @@ import { onKeydown } from "./internal/on-keydown";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
+import { getPrefix } from "./internal/utils";
 
 // TODO: rename "toggle" or "toggleSwitch", to avoid `const switch = createSwitch()`
 export interface Switch extends Labelable, Checkable { }
 
 export function createSwitch(init?: Partial<Switch>) {
   // prefix for generating unique IDs
-  const prefix = 'headlessui-button'
+  const prefix = getPrefix('switch')
 
   let state: Switch = {
     ...defaultCheckable,

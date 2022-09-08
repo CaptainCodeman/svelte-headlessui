@@ -12,7 +12,7 @@ import { keyHomeEnd } from "./internal/key-home-end";
 import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { active, defaultList, firstActive, getItemValues, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List, type ListItem } from "./internal/list";
+import { active, defaultList, firstActive, getFocuser, getItemValues, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List, type ListItem } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -27,6 +27,7 @@ import { setType } from "./internal/set-type";
 import { reflectSelectedValueOnClose } from "./internal/value";
 import { tick } from "svelte";
 import { setDisabled } from "./internal/set-disabled";
+import { getPrefix } from "./internal/utils";
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
@@ -37,7 +38,7 @@ export interface Combobox extends Labelable, Expandable, Controllable, List, Sel
 
 export function createCombobox(init?: Partial<Combobox>) {
   // prefix for generating unique IDs
-  const prefix = 'headlessui-combobox'
+  const prefix = getPrefix('combobox')
 
   // internal state for component
   let state: Combobox = {
@@ -115,7 +116,7 @@ export function createCombobox(init?: Partial<Combobox>) {
   }
 
   // set the focus based on the HTMLElement passed which will be a menuitem element or null
-  const focusNode = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id && !item.disabled) : -1)
+  const focusNode = getFocuser(() => state, focus)
 
   const remove = (node: HTMLElement) => set(removeItem(state, node))
 

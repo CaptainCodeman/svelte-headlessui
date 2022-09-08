@@ -12,6 +12,7 @@ import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
+import { getPrefix } from "./internal/utils";
 
 export interface Disclosure extends Labelable, Expandable, Controllable {
   button?: string
@@ -20,7 +21,7 @@ export interface Disclosure extends Labelable, Expandable, Controllable {
 
 export function createDisclosure(init?: Partial<Disclosure>) {
   // prefix for generating unique IDs
-  const prefix = 'headlessui-disclosure'
+  const prefix = getPrefix('disclosure')
 
   let state: Disclosure = {
     ...defaultExpanded,

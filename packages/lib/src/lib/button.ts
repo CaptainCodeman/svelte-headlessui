@@ -9,13 +9,14 @@ import { onKeydown } from "./internal/on-keydown";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
+import { getPrefix } from "./internal/utils";
 
 // really a toggle button
 export interface Button extends Pressable, Labelable { }
 
 export function createButton(init?: Partial<Button>) {
   // prefix for generating unique IDs
-  const prefix = 'headlessui-button'
+  const prefix = getPrefix('button')
 
   let state: Button = {
     ...defaultPressable,

@@ -13,6 +13,7 @@ import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
+import { getPrefix } from "./internal/utils";
 
 export interface Popover extends Labelable, Expandable, Controllable {
   button?: string
@@ -21,7 +22,7 @@ export interface Popover extends Labelable, Expandable, Controllable {
 
 export function createPopover(init?: Partial<Popover>) {
   // prefix for generating unique IDs
-  const prefix = 'headlessui-popover'
+  const prefix = getPrefix('popover')
 
   let state: Popover = {
     ...defaultExpanded,

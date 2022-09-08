@@ -113,3 +113,25 @@ export const getUpdater = (node: HTMLElement, getState: () => List, setState: (p
   }
   setState({ items: state.items })
 }
+
+export const getFocuser = (getState: () => List, focus: (active: number) => void) => (node: HTMLElement | null) => {
+  const state = getState()
+  focus(node ? state.items.findIndex(item => item.id === node.id && !item.disabled) : -1)
+}
+
+export const getSearch = (getState: () => List, focus: (active: number) => void) => (query: string) => {
+  const state = getState()
+  const searchable = state.active === -1
+    ? state.items
+    : state.items
+      .slice(state.active + 1)
+      .concat(state.items.slice(0, state.active + 1))
+
+  const re = new RegExp(`^${query}`, 'i')
+  const found = searchable.findIndex(x => x.value.match(re) && !x.disabled)
+
+  if (found > -1) {
+    const index = (found + state.active + 1) % state.items.length
+    focus(index)
+  }
+}

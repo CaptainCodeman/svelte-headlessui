@@ -11,12 +11,13 @@ import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
+import { getPrefix } from "./internal/utils";
 
 export interface Dialog extends Expandable, Labelable { }
 
 export function createDialog(init?: Partial<Dialog>) {
   // prefix for generating unique IDs
-  const prefix = 'headlessui-dialog'
+  const prefix = getPrefix('dialog')
 
   let state: Dialog = {
     ...defaultExpanded,

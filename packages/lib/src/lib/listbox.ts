@@ -12,7 +12,7 @@ import { keyHomeEnd } from "./internal/key-home-end";
 import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { active, defaultList, firstActive, getItemValues, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
+import { active, defaultList, firstActive, getFocuser, getItemValues, getSearch, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -23,6 +23,7 @@ import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
+import { getPrefix } from "./internal/utils";
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Listbox extends Labelable, Expandable, Controllable, List, Selectable {
@@ -31,7 +32,7 @@ export interface Listbox extends Labelable, Expandable, Controllable, List, Sele
 
 export function createListbox<T = any>(init?: Partial<Listbox>) {
   // prefix for generating unique IDs
-  const prefix = 'headlessui-listbox'
+  const prefix = getPrefix('listbox')
 
   // internal state for component
   let state: Listbox = {
@@ -74,26 +75,10 @@ export function createListbox<T = any>(init?: Partial<Listbox>) {
   // clear focus
   const none = () => focus(-1)
 
-  // TODO: make re-usable
-  // search for query value starting from the current position and looping round, set first found to active
-  const search = (query: string) => {
-    const searchable = state.active === -1
-      ? state.items
-      : state.items
-        .slice(state.active + 1)
-        .concat(state.items.slice(0, state.active + 1))
-
-    const re = new RegExp(`^${query}`, 'i')
-    const found = searchable.findIndex(x => x.value.match(re) && !x.disabled)
-
-    if (found > -1) {
-      const index = (found + state.active + 1) % state.items.length
-      focus(index)
-    }
-  }
+  const search = getSearch(() => state, focus)
 
   // set the focus based on the HTMLElement passed which will be a menuitem element or null
-  const focusNode = (node: HTMLElement | null) => focus(node ? state.items.findIndex(item => item.id === node.id && !item.disabled) : -1)
+  const focusNode = getFocuser(() => state, focus)
 
   const remove = (node: HTMLElement) => set(removeItem(state, node))
 
