@@ -100,3 +100,16 @@ export function findLastIndex<T>(array: Array<T>, predicate: (value: T, index: n
   }
   return -1;
 }
+
+export const getUpdater = (node: HTMLElement, getState: () => List, setState: (part: Partial<List>) => void) => (options?: ItemOptions) => {
+  const state = getState()
+  const values = getItemValues(node, options)
+  const item = state.items.find(item => item.id === node.id)
+  if (item) {
+    if (item.value === values.value && item.disabled === values.disabled) return
+    Object.assign(item, values)
+  } else {
+    state.items.push({ id: node.id, ...values })
+  }
+  setState({ items: state.items })
+}

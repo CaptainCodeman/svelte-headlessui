@@ -12,7 +12,7 @@ import { keyHomeEnd } from "./internal/key-home-end";
 import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { active, defaultList, firstActive, getItemValues, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
+import { active, defaultList, firstActive, getItemValues, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -158,17 +158,7 @@ export function createListbox<T = any>(init?: Partial<Listbox>) {
   function item(node: HTMLElement, options?: ItemOptions) {
     ensureID(node, prefix)
 
-    const update = (options?: ItemOptions) => {
-      const values = getItemValues(node, options)
-      const item = state.items.find(item => item.id === node.id)
-      if (item) {
-        if (item.value === values.value && item.disabled === values.disabled) return
-        Object.assign(item, values)
-      } else {
-        state.items.push({ id: node.id, ...values })
-      }
-      set({ items: state.items })
-    }
+    const update = getUpdater(node, () => state, set)
 
     update(options)
 
