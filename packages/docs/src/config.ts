@@ -1,6 +1,6 @@
 export const SITE = {
-	title: 'Documentation',
-	description: 'Your website description.',
+	title: 'Svelte-HeadlessUI',
+	description: 'HeadlessUI Components for Svelte',
 	defaultLanguage: 'en_US',
 };
 
@@ -34,13 +34,18 @@ export const KNOWN_LANGUAGES = {
 
 export const SIDEBAR = {
 	en: [
-		{ text: '', header: true },
-		{ text: 'Section Header', header: true },
-		{ text: 'Introduction', link: 'en/introduction' },
-		{ text: 'Page 2', link: 'en/page-2' },
-		{ text: 'Page 3', link: 'en/page-3' },
-
-		{ text: 'Another Section', header: true },
-		{ text: 'Page 4', link: 'en/page-4' },
+		{ text: 'Home', link: 'en/home' },
+		{ text: 'Design Approach', link: 'en/design' },
+		{ text: 'Combobox (Autocomplete)', link: 'en/combobox' },
+		{ text: 'Dialog (Modal)', link: 'en/dialog' },
+		{ text: 'Disclosure', link: 'en/disclosure' },
+		{ text: 'Listbox (Select)', link: 'en/listbox' },
+		{ text: 'Menu (Dropdown)', link: 'en/menu' },
+		{ text: 'Popover', link: 'en/popover' },
+		{ text: 'Radio Group', link: 'en/radio-group' },
+		{ text: 'Switch (Button)', link: 'en/button' },
+		{ text: 'Switch (Toggle)', link: 'en/switch' },
+		{ text: 'Tabs', link: 'en/tabs' },
+		{ text: 'Transition', link: 'en/transition' },
 	],
 };

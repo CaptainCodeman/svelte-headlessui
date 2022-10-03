@@ -9,9 +9,8 @@ import tailwind from '@astrojs/tailwind'
 // https://astro.build/config
 export default defineConfig({
 	integrations: [
-		// Enable Preact to support Preact JSX components.
-		preact(), // Enable React for the Algolia search component.
-		react(),
+		preact(), // Enable Preact to support Preact JSX components.
+		// react(), // Enable React for the Algolia search component.
 		svelte(),
 		mdx(),
 		tailwind(),

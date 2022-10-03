@@ -25,7 +25,8 @@
     "@astrojs/preact": "^1.0.2",
     "@astrojs/react": "^1.0.0",
     "@astrojs/svelte": "^1.0.0",
-    "@astrojs/tailwind": "^1.0.0",
+    "@astrojs/tailwind": "^2.0.0",
+    "@tailwindcss/forms": "^0.5.2",
     "astro": "^1.0.7",
     "svelte": "^3.46.4"
   }
