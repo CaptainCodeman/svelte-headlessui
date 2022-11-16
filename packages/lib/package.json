@@ -30,7 +30,7 @@
     "url": "https://www.captaincodeman.com/"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "svelte-kit sync && tsup",
     "dev": "vite dev",
     "test": "vitest run src",
     "test:watch": "vitest src",
