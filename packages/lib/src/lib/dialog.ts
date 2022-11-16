@@ -1,17 +1,15 @@
 import { derived, writable } from "svelte/store";
-import { defaultExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
+import { defaultExpanded, type Expandable } from "./internal/aria-expanded";
+import { reflectAriaModal } from "./internal/aria-modal";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { applyBehaviors } from "./internal/behavior";
 import { keyEscape } from "./internal/key-escape";
-import { keySpaceEnter } from "./internal/key-space-enter";
 import { ensureID } from "./internal/new-id";
 import { onClickOutside } from "./internal/on-click-outside";
 import { onKeydown } from "./internal/on-keydown";
-import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
-import { setTabIndex } from "./internal/set-tab-index";
-import { setType } from "./internal/set-type";
 import { getPrefix } from "./internal/utils";
+import { trapFocusOnOpen } from "./internal/focus";
 
 export interface Dialog extends Expandable, Labelable { }
 
@@ -32,23 +30,19 @@ export function createDialog(init?: Partial<Dialog>) {
 
   const open = () => set({ expanded: true })
   const close = () => set({ expanded: false })
-  const toggle = () => state.expanded ? close() : open()
 
   // modal
   function modal(node: HTMLElement) {
     ensureID(node, prefix)
 
     const destroy = applyBehaviors(node, [
-      setType('button'),
-      setRole('button'),
-      setHasPopup(),
-      setTabIndex(0),
-      reflectAriaExpanded(store),
+      setRole('modal'),
+      reflectAriaModal(store),
       reflectAriaLabel(store),
+      trapFocusOnOpen(store),
       onClickOutside(close),
       onKeydown(
         keyEscape(close),
-        keySpaceEnter(toggle),
       )
     ])
 

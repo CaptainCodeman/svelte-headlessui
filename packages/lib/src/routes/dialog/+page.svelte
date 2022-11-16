@@ -39,7 +39,10 @@
 						leaveFrom="opacity-100 scale-100"
 						leaveTo="opacity-0 scale-95"
 					>
-						<div class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+						<div
+							class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+							use:dialog.modal
+						>
 							<h3 class="text-lg font-medium leading-6 text-gray-900">Payment successful</h3>
 							<div class="mt-2">
 								<p class="text-sm text-gray-500">
@@ -54,6 +57,13 @@
 									on:click={dialog.close}
 								>
 									Got it, thanks!
+								</button>
+								<button
+									type="button"
+									class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ml-2"
+									on:click={dialog.close}
+								>
+									Go to Order
 								</button>
 							</div>
 						</div>
