@@ -7,10 +7,9 @@ import { keyEscape } from "./internal/key-escape";
 import { ensureID } from "./internal/new-id";
 import { onClickOutside } from "./internal/on-click-outside";
 import { onKeydown } from "./internal/on-keydown";
-import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
-import { setTabIndex } from "./internal/set-tab-index";
 import { getPrefix } from "./internal/utils";
+import { trapFocusOnOpen } from "./internal/focus";
 
 export interface Dialog extends Expandable, Labelable { }
 
@@ -40,6 +39,7 @@ export function createDialog(init?: Partial<Dialog>) {
       setRole('modal'),
       reflectAriaModal(store),
       reflectAriaLabel(store),
+      trapFocusOnOpen(store),
       onClickOutside(close),
       onKeydown(
         keyEscape(close),
