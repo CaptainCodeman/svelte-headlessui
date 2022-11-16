@@ -3,6 +3,7 @@
 	import Transition from 'svelte-transition'
 	import Selector from './Selector.svelte'
 	import Check from './Check.svelte'
+	import { onMount } from 'svelte'
 
 	// prettier-ignore
 	const people = [
@@ -15,6 +16,7 @@
   ]
 
 	const combobox = createCombobox({ label: 'Actions', selected: people[2] })
+	onMount(combobox.open)
 
 	function onSelect(e: Event) {
 		console.log('select', (e as CustomEvent).detail)

@@ -3,6 +3,7 @@
 	import Transition from 'svelte-transition'
 	import Selector from './Selector.svelte'
 	import Check from './Check.svelte'
+	import { onMount } from 'svelte'
 
 	type Person = { name: string }
 	type People = Person[]
@@ -19,6 +20,7 @@
 
 	// TODO: type list so 'selected' isn't 'any'
 	const listbox = createListbox<People>({ label: 'Actions', selected: people[2] })
+	onMount(listbox.open)
 
 	function onSelect(e: Event) {
 		console.log('select', (e as CustomEvent).detail)

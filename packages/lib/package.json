@@ -1,7 +1,7 @@
 {
   "name": "svelte-headlessui",
   "description": "HeadlessUI components for Svelte",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.2",
   "type": "module",
   "keywords": [
     "svelte",
@@ -20,6 +20,7 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "homepage": "https://captaincodeman.github.io/svelte-headlessui/",
   "repository": {
     "type": "git",
     "url": "https://github.com/captaincodeman/svelte-headlessui.git"

@@ -171,5 +171,7 @@ export function createMenu(init?: Partial<Menu>) {
     button,
     items,
     item,
+    open,
+    close,
   }
 }

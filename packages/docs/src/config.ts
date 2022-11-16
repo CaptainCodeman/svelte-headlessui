@@ -6,12 +6,11 @@ export const SITE = {
 
 export const OPEN_GRAPH = {
 	image: {
-		src: 'https://github.com/withastro/astro/blob/main/assets/social/banner.jpg?raw=true',
+		src: '/svelte-headlessui/menu.png',
 		alt:
-			'astro logo on a starry expanse of space,' +
-			' with a purple saturn-like planet floating in the right foreground',
+			'Screenshot of a Svelte HeadlessUI menu button',
 	},
-	twitter: 'astrodotbuild',
+	twitter: 'captaincodeman',
 };
 
 export const KNOWN_LANGUAGES = {

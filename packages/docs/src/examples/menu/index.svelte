@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import { createMenu } from 'svelte-headlessui'
 	import Transition from 'svelte-transition'
 	import Archive from './Archive.svelte'
@@ -9,6 +10,7 @@
 	import Move from './Move.svelte'
 
 	const menu = createMenu({ label: 'Actions' })
+	onMount(menu.open)
 
 	function onSelect(e: Event) {
 		console.log('select', (e as CustomEvent).detail)

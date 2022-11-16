@@ -17,7 +17,7 @@
     "preact": "^10.11.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "svelte-headlessui": "workspace:0.0.1-alpha.3",
+    "svelte-headlessui": "workspace:*",
     "svelte-transition": "^0.0.6"
   },
   "devDependencies": {

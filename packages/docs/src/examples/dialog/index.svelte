@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import { createDialog } from 'svelte-headlessui'
 	import Transition from 'svelte-transition'
 
 	const dialog = createDialog({ label: 'Payment Success' })
+	onMount(dialog.open)
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">

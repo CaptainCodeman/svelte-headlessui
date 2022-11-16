@@ -171,5 +171,7 @@ export function createListbox<T = any>(init?: Partial<Listbox>) {
     button,
     items,
     item,
+    open,
+    close,
   }
 }
