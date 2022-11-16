@@ -15,7 +15,7 @@ permissions:
   id-token: write
 
 jobs:
-  lib:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout your repository using git
@@ -29,11 +29,6 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build lib
         run: pnpm run --filter lib build
-
-  build:
-    needs: lib
-    runs-on: ubuntu-latest
-    steps:
       - name: Install, build, and upload your site
         uses: withastro/action@v0
         with:
