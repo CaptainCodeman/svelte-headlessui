@@ -9,14 +9,24 @@ layout: ../layouts/MainLayout.astro
 `svelte-headlessui` is an unofficial implementation of [Tailwind HeadlessUI](https://headlessui.com/) for [Svelte](https://svelte.dev/). Just like the official implementation, they are:
 
 - ✅ Completely unstyled
-- ✅ Fully accessible UI components
-- ✅ Fully types with Typescript
+- ✅ Fully WIA-ARIA accessible UI components
+- ✅ Fully typed with Typescript
 - ✅ Designed to integrate beautifully with Tailwind CSS
 
 But also:
 
 - ✅ Designed to integrate beautifully with Svelte and SvelteKit
 - ✅ Less than 14kB minified / 4.5kB minified gzipped
+
+## Installation
+
+Install using your package manager of choice, e.g.
+
+    pnpm install svelte-headlessui
+
+Import the appropriate `create...` factory method in your component and use the custom store it returns to manage your component state and attach `use:action` behaviors to your elements.
+
+See the individual component pages for usage examples.
 
 ## Alternative
 
