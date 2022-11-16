@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "build": "pnpm --filter './packages/**' build"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "Simon Green <simon@captaincodeman.com> (https://github.com/captaincodeman)",
   "license": "ISC"

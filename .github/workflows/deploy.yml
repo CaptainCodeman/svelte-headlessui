@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build lib
-        run: pnpm build
+        run: pnpm --filter svelte-headlessui build
       - name: Install, build, and upload your site
         uses: withastro/action@v0
         with:
