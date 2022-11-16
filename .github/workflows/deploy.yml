@@ -16,11 +16,17 @@ permissions:
 
 jobs:
   build:
+    # prevents this action from running on forks
+    if: github.repository == 'CaptainCodeman/svelte-headlessui'
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2.2.4
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 7.x.x
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -29,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build lib
-        run: pnpm run --filter lib build
+        run: pnpm build
       - name: Install, build, and upload your site
         uses: withastro/action@v0
         with:
