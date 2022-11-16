@@ -9,13 +9,13 @@
 
 	// prettier-ignore
 	const people = [
-    { name: 'Wade Cooper' },
-    { name: 'Arlene Mccoy' },
-    { name: 'Devon Webb' },
-    { name: 'Tom Cook' },
-    { name: 'Tanya Fox' },
-    { name: 'Hellen Schmidt' },
-  ]
+		{ name: 'Wade Cooper' },
+		{ name: 'Arlene Mccoy' },
+		{ name: 'Devon Webb' },
+		{ name: 'Tom Cook' },
+		{ name: 'Tanya Fox' },
+		{ name: 'Hellen Schmidt' },
+	]
 
 	// TODO: type list so 'selected' isn't 'any'
 	const listbox = createListbox<People>({ label: 'Actions', selected: people[2] })

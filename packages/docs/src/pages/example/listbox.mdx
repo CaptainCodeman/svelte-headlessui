@@ -6,4 +6,10 @@ layout: ../../layouts/ExampleLayout.astro
 
 import Listbox from '@examples/listbox/index.svelte'
 
-<Listbox client:load />
+<div class="relative flex flex-col items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-amber-300 to-orange-500">
+	<div class="w-full h-[378px]">
+		<div class="absolute inset-0">
+			<Listbox client:load />
+		</div>
+	</div>
+</div>

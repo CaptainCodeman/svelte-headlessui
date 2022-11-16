@@ -4,10 +4,52 @@ description: Disclosure
 layout: ../layouts/MainLayout.astro
 ---
 
-<div class="relative mt-8 mb-12 flex flex-col items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-fuchsia-500 to-purple-600">
-	<div class="w-full h-[378px]">
-		<div class="absolute inset-0">
-			<iframe class="h-full w-full" src="/svelte-headlessui/example/disclosure" frameborder="0" scrolling="no"></iframe>
+<iframe class="w-full h-[378px] mt-8 mb-4 rounded-xl" src="/svelte-headlessui/example/disclosure" frameborder="0" scrolling="no"></iframe>
+<a href="/svelte-headlessui/example/disclosure" target="_blank">
+	Open in separate tab
+</a>
+
+## Example
+
+```svelte
+<script lang="ts">
+	import { createDisclosure } from 'svelte-headlessui'
+	import ChevronUp from './ChevronUp.svelte'
+
+	const refund = createDisclosure({ label: 'Refund Policy', expanded: true })
+	const support = createDisclosure({ label: 'Technical Support', expanded: true })
+</script>
+
+<div class="flex w-full flex-col items-center justify-center">
+	<div class="w-full px-4 pt-16">
+		<div class="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
+			<div>
+				<button
+					use:refund.button
+					class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+				>
+					<span>What is your refund policy?</span>
+					<ChevronUp class="h-5 w-5 text-purple-500 {$refund.expanded ? 'rotate-180 transform' : ''}" />
+				</button>
+				{#if $refund.expanded}
+					<div use:refund.panel class="px-4 pt-4 pb-2 text-sm text-gray-500">
+						If you're unhappy with your purchase for any reason, email us within 90 days and we'll refund you in full, no questions asked.
+					</div>
+				{/if}
+			</div>
+			<div class="mt-2">
+				<button
+					use:support.button
+					class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+				>
+					<span>Do you offer technical support?</span>
+					<ChevronUp class="h-5 w-5 text-purple-500 {$support.expanded ? 'rotate-180 transform' : ''}" />
+				</button>
+				{#if $support.expanded}
+					<div use:support.panel class="px-4 pt-4 pb-2 text-sm text-gray-500">No.</div>
+				{/if}
+			</div>
 		</div>
 	</div>
 </div>
+```

@@ -10,21 +10,21 @@
 
 	// prettier-ignore
 	const solutions = [{
-    name: 'Insights',
-    description: 'Measure actions your users take',
-    href: '##',
-    icon: IconOne,
-  }, {
-    name: 'Automations',
-    description: 'Create your own targeted content',
-    href: '##',
-    icon: IconTwo,
-  }, {
-    name: 'Reports',
-    description: 'Keep track of your growth',
-    href: '##',
-    icon: IconThree,
-  }]
+		name: 'Insights',
+		description: 'Measure actions your users take',
+		href: '##',
+		icon: IconOne,
+	}, {
+		name: 'Automations',
+		description: 'Create your own targeted content',
+		href: '##',
+		icon: IconTwo,
+	}, {
+		name: 'Reports',
+		description: 'Keep track of your growth',
+		href: '##',
+		icon: IconThree,
+	}]
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">

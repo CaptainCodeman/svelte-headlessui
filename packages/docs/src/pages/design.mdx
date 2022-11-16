@@ -8,97 +8,26 @@ Most Web Frameworks have the concept of "slots" which enables composition of com
 
 Basically, it allows you to wrap some DOM tree with other elements that your component provides. You're usually not limited to a single slot either - you can have multiple, named, slots and the placeholders can have their own default content if none is passed in.
 
-While these slots are fantastic for composing content such as creating a "card" component where the image, title and text are passed in, they can become a little clumsy to use when implementing behaviors.
+While these slots are fantastic for composing content as wrappers such as creating a "card" component where the image, title and text are passed in, they can become a little clumsy to use when implementing behaviors.
 
-Although it seems ideal for writing component libraries the reality is that
+The typical approach is to create extra components that act as wrappers for all the parts of the UI component being implemented, so that these pieces can be coordinated behind the scenes. But I think this adds bload to the component definitions and is also inefficient.
 
-Most component libraries work the same way and lean heavily on the concept of "slots". This
+So, instead of using slots, I took advantage of Svelte's `use:action` directive to attach the necessary behaviors to the elements that _you_ define, and a Svelte store is provided to communicate reactivity to your elements - when to hide, what to filer and so on.
+
+Behind the scenes, the behaviors handle UI events and WIA-ARIA attributes.
 
 ## General Pattern
 
-Components all work the same way
+Components all work the same way ...
 
 A factory method is called to create a component instance. Options can be passed to this method.
 
-The factory method creates an internal store to manage the state of the component and defines methods to mutate that store. When possible, these methods are imported for re-usability.
+The factory method creates an internal store to manage the state of the component and defines methods to mutate that store. When possible, these methods are shared and imported for re-usability.
 
-The public state from the internal store is created using a derived store and is returned with any custom methods. These will typicall be Svelte `use:action` functions that attach behaviors to DOM elements.
+The public state from the internal store is created using a derived store and is returned along with any custom store methods. These will typically be Svelte `use:action` functions that attach behaviors to DOM elements.
 
 These behaviors are again imported for re-usability whenever possible and they typically follow a pattern of subscribing to the internal store and updating DOM attributes as appropriate to provide WIA-ARIA support or attaching DOM event listeners on the Node to mutate the state. i.e. they are a two-way bridge between the DOM and the internal state store. Some are simple one-time setters to define attributes in a re-usable way.
 
 Overall, the re-use of store methods and behaviors reduces the size of the components.
 
 The state store and `use:action` methods makes it easy to build up a rich UI component with whatever DOM elements and styling are required, while ensuring WIA-ARIA support.
-
-## Filtering
-
-To handle filtering, and any items in menu's etc... being hidden, the active / selected states need to be based on the values of the nodes rather than an index
-
-Especially with a combobox, filtering the list _may_ remove the selected item so it's no longer pointing to the right thing, which means it _has_ to be the actual value
-
-But the active item is always relative to the visible items, so can be a pointer
-
-Q: should value always be a string, or "any object"
-
-Any object is nicer for returning as "the selected thing" and comparing to the active / selected thing
-
-But for type-ahead there needs to be a way to extract the value, which can be a function passed to the component constructor to provide a typed "selector" to extract the value
-
-e.g.
-
-```ts
-const people: Person[] = [
-	{
-		id: 1,
-		first_name: 'Captain',
-		last_name: 'Codeman',
-		avatar: '...',
-	},
-]
-
-const menu = createMenu({ value: (person: Person) => `${person.first_name} ${person.last_name}`.toLowercase() })
-```
-
-Fallback can always be to node's `textContent`
-
-Q: why can't `selected` always be a string?
-A: We could only ever pass a string to an item - what if two people had the same name, but different avatars or some other info that wasn't part of the searchable "value"
-
-For consistency when deciding if something is `selected` or `active`, we should have `active` and `activeIndex`
-
-Need to be able to do filtering _inside_ our component, and return list of filtered items
-Allows us control over applying filter and setting active item
-Need to provide value-select function, ideally to apply to typed entries
-
-When clearing filter, we need to wait for 'expanded: false' setting to complete, which may be a transition, otherwise we get a flash of "all options"
-
-Provide complete callback that Transition can call (?)
-
-```ts
-export const setAriaAttributeString = (name: string) => (node: HTMLElement) => (id?: string) =>
-	id ? node.setAttribute(name, id) : node.removeAttribute(name)
-
-export const setAriaExpanded = setAriaAttributeBoolean('aria-expanded')
-
-export const reflectAriaExpanded =
-	(store: Readable<Expandable>): Behavior =>
-	node =>
-		derived(store, $store => $store.expanded).subscribe(setAriaExpanded(node))
-
-const destroy = applyBehaviors(node, [
-	setType('button'),
-	setRole('button'),
-	setHasPopup(),
-	setTabIndex(0),
-	reflectAriaLabel(store),
-	reflectAriaExpanded(store),
-	reflectAriaControls(store),
-	onClick(toggle),
-	onKeydown(keySpaceEnter(toggle), keyUpDown(last, first)),
-	focusOnClose(store),
-])
-
-return {
-	destroy,
-}
-```

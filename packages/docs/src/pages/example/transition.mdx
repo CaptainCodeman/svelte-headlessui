@@ -6,4 +6,10 @@ layout: ../../layouts/ExampleLayout.astro
 
 import Transition from '@examples/transition/index.svelte'
 
-<Transition client:load />
+<div class="relative flex flex-col items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-pink-500 to-rose-500">
+	<div class="w-full h-[378px]">
+		<div class="absolute inset-0">
+			<Transition client:load />
+		</div>
+	</div>
+</div>
