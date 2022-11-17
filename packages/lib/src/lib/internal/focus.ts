@@ -1,4 +1,5 @@
 import { derived, type Readable } from "svelte/store"
+import { Tab } from "./keys"
 import type { Expandable } from "./aria-expanded"
 import type { Behavior } from "./behavior"
 
@@ -24,6 +25,8 @@ const focusableSelector = [
 ]
 
 function onKeyDown(event: KeyboardEvent) {
+  if (event.key !== Tab) return
+
   const container = event.currentTarget as HTMLElement
   const element = event.target as HTMLElement
   if (!container.contains(element)) return
