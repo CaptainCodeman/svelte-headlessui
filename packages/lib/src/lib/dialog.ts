@@ -42,8 +42,6 @@ export function createDialog(init?: Partial<Dialog>) {
       reflectAriaLabel(store),
       trapFocusOnOpen(store),
       onClickOutside(close),
-      setTabIndex(0),
-      focusOnExpanded(store),
       onKeydown(
         keyEscape(close),
       )

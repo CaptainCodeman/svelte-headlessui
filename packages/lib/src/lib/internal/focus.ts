@@ -50,6 +50,10 @@ function onKeyDown(event: KeyboardEvent) {
 
 export const trapFocusOnOpen = (store: Readable<Expandable>): Behavior => node => derived(store, $store => $store.expanded).subscribe(expanded => {
   if (expanded) {
+    const focusable = node.querySelector(focusableSelector.join(','))
+    if (focusable) {
+      requestAnimationFrame(() => (focusable as HTMLElement).focus())
+    }
     node.addEventListener('keydown', onKeyDown)
   } else {
     node.removeEventListener('keydown', onKeyDown)
