@@ -1,3 +1,6 @@
+![minified](https://img.shields.io/bundlephobia/min/svelte-headlessui?style=for-the-badge)
+![minified + zipped](https://img.shields.io/bundlephobia/minzip/svelte-headlessui?style=for-the-badge)
+
 # Svelte-HeadlessUI
 
 `svelte-headlessui` is an unofficial implementation of [Tailwind HeadlessUI](https://headlessui.com/) for [Svelte](https://svelte.dev/). Just like the official implementation, they are:
@@ -10,7 +13,7 @@
 But also:
 
 - ✅ Designed to integrate beautifully with Svelte and SvelteKit
-- ✅ Less than 14kB minified / 4.5kB minified gzipped
+- ✅ Less than 14kB minified / 4kB minified gzipped
 
 ## Installation
 

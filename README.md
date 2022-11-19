@@ -1,3 +1,6 @@
+![minified](https://img.shields.io/bundlephobia/min/svelte-headlessui?style=for-the-badge)
+![minified + zipped](https://img.shields.io/bundlephobia/minzip/svelte-headlessui?style=for-the-badge)
+
 # Svelte Headless-UI
 
 Ultra-small (<3kb gzipped), unofficial, [HeadlessUI](https://headlessui.com/) inspired components for Svelte.
