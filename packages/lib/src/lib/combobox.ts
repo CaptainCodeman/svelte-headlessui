@@ -10,7 +10,6 @@ import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
 import { keyHomeEnd } from "./internal/key-home-end";
 import { keyUpDown } from "./internal/key-up-down";
-import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
 import { active, defaultList, firstActive, getFocuser, getItemValues, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List, type ListItem } from "./internal/list";
 import { ensureID } from "./internal/new-id";
@@ -28,6 +27,7 @@ import { reflectSelectedValueOnClose } from "./internal/value";
 import { tick } from "svelte";
 import { setDisabled } from "./internal/set-disabled";
 import { getPrefix } from "./internal/utils";
+import { keyEnter } from "./internal/key-enter";
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
@@ -139,7 +139,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       // onClick(toggle),
       // selectAllOnFocus(), <--
       onKeydown(
-        keySpaceEnter(select),  // TODO: should be enter only
+        keyEnter(select),
         keyEscape(close),
         keyHomeEnd(first, last),
         keyUpDown(previous, next),
