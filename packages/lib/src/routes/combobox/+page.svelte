@@ -20,7 +20,7 @@
 		console.log('select', (e as CustomEvent).detail)
 	}
 
-	$: filtered = people.filter(person => person.name.toLowerCase().replace(/\s+/g, '').includes($combobox.filter.toLowerCase().replace(/\s+/g, '')))
+	$: filtered = people.filter(person => person.name.toLowerCase().includes($combobox.filter.toLowerCase()))
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">

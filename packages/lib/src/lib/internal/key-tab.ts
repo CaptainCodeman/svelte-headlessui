@@ -1,10 +1,4 @@
-import { Tab, type KeyHandler } from "./keys"
+import { keyHandler } from "./key-handler"
+import { Tab } from "./keys"
 
-export const keyTab = (fn: () => void): KeyHandler => key => {
-  switch (key) {
-    case Tab:
-      fn()
-      return true
-  }
-  return false
-}
+export const keyTab = keyHandler(Tab)
