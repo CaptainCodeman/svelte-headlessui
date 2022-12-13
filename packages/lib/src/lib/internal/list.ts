@@ -35,7 +35,7 @@ export const removeItem = (state: List, node: HTMLElement) => {
 export const active = (state: List) => state.active === -1 || state.items.length === 0 ? undefined : state.active >= state.items.length ? state.items[state.active] : state.items[state.active].value
 
 export function onSelect(state: List, node?: HTMLElement) {
-  if (state.items[state.active].disabled) return {}
+  if (state.active === -1 || state.items[state.active].disabled) return {}
   const selected = active(state)
   if (node) {
     const event = new CustomEvent('select', {

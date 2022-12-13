@@ -1,5 +1,5 @@
-![minified](https://img.shields.io/bundlephobia/min/svelte-headlessui?style=for-the-badge)
-![minified + zipped](https://img.shields.io/bundlephobia/minzip/svelte-headlessui?style=for-the-badge)
+![minified](https://img.shields.io/bundlephobia/min/svelte-headlessui/latest?style=for-the-badge)
+![minified + zipped](https://img.shields.io/bundlephobia/minzip/svelte-headlessui/latest?style=for-the-badge)
 
 # Svelte-HeadlessUI
 
