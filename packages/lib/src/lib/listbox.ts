@@ -36,7 +36,7 @@ export function createListbox<T = any>(init?: Partial<Listbox>) {
 
   // internal state for component
   let state: Listbox = {
-    ...defaultList,
+    ...defaultList(),
     ...defaultExpanded,
     ...defaultSelected,
     ...init,

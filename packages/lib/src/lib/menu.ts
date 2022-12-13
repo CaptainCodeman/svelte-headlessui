@@ -36,7 +36,7 @@ export function createMenu(init?: Partial<Menu>) {
 
   // internal state for component
   let state: Menu = {
-    ...defaultList,
+    ...defaultList(),
     ...defaultExpanded,
     ...defaultSelected,
     ...init,

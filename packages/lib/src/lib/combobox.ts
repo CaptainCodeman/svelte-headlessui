@@ -40,7 +40,7 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   // internal state for component
   let state: Combobox = {
-    ...defaultList,
+    ...defaultList(),
     ...defaultExpanded,
     ...defaultSelected,
     ...init,

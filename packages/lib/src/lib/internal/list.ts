@@ -16,10 +16,10 @@ export interface List {
   active: number
 }
 
-export const defaultList: List = {
+export const defaultList = () => ({
   items: [],
   active: -1,
-}
+} as List)
 
 
 export function onDestroy(fn: (node: HTMLElement) => void): Behavior {

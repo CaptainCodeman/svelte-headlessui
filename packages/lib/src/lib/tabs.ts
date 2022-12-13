@@ -35,7 +35,7 @@ export function createTabs(init?: Partial<Tabs>) {
 
   // internal state for component
   let state: Tabs = {
-    ...defaultList,
+    ...defaultList(),
     ...defaultSelected,
     ...init,
   }
