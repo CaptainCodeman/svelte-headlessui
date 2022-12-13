@@ -11,7 +11,7 @@ import { keyHomeEnd } from "./internal/key-home-end";
 import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { defaultList, firstActive, getFocuser, getItemValues, getSearch, getUpdater, lastActive, nextActive, onDestroy, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
+import { defaultList, firstActive, getFocuser, getSearch, getUpdater, lastActive, nextActive, onDestroy, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -167,7 +167,7 @@ export function createTabs(init?: Partial<Tabs>) {
   }
 
   // expose a subset of our state, derive the selected value
-  const { subscribe } = derived(store, $state => {
+  const { subscribe } = derived(store, _state => {
     return { active: active() }
   })
 

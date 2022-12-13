@@ -1,4 +1,3 @@
-import type { Writable } from "svelte/store"
 import type { Behavior } from "./behavior"
 
 export interface ItemOptions {

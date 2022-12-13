@@ -83,19 +83,19 @@
 						<ul>
 							{#each category as post}
 								<li class="relative rounded-md p-3 hover:bg-gray-100">
-									<h3 class="text-sm font-medium leading-5">
-										{post.title}
-									</h3>
+									<a href="#" class="absolute inset-0 rounded-md ring-blue-400 focus:z-10 focus:outline-none focus:ring-2">
+										<h3 class="text-sm font-medium leading-5">
+											{post.title}
+										</h3>
 
-									<ul class="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">
-										<li>{post.date}</li>
-										<li>&middot;</li>
-										<li>{post.commentCount} comments</li>
-										<li>&middot;</li>
-										<li>{post.shareCount} shares</li>
-									</ul>
-
-									<a href="#" class="absolute inset-0 rounded-md ring-blue-400 focus:z-10 focus:outline-none focus:ring-2" />
+										<ul class="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">
+											<li>{post.date}</li>
+											<li>&middot;</li>
+											<li>{post.commentCount} comments</li>
+											<li>&middot;</li>
+											<li>{post.shareCount} shares</li>
+										</ul>
+									</a>
 								</li>
 							{/each}
 						</ul>

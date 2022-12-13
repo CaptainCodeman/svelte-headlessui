@@ -44,7 +44,7 @@
 					use:listbox.items
 					class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
 				>
-					{#each people as value, i}
+					{#each people as value}
 						{@const active = $listbox.active === value}
 						{@const selected = $listbox.selected === value}
 						<li

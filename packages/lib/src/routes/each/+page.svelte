@@ -49,7 +49,7 @@
 	}
 
 	function del(i: number) {
-		items = items.filter((value, index) => index !== i)
+		items = items.filter((_value, index) => index !== i)
 	}
 
 	// maintain ordered mapping of values based on node position
