@@ -50,7 +50,7 @@ export function createTabs(init?: Partial<Tabs>) {
   // TODO: change to 'active' when active changed to activeIndex
   const active = () => state.active === -1 || state.items.length === 0 ? undefined : state.active >= state.items.length ? state.items[state.active] : state.items[state.active].value
 
-  // set focused (active) item (open if not expanded) only if changed
+  // set focused (active) item only if changed
   const focus = (active: number) => state.active !== active && set({ active })
 
   // set focus (active) to first
