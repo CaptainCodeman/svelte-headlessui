@@ -6,7 +6,6 @@ export const listener = <K extends keyof HTMLElementEventMap>(node: HTMLElement,
 
 // terminateEvent decorates event handlers to preventDefault and stopPropagation of the event
 export const terminateEvent = <T extends Event>(handler: (event: T) => void) => (event: T) => {
-  event.preventDefault()
   event.stopPropagation()
   event.stopImmediatePropagation()
   handler(event)
