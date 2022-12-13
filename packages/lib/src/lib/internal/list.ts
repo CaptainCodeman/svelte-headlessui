@@ -61,7 +61,7 @@ export const firstActive = (state: List) => state.items.findIndex(item => !item.
 // return index of previous non-disabled item
 export const previousActive = (state: List) => {
   let x = state.active === -1 ? state.items.length : state.active
-  while (x-- && x > -1) {
+  while (--x > -1) {
     if (!state.items[x].disabled) {
       return x
     }
@@ -72,7 +72,7 @@ export const previousActive = (state: List) => {
 // return index of next non-disabled item
 export const nextActive = (state: List) => {
   let x = state.active
-  while (++x && x < state.items.length) {
+  while (++x < state.items.length) {
     if (!state.items[x].disabled) {
       return x
     }
