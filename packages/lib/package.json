@@ -55,26 +55,26 @@
     "dts": true
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "next",
-    "@sveltejs/kit": "next",
+    "@sveltejs/adapter-auto": "1.0.0",
+    "@sveltejs/kit": "1.0.0",
     "@tailwindcss/forms": "^0.5.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/svelte": "^3.2.2",
     "@types/testing-library__jest-dom": "^5.14.5",
     "autoprefixer": "^10.4.13",
-    "happy-dom": "^7.7.0",
-    "postcss": "^8.4.19",
+    "happy-dom": "^8.1.0",
+    "postcss": "^8.4.20",
     "postcss-load-config": "^4.0.1",
     "source-map-explorer": "^2.5.3",
-    "svelte": "^3.53.1",
-    "svelte-check": "^2.9.2",
-    "svelte-preprocess": "^4.10.7",
+    "svelte": "^3.55.0",
+    "svelte-check": "^2.10.2",
+    "svelte-preprocess": "^5.0.0",
     "tailwindcss": "^3.2.4",
     "tslib": "^2.4.1",
     "tsup": "^6.5.0",
-    "typescript": "^4.9.3",
-    "vite": "^3.2.4",
-    "vitest": "^0.25.2"
+    "typescript": "^4.9.4",
+    "vite": "^4.0.1",
+    "vitest": "^0.25.8"
   },
   "dependencies": {
     "svelte-transition": "^0.0.6"
