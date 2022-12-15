@@ -1,0 +1,15 @@
+---
+title: Radio-Group Example
+description: SvelteHeadlessUI Radio-Group Example
+layout: ../../layouts/ExampleLayout.astro
+---
+
+import RadioGroup from '@examples/radio-group/index.svelte'
+
+<div class="relative flex flex-col items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-cyan-400 to-sky-500">
+	<div class="w-full h-[360px]">
+		<div class="absolute inset-0">
+			<RadioGroup client:load />
+		</div>
+	</div>
+</div>

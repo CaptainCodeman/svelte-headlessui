@@ -1,26 +1,3 @@
----
-title: Radio Group
-description: Radio Group
-layout: ../layouts/MainLayout.astro
-image:
-  src: /svelte-headlessui/radio-group.png
-  alt: Radio Groups give you the same functionality as native HTML radio inputs, without any of the styling. They're perfect for building out custom UIs for selectors.
----
-
-<iframe class="w-full h-[360px] mt-8 mb-4 rounded-xl" src="/svelte-headlessui/example/radio-group" frameborder="0" scrolling="no"></iframe>
-<a href="/svelte-headlessui/example/radio-group" target="_blank">
-	Open in separate tab
-</a>
-
-## Note
-
-Svelte provides a [group bind option](https://svelte.dev/docs#template-syntax-element-directives-bind-group) that provides radio-button group functionality out-of-the-box. Combined with some CSS wizardry to hide the inputs and style the labels, we can achieve the nicely styled radio-group input without needing any additional components or code. By re-using the standard `input[type=radio]` functionality we keep the WIA-ARIA behavior and keyboard handling that the browser already provides.
-
-You would probably split each "option" into a separate component to reduce the complexity and repetition of the CSS classes.
-
-## Example
-
-```svelte
 <script lang="ts">
 	let group = 'startup'
 </script>
@@ -120,4 +97,3 @@ You would probably split each "option" into a separate component to reduce the c
 		</div>
 	</div>
 </div>
-```

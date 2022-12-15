@@ -14,6 +14,7 @@
 	<a href="/listbox">Listbox</a>
 	<a href="/menu">Menu</a>
 	<a href="/popover">Popover</a>
+	<a href="/radio-group">Radio Group</a>
 	<a href="/switch">Switch</a>
 	<a href="/tabs">Tabs</a>
 </nav>
