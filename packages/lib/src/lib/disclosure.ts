@@ -34,7 +34,7 @@ export function createDisclosure(init?: Partial<Disclosure>) {
   // update state and notify store of changes for reactivity
   const set = (part: Partial<Disclosure>) => store.set(state = { ...state, ...part })
 
-  const open = () => set({ expanded: true })
+  const open = () => set({ expanded: true, opened: true })
   const close = () => set({ expanded: false })
   const toggle = () => state.expanded ? close() : open()
 

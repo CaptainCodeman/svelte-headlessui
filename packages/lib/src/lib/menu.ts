@@ -49,7 +49,7 @@ export function createMenu(init?: Partial<Menu>) {
   const set = (part: Partial<Menu>) => store.set(state = { ...state, ...part })
 
   // open the menu and set first item active
-  const open = () => set({ expanded: true })
+  const open = () => set({ expanded: true, opened: true })
 
   // close the menu
   const close = () => set({ expanded: false, active: -1 })

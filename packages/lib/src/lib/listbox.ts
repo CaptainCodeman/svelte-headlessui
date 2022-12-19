@@ -49,7 +49,7 @@ export function createListbox<T = any>(init?: Partial<Listbox>) {
   const set = (part: Partial<Listbox>) => store.set(state = { ...state, ...part })
 
   // open the menu and set first item active
-  const open = () => set({ expanded: true, active: state.items.findIndex(x => x.value === state.selected) })
+  const open = () => set({ expanded: true, opened: true, active: state.items.findIndex(x => x.value === state.selected) })
 
   // close the menu
   const close = () => set({ expanded: false })

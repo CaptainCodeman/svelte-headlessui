@@ -55,7 +55,7 @@ export function createCombobox(init?: Partial<Combobox>) {
   const set = (part: Partial<Combobox>) => store.set(state = { ...state, ...part })
 
   // open the menu and set first item active
-  const open = () => set({ expanded: true })
+  const open = () => set({ expanded: true, opened: true })
 
   // close the menu
   const close = () => set({ expanded: false })
@@ -91,7 +91,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       ? state.selected
       : state.items[state.active].value
 
-    set({ filter: value, expanded: true })  // keep expanded or expand if filter is set
+    set({ filter: value, expanded: true, opened: true })  // keep expanded or expand if filter is set
 
     await tick()
 

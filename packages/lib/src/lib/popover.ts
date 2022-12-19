@@ -35,7 +35,7 @@ export function createPopover(init?: Partial<Popover>) {
   // update state and notify store of changes for reactivity
   const set = (part: Partial<Popover>) => store.set(state = { ...state, ...part })
 
-  const open = () => set({ expanded: true })
+  const open = () => set({ expanded: true, opened: true })
   const close = () => set({ expanded: false })
   const toggle = () => state.expanded ? close() : open()
 
