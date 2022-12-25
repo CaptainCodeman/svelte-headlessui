@@ -19,18 +19,9 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   parserOptions: {
     tsconfigRootDir: __dirname,
-    project: ["./tsconfig.json"],
+    project: "./tsconfig.lint.json",
     extraFileExtensions: [".svelte"],
   },
-  ignorePatterns: [
-    // TODO: create a tsconfig.lint.json to re-enable linting for js,cjs files.
-    // More info: uncomment and read error message.
-    // https://typescript-eslint.io/linting/typed-linting/monorepos#one-root-tsconfigjson
-    "*.cjs",
-    "svelte.config.js",
-    "vite.config.js",
-    ".eslintrc.cjs",
-  ],
   globals: {
     svelte: "readonly",
     $$Generic: "readonly",
@@ -46,7 +37,7 @@ module.exports = {
         parser: "@typescript-eslint/parser",
         extraFileExtensions: [".svelte"],
         tsconfigRootDir: __dirname,
-        project: "./tsconfig.json",
+        project: "./tsconfig.lint.json",
       },
       settings: {
         // https://ota-meshi.github.io/eslint-plugin-svelte/user-guide/#settings-svelte
