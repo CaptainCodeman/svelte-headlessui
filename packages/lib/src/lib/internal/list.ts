@@ -56,7 +56,7 @@ export function onSelect(state: List, node?: HTMLElement) {
 
 export function getItemValues(node: HTMLElement, options?: ItemOptions) {
   return {
-    value: options?.value ?? node.textContent!.trim(),
+    value: options?.value ?? node.textContent?.trim(),
     disabled: options?.disabled ?? false
   }
 }
@@ -97,7 +97,7 @@ export const lastActive = (state: List) => findLastIndex(state.items, item => !i
 * order, until it finds one where predicate returns true. If such an element is found,
 * findLastIndex immediately returns that element index. Otherwise, findLastIndex returns -1.
 */
-export function findLastIndex<T>(array: Array<T>, predicate: (value: T, index: number, obj: T[]) => boolean): number {
+export function findLastIndex<T>(array: T[], predicate: (value: T, index: number, obj: T[]) => boolean): number {
   let l = array.length;
   while (l--) {
     if (predicate(array[l], l, array))

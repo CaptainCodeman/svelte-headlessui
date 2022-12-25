@@ -118,7 +118,7 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   const remove = (node: HTMLElement) => set(removeItem(state, node))
 
-  const select = async () => set(onSelect(state, state.input))
+  const select = () => set(onSelect(state, state.input))
 
   function input(node: HTMLElement) {
     ensureID(node, prefix)
@@ -146,7 +146,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       ),
       onInput(filter),
       focusOnClose(store),
-      node => derived(store, state => state.expanded).subscribe(expanded => {
+      () => derived(store, state => state.expanded).subscribe(expanded => {
         if (expanded) {
           // when expanded, set active to selected if not set
           if (state.active === -1) {
@@ -197,7 +197,7 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   function items(node: HTMLElement) {
     ensureID(node, prefix)
-    set({ controls: node ? node.id : undefined })
+    set({ controls: node.id })
 
     const destroy = applyBehaviors(node, [
       setRole('listbox'),

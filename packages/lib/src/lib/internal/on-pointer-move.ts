@@ -2,7 +2,7 @@ import type { Behavior } from "./behavior"
 
 export function onPointerMove(fn: (node: HTMLElement) => void): Behavior {
   return node => {
-    const handler = (_event: PointerEvent) => fn(node)
+    const handler = () => fn(node)
 
     node.addEventListener('pointermove', handler)
     return () => node.removeEventListener('pointermove', handler)
@@ -11,7 +11,7 @@ export function onPointerMove(fn: (node: HTMLElement) => void): Behavior {
 
 export function onPointerOut(fn: () => void): Behavior {
   return node => {
-    const handler = (_event: PointerEvent) => fn()
+    const handler = () => fn()
 
     node.addEventListener('pointerout', handler)
     return () => node.removeEventListener('pointerout', handler)

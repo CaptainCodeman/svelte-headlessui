@@ -3,7 +3,7 @@ import { Tab } from "./keys"
 import type { Expandable } from "./aria-expanded"
 import type { Behavior } from "./behavior"
 
-export const setFocus = (node: HTMLElement) => async (focus: boolean) => {
+export const setFocus = (node: HTMLElement) => (focus: boolean) => {
   if (focus) {
     // may need to wait for svelte to update UI before we can set focus
     requestAnimationFrame(() => node.focus({ preventScroll: true }))

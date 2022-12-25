@@ -68,7 +68,7 @@ export function createPopover(init?: Partial<Popover>) {
   // panel
   function panel(node: HTMLElement) {
     ensureID(node, prefix)
-    set({ panel: node.id, controls: node ? node.id : undefined })
+    set({ panel: node.id, controls: node.id })
 
     const destroy = applyBehaviors(node, [
       setRole('menu'),

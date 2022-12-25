@@ -76,6 +76,7 @@ export function createTabs(init?: Partial<Tabs>) {
   const remove = (node: HTMLElement) => set(removeItem(state, node))
 
   // "two stage" dispatch is because button may be added last, but we want to wire behaviors to the method
+  // eslint-disable-next-line prefer-const @typescript-eslint/no-empty-function
   let onSelect = () => { }
   const select = () => onSelect()
 
@@ -119,7 +120,7 @@ export function createTabs(init?: Partial<Tabs>) {
 
   function items(node: HTMLElement) {
     ensureID(node, prefix)
-    set({ menu: node.id, controls: node ? node.id : undefined })
+    set({ menu: node.id, controls: node.id })
 
     const destroy = applyBehaviors(node, [
       setRole('menu'),
@@ -167,7 +168,7 @@ export function createTabs(init?: Partial<Tabs>) {
   }
 
   // expose a subset of our state, derive the selected value
-  const { subscribe } = derived(store, _state => {
+  const { subscribe } = derived(store, () => {
     return { active: active() }
   })
 
