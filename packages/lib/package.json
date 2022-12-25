@@ -37,6 +37,7 @@
     "test:watch": "vitest src",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "eslint --max-warnings 0 --report-unused-disable-directives --ignore-path ./.gitignore \"**/*.{js,cjs,mjs,ts,cts,mts,svelte}\"",
     "sourcemap": "source-map-explorer dist/*.js"
   },
   "tsup": {
@@ -61,7 +62,11 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/svelte": "^3.2.2",
     "@types/testing-library__jest-dom": "^5.14.5",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
     "autoprefixer": "^10.4.13",
+    "eslint": "^8.30.0",
+    "eslint-plugin-svelte": "^2.14.1",
     "happy-dom": "^8.1.0",
     "postcss": "^8.4.20",
     "postcss-load-config": "^4.0.1",
