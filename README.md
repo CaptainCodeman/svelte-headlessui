@@ -3,6 +3,8 @@
 
 # Svelte Headless-UI
 
+![Svelte Headless-UI](https://raw.githubusercontent.com/CaptainCodeman/svelte-headlessui/a4034734802b75102159ed7f9a1591fd2899f895/packages/lib/static/svelte-headlessui-solid-text.svg?sanitize=true)
+
 Ultra-small (<3kb gzipped), unofficial, [HeadlessUI](https://headlessui.com/) inspired components for Svelte.
 
 ## What is this?
