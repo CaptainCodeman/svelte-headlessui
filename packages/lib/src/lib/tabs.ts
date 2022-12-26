@@ -11,7 +11,7 @@ import { keyHomeEnd } from "./internal/key-home-end";
 import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { defaultList, firstActive, getFocuser, getSearch, getUpdater, lastActive, nextActive, onDestroy, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
+import { activate, defaultList, firstActive, getFocuser, getSearch, getUpdater, lastActive, nextActive, onDestroy, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -125,7 +125,7 @@ export function createTabs(init?: Partial<Tabs>) {
       setRole('menu'),
       setTabIndex(0),
       onClickOutside(close),
-      onClick(select),
+      onClick(activate('[role="option"]', focusNode, select)),
       onPointerMoveChild('[role="menuitem"]', focusNode),
       onPointerOut(none),
       onKeydown(

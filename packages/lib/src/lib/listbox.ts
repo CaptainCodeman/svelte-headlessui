@@ -12,7 +12,7 @@ import { keyHomeEnd } from "./internal/key-home-end";
 import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { active, defaultList, firstActive, getFocuser, getSearch, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
+import { activate, active, defaultList, firstActive, getFocuser, getSearch, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -118,7 +118,7 @@ export function createListbox<T = any>(init?: Partial<Listbox>) {
       setRole('listbox'),
       setTabIndex(0),
       onClickOutside(close),
-      onClick(select),
+      onClick(activate('[role="option"]', focusNode, select)),
       onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),
       onKeydown(

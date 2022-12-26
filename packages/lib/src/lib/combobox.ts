@@ -10,7 +10,7 @@ import { keyEscape } from "./internal/key-escape";
 import { keyHomeEnd } from "./internal/key-home-end";
 import { keyUpDown } from "./internal/key-up-down";
 import { keyTab } from "./internal/key-tab";
-import { active, defaultList, firstActive, getFocuser, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
+import { activate, active, defaultList, firstActive, getFocuser, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -203,7 +203,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       setRole('listbox'),
       setTabIndex(-1),
       onClickOutside(close),
-      onClick(select),
+      onClick(activate('[role="option"]', focusNode, select)),
       onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),
       // onKeydown(
