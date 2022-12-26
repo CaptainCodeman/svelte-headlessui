@@ -1,9 +1,7 @@
-import { noopUnsubscribe, type Behavior } from "./behavior"
-import { hasOwnProperty } from "./properties"
+import type { Behavior } from "./behavior"
+import { noop } from "./noop"
 
 export const setType = (type: string): Behavior => node => {
-  if (hasOwnProperty(node, 'type')) {
-    node.type = type
-  }
-  return noopUnsubscribe
+  node.setAttribute('type', type)
+  return noop
 }

@@ -1,9 +1,11 @@
-import { noopUnsubscribe, type Behavior } from "./behavior"
-import { hasOwnProperty } from "./properties"
+import type { Behavior } from "./behavior"
+import { noop } from "./noop"
 
 export const setDisabled = (disabled: boolean): Behavior => node => {
-  if (hasOwnProperty(node, 'disabled')) {
-    node.disabled = disabled
+  if (disabled) {
+    node.setAttribute('disabled', '')
+  } else {
+    node.removeAttribute('disabled')
   }
-  return noopUnsubscribe
+  return noop
 }
