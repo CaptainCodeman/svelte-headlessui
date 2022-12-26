@@ -76,8 +76,8 @@ export function createTabs(init?: Partial<Tabs>) {
   const remove = (node: HTMLElement) => set(removeItem(state, node))
 
   // "two stage" dispatch is because button may be added last, but we want to wire behaviors to the method
-  // eslint-disable-next-line prefer-const @typescript-eslint/no-empty-function
-  let onSelect = () => { }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const onSelect = () => { }
   const select = () => onSelect()
 
   // menubutton
