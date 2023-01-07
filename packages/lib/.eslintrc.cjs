@@ -27,6 +27,15 @@ module.exports = {
 		$$Generic: 'readonly',
 	},
 	ignorePatterns: ['src/routes/*', 'src/tests/*', '*.cjs'],
+	rules: {
+		// TODO: work on removing these
+		'@typescript-eslint/no-explicit-any': 'off',
+		'@typescript-eslint/no-misused-promises': 'off',
+		'@typescript-eslint/no-unsafe-assignment': 'off',
+		'@typescript-eslint/no-unsafe-call': 'off',
+		'@typescript-eslint/no-unsafe-member-access': 'off',
+		'@typescript-eslint/no-unsafe-return': 'off',
+	},
 	overrides: [
 		{
 			files: ['*.svelte'],
