@@ -6,7 +6,7 @@ export function onClickOutside(fn: (event: Event) => void, when?: () => boolean)
     function handler(event: Event) {
       if ((event as PointerEvent).pointerType === '') return // ignore space as click
       if (!when || when()) {
-        if (node && !node.contains(event.target as Node)) {
+        if (!node.contains(event.target as Node)) {
           if (node.clientWidth) {
             event.preventDefault()
             event.stopPropagation()

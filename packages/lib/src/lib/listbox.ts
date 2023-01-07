@@ -30,7 +30,7 @@ export interface Listbox extends Labelable, Expandable, Controllable, List, Sele
   button?: HTMLElement
 }
 
-export function createListbox<T = any>(init?: Partial<Listbox>) {
+export function createListbox(init?: Partial<Listbox>) {
   // prefix for generating unique IDs
   const prefix = getPrefix('listbox')
 
@@ -112,7 +112,7 @@ export function createListbox<T = any>(init?: Partial<Listbox>) {
 
   function items(node: HTMLElement) {
     ensureID(node, prefix)
-    set({ controls: node ? node.id : undefined })
+    set({ controls: node.id })
 
     const destroy = applyBehaviors(node, [
       setRole('listbox'),
