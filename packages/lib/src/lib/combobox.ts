@@ -95,18 +95,21 @@ export function createCombobox(init?: Partial<Combobox>) {
 
     await tick()
 
-    // if we moved, try to keep current active, otherwise use selected, always fallback to first
+    // if we moved try to keep current active, otherwise use selected, always fallback to first
+    // unless there are no items matching the filter in which case nothing can be active
     const selectedIndex = state.items.findIndex(item => item.value === state.selected)
     const currentIndex = state.items.findIndex(item => item.value === current)
-    const active = state.moved
-      ? currentIndex === -1
-        ? 0
-        : currentIndex
-      : selectedIndex === -1
+    const active = state.items.length
+      ? state.moved
         ? currentIndex === -1
           ? 0
           : currentIndex
-        : selectedIndex
+        : selectedIndex === -1
+          ? currentIndex === -1
+            ? 0
+            : currentIndex
+          : selectedIndex
+      : -1
 
     if (state.active !== active) {
       set({ active })
