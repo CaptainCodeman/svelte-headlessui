@@ -26,12 +26,12 @@
 <div class="flex w-full flex-col items-center justify-center">
 	<div class="fixed top-56 w-72">
 		<div class="relative mt-1">
-			<button
-				on:select={onSelect}
+			<div
 				class="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
 			>
 				<input
 					use:combobox.input
+					on:select={onSelect}
 					class="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
 					value={$combobox.selected.name}
 				/>
@@ -39,7 +39,7 @@
 				<button use:combobox.button class="absolute inset-y-0 right-0 flex items-center pr-2" type="button">
 					<Selector class="h-5 w-5 text-gray-400" />
 				</button>
-			</button>
+			</div>
 
 			<Transition
 				show={$combobox.expanded}
