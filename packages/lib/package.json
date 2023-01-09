@@ -18,8 +18,8 @@
   "exports": {
     ".": "./dist/index.js"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "homepage": "https://captaincodeman.github.io/svelte-headlessui/",
   "repository": {
     "type": "git",
