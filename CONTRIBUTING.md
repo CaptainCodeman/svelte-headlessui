@@ -33,7 +33,7 @@ cd packages/docs && pnpm run dev
 
 You can open [http://localhost:3000/svelte-headlessui/](http://localhost:3000/svelte-headlessui/) in your browser to see the documentation and make changes.
 
-## Contributing To Svelte-HeadlessUI library
+## Contributing To Svelte-HeadlessUI
 
 From the root of the project navigate to `package/lib` and run the development server.
 
