@@ -4,12 +4,12 @@ Welcome to the contributing guidelines! Here you can find instructions on how to
 
 ## The Project Structure
 
-The project uses [pnpm](https://pnpm.io/) and [pnpm workspaces](https://pnpm.io/workspaces) and the packages are split into:
+The project uses [pnpm](https://pnpm.io/) and [pnpm workspaces](https://pnpm.io/workspaces) and is split into:
 
-- **packages/docs** is the documenation which uses [Astro](https://astro.build/)
+- **packages/docs** which uses [Astro](https://astro.build/) for the documentation
 - **packages/lib** is the code for the Svelte-HeadlessUI library
 
-## How To Set Up The Project
+## Setting Up The Project
 
 From the root of the project install the project dependencies.
 
@@ -23,7 +23,7 @@ Build the packages in every project of a workspace.
 pnpm -r build
 ```
 
-## How To Contribute To The Documentation
+## Contributing To The Documentation
 
 From the root of the project navigate to `packages/docs` and run the development server.
 
@@ -33,7 +33,7 @@ cd packages/docs && pnpm run dev
 
 You can open [http://localhost:3000/svelte-headlessui/](http://localhost:3000/svelte-headlessui/) in your browser to see the documentation and make changes.
 
-## How To Contribute To The Svelte-HeadlessUI library
+## Contributing To Svelte-HeadlessUI library
 
 From the root of the project navigate to `package/lib` and run the development server.
 
