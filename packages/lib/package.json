@@ -30,6 +30,7 @@
     "email": "simon@captaincodeman.com",
     "url": "https://www.captaincodeman.com/"
   },
+  "license": "MIT",
   "scripts": {
     "build": "svelte-kit sync && tsup",
     "dev": "vite dev",
