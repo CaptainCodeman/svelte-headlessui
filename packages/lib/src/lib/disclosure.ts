@@ -91,5 +91,6 @@ export function createDisclosure(init?: Partial<Disclosure>) {
     panel,
     open,
     close,
+    set,
   }
 }

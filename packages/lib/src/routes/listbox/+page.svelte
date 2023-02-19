@@ -18,12 +18,15 @@
   ]
 
 	// TODO: type list so 'selected' isn't 'any'
-	const listbox = createListbox<People>({ label: 'Actions', selected: people[2] })
+	const listbox = createListbox({ label: 'Actions', selected: people[2] })
 
 	function onSelect(e: Event) {
 		console.log('select', (e as CustomEvent).detail)
 	}
 </script>
+
+<button class="m-2" on:click={_ => listbox.set({ selected: people[1] })}>Set Arlene</button>
+<button class="m-2" on:click={_ => listbox.set({ selected: people[4] })}>Set Tanya</button>
 
 <div class="flex w-full flex-col items-center justify-center">
 	<div class="fixed top-56 w-72">

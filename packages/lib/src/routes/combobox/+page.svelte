@@ -23,6 +23,9 @@
 	$: filtered = people.filter(person => person.name.toLowerCase().includes($combobox.filter.toLowerCase()))
 </script>
 
+<button class="m-2" on:click={_ => combobox.set({ selected: people[1] })}>Set Arlene</button>
+<button class="m-2" on:click={_ => combobox.set({ selected: people[4] })}>Set Tanya</button>
+
 <div class="flex w-full flex-col items-center justify-center">
 	<div class="fixed top-56 w-72">
 		<div class="relative mt-1">
