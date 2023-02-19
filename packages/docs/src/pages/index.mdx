@@ -26,11 +26,15 @@ But also:
 
 Install using your package manager of choice, e.g.
 
-    pnpm install svelte-headlessui
+```bash
+pnpm install svelte-headlessui
+```
 
 Import the appropriate `create...` factory method in your component and use the custom store it returns to manage your component state and attach `use:action` behaviors to your elements.
 
 See the individual component pages for usage examples.
+
+NOTE: Some of the examples use [`svelte-transition`](https://www.npmjs.com/package/svelte-transition) to apply TailwindCSS animation classes. This is a separate package, not to be confused with the [`svelte/transition`](https://svelte.dev/docs#run-time-svelte-transition) module built into Svelte itself.
 
 ## Alternative
 
