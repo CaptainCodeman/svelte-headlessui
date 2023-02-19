@@ -177,5 +177,6 @@ export function createTabs(init?: Partial<Tabs>) {
     button,
     items,
     item,
+    set,
   }
 }

@@ -173,5 +173,6 @@ export function createMenu(init?: Partial<Menu>) {
     item,
     open,
     close,
+    set,
   }
 }

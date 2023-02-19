@@ -262,5 +262,6 @@ export function createCombobox(init?: Partial<Combobox>) {
     reset,
     open,
     close,
+    set,
   }
 }

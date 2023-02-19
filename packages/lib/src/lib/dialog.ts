@@ -62,5 +62,6 @@ export function createDialog(init?: Partial<Dialog>) {
     modal,
     open,
     close,
+    set,
   }
 }

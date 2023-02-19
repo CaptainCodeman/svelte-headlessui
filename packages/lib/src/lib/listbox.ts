@@ -173,5 +173,6 @@ export function createListbox(init?: Partial<Listbox>) {
     item,
     open,
     close,
+    set,
   }
 }

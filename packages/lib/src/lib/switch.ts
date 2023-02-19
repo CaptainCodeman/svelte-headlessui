@@ -62,5 +62,6 @@ export function createSwitch(init?: Partial<Switch>) {
   return {
     subscribe,
     button,
+    set,
   }
 }

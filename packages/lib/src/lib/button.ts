@@ -63,5 +63,6 @@ export function createButton(init?: Partial<Button>) {
   return {
     subscribe,
     button,
+    set,
   }
 }

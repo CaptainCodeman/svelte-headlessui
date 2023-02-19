@@ -93,5 +93,6 @@ export function createPopover(init?: Partial<Popover>) {
     panel,
     open,
     close,
+    set,
   }
 }
