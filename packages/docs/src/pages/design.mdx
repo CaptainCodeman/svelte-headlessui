@@ -14,7 +14,7 @@ The typical approach is to create extra components that act as wrappers for all 
 
 So, instead of using slots, I took advantage of Svelte's `use:action` directive to attach the necessary behaviors to the elements that _you_ define, and a Svelte store is provided to communicate reactivity to your elements - when to hide, what to filer and so on.
 
-Behind the scenes, the behaviors handle UI events and WIA-ARIA attributes.
+Behind the scenes, the behaviors handle UI events and WAI-ARIA attributes.
 
 ## General Pattern
 
@@ -26,8 +26,8 @@ The factory method creates an internal store to manage the state of the componen
 
 The public state from the internal store is created using a derived store and is returned along with any custom store methods. These will typically be Svelte `use:action` functions that attach behaviors to DOM elements.
 
-These behaviors are again imported for re-usability whenever possible and they typically follow a pattern of subscribing to the internal store and updating DOM attributes as appropriate to provide WIA-ARIA support or attaching DOM event listeners on the Node to mutate the state. i.e. they are a two-way bridge between the DOM and the internal state store. Some are simple one-time setters to define attributes in a re-usable way.
+These behaviors are again imported for re-usability whenever possible and they typically follow a pattern of subscribing to the internal store and updating DOM attributes as appropriate to provide WAI-ARIA support or attaching DOM event listeners on the Node to mutate the state. i.e. they are a two-way bridge between the DOM and the internal state store. Some are simple one-time setters to define attributes in a re-usable way.
 
 Overall, the re-use of store methods and behaviors reduces the size of the components.
 
-The state store and `use:action` methods makes it easy to build up a rich UI component with whatever DOM elements and styling are required, while ensuring WIA-ARIA support.
+The state store and `use:action` methods makes it easy to build up a rich UI component with whatever DOM elements and styling are required, while ensuring WAI-ARIA support.
