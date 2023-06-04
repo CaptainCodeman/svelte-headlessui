@@ -70,7 +70,6 @@ export function createDisclosure(init?: Partial<Disclosure>) {
     set({ panel: node.id, controls: node.id })
 
     const destroy = applyBehaviors(node, [
-      setRole('menu'),
       focusOnExpanded(store),
     ])
 
