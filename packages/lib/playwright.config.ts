@@ -6,7 +6,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
 	testDir: './src/tests',
-	timeout: 10 * 1000,
+	timeout: 5 * 1000,
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 0,
