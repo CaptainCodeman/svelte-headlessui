@@ -69,6 +69,9 @@ importers:
         specifier: ^0.0.10
         version: 0.0.10(svelte@4.0.0)
     devDependencies:
+      '@playwright/experimental-ct-svelte':
+        specifier: ^1.35.1
+        version: 1.35.1(svelte@4.0.0)(vite@4.3.9)
       '@sveltejs/adapter-auto':
         specifier: ^2.1.0
         version: 2.1.0(@sveltejs/kit@1.20.4)
@@ -1320,6 +1323,52 @@ packages:
       open: 9.1.0
       picocolors: 1.0.0
       tslib: 2.5.3
+    dev: true
+
+  /@playwright/experimental-ct-core@1.35.1:
+    resolution: {integrity: sha512-NSoUf6JDLeZFy0HiENwA1GkIwZHvg5KrygnZknwWs7O8yksYLsmiuMb09sf2zsZmfYgVen401SNgf3KfekbweA==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      '@playwright/test': 1.35.1
+      vite: 4.3.9(@types/node@20.3.1)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - sass
+      - stylus
+      - sugarss
+      - terser
+    dev: true
+
+  /@playwright/experimental-ct-svelte@1.35.1(svelte@4.0.0)(vite@4.3.9):
+    resolution: {integrity: sha512-7CV6pXyZMX9IQl0+J9+eNIv1hZj23z9hMA0GHZr7EubkbJvneIB2HsMKgEGxgW/KSGRqPMBNResfl2ShmHgHHQ==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      '@playwright/experimental-ct-core': 1.35.1
+      '@sveltejs/vite-plugin-svelte': 2.4.1(svelte@4.0.0)(vite@4.3.9)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - svelte
+      - terser
+      - vite
+    dev: true
+
+  /@playwright/test@1.35.1:
+    resolution: {integrity: sha512-b5YoFe6J9exsMYg0pQAobNDR85T1nLumUYgUTtKm4d21iX2L7WqKq9dW8NGJ+2vX0etZd+Y7UeuqsxDXm9+5ZA==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      '@types/node': 20.3.1
+      playwright-core: 1.35.1
+    optionalDependencies:
+      fsevents: 2.3.2
     dev: true
 
   /@polka/url@1.0.0-next.21:
@@ -5127,6 +5176,12 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       find-up: 3.0.0
+    dev: true
+
+  /playwright-core@1.35.1:
+    resolution: {integrity: sha512-pNXb6CQ7OqmGDRspEjlxE49w+4YtR6a3X6mT1hZXeJHWmsEz7SunmvZeiG/+y1yyMZdHnnn73WKYdtV1er0Xyg==}
+    engines: {node: '>=16'}
+    hasBin: true
     dev: true
 
   /postcss-import@15.1.0(postcss@8.4.24):

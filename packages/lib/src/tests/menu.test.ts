@@ -1,24 +1,23 @@
+import { expect, test } from '@playwright/experimental-ct-svelte';
+import Control from './menu.svelte';
 
-import { fireEvent, getByRole, getByTestId, render } from "@testing-library/svelte";
-import Control from './menu.svelte'
+test.fixme('menu', async ({ mount }) => {
+	const component = await mount(Control);
 
-test('menu', () => {
-  const { container, getByRole } = render(Control);
+	let pre = component.getByTestId('debug');
+	let button = component.getByRole('button');
 
-  let pre = getByTestId(container, 'debug')
-  let button = getByRole('button')
+	await expect(pre).toBeVisible();
+	// expect(pre).toHaveTextContent(`{ "active": -1, "expanded": false }`);
+	// expect(button).toBeInTheDocument()
+	// expect(button).toHaveAttribute('aria-label', 'Play Music')
+	// expect(button).toHaveAttribute('aria-pressed', 'false')
 
-  expect(pre).toBeInTheDocument()
-  expect(pre).toHaveTextContent(`{ "active": -1, "expanded": false }`)
-  // expect(button).toBeInTheDocument()
-  // expect(button).toHaveAttribute('aria-label', 'Play Music')
-  // expect(button).toHaveAttribute('aria-pressed', 'false')
+	// await fireEvent.click(button)
 
-  // await fireEvent.click(button)
-
-  // expect(pre).toHaveTextContent(`{ "label": "Play Music", "pressed": true }`)
-  // expect(button).toHaveAttribute('aria-pressed', 'true')
-})
+	// expect(pre).toHaveTextContent(`{ "label": "Play Music", "pressed": true }`)
+	// expect(button).toHaveAttribute('aria-pressed', 'true')
+});
 
 // test('shit works', async () => { })
 

@@ -37,8 +37,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "test": "vitest run src",
-    "test:watch": "vitest src",
+    "test": "svelte-kit sync && playwright test",
     "package": "svelte-kit sync && tsup && publint",
     "prepublishOnly": "npm run package",
     "check": "svelte-check --tsconfig ./tsconfig.json",
@@ -62,6 +61,7 @@
     "dts": true
   },
   "devDependencies": {
+    "@playwright/experimental-ct-svelte": "^1.35.1",
     "@sveltejs/adapter-auto": "^2.1.0",
     "@sveltejs/kit": "^1.20.4",
     "@tailwindcss/forms": "^0.5.3",

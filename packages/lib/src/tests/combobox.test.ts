@@ -1,16 +1,51 @@
+import { expect, test } from '@playwright/experimental-ct-svelte';
+import Control from './combobox.svelte';
 
-import { fireEvent, getByRole, getByTestId, render } from "@testing-library/svelte";
-import Control from './menu.svelte'
+test.describe('combobox', async () => {
+	test('has an accessible name', async ({ mount }) => {
+		const component = await mount(Control);
+		const combobox = component.getByRole('combobox', { name: 'My Combobox' });
+		await expect(combobox).toBeVisible();
+	});
 
-test('combobox', () => {
-  // const { container, getByRole } = render(Control);
+	test('focuses the input when clicked', async ({ mount }) => {
+		const component = await mount(Control);
+		const combobox = component.getByRole('combobox');
 
-  // let pre = getByTestId(container, 'debug')
-  // let button = getByRole('button')
+		await combobox.click();
 
-  // expect(pre).toBeInTheDocument()
-  // expect(pre).toHaveTextContent(`{ "active": -1, "expanded": false }`)
-})
+		const input = component.locator('input');
+		await expect(input).toBeFocused();
+	});
+
+	test('expands the list and focuses the input when button is clicked', async ({
+		mount,
+	}) => {
+		const component = await mount(Control);
+		const button = component.getByRole('button');
+		await button.click();
+		const combobox = component.getByRole('combobox', { expanded: true });
+		await expect(combobox).toBeVisible();
+		const input = component.locator('input');
+		await expect(input).toBeFocused();
+	});
+
+	test('opens menu and focuses selected item when up or down is pressed', async ({
+		mount,
+	}) => {
+		const component = await mount(Control);
+		const comboboxClosed = component.getByRole('combobox', { expanded: false });
+
+		await comboboxClosed.press('ArrowDown');
+		await comboboxClosed.click();
+
+		const comboboxOpen = component.getByRole('combobox', { expanded: true });
+		await expect(comboboxOpen).toBeVisible();
+		const item = component.getByRole('option').first();
+		await expect(item).toBeInViewport();
+		await expect(item).toBeFocused();
+	});
+});
 
 /*
 unit tests:

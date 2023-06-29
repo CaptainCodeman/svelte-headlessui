@@ -7,3 +7,7 @@ node_modules
 .env
 .env.*
 !.env.example
+__snapshots__
+playwright-report
+test-results
+.cache
