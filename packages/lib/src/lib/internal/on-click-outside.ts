@@ -10,7 +10,6 @@ export function onClickOutside(fn: (event: Event) => void): Behavior {
       if (initial && !node.contains(initial)) {
         if (node.clientWidth) {
           event.preventDefault()
-          event.stopPropagation()
           fn(event)
         }
       }
