@@ -117,7 +117,7 @@ export function createListbox(init?: Partial<Listbox>) {
     const destroy = applyBehaviors(node, [
       setRole('listbox'),
       setTabIndex(0),
-      onClickOutside(close),
+      onClickOutside(close, target => state.button?.contains(target)),
       onClick(activate('[role="option"]', focusNode, select)),
       onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),

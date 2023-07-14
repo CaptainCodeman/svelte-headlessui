@@ -16,7 +16,7 @@ import { setType } from "./internal/set-type";
 import { getPrefix } from "./internal/utils";
 
 export interface Popover extends Labelable, Expandable, Controllable {
-  button?: string
+  button?: HTMLElement
   panel?: string
 }
 
@@ -42,7 +42,7 @@ export function createPopover(init?: Partial<Popover>) {
   // button
   function button(node: HTMLElement) {
     ensureID(node, prefix)
-    set({ button: node.id })
+    set({ button: node })
 
     const destroy = applyBehaviors(node, [
       setType('button'),
@@ -72,7 +72,7 @@ export function createPopover(init?: Partial<Popover>) {
 
     const destroy = applyBehaviors(node, [
       setRole('menu'),
-      onClickOutside(close),
+      onClickOutside(close, target => state.button?.contains(target)),
       focusOnExpanded(store),
     ])
 

@@ -30,6 +30,7 @@ import { keyEnter } from "./internal/key-enter";
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
   input?: HTMLElement
+  button?: HTMLElement
   filter: string
   moved: boolean  // whether we have moved active or not (to reset when filtering)
 }
@@ -171,6 +172,7 @@ export function createCombobox(init?: Partial<Combobox>) {
   // menubutton
   function button(node: HTMLElement) {
     ensureID(node, prefix)
+    set({ button: node })
 
     const destroy = applyBehaviors(node, [
       setType('button'),
@@ -205,7 +207,7 @@ export function createCombobox(init?: Partial<Combobox>) {
     const destroy = applyBehaviors(node, [
       setRole('listbox'),
       setTabIndex(-1),
-      onClickOutside(close),
+      onClickOutside(close, target => state.button?.contains(target)),
       onClick(activate('[role="option"]', focusNode, select)),
       onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),
