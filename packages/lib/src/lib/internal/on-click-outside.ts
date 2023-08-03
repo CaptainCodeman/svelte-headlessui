@@ -1,7 +1,7 @@
 import type { Behavior } from "./behavior"
 import { listener } from "./events"
 
-export function onClickOutside(fn: (event: Event) => void, preventPropagation?: (target: HTMLElement) => boolean | undefined): Behavior {
+export function onClickOutside(fn: (event: Event) => void, preventPropagation?: (target: Node) => boolean | undefined): Behavior {
   return node => {
     let initial: Node | null = null
 
@@ -13,7 +13,7 @@ export function onClickOutside(fn: (event: Event) => void, preventPropagation?: 
             // prevent event propagation if clicked element is contained within specified elements
             // this is to avoid clicking a menu button, which is outside the menu list, and having
             // the menu close and then immediately re-open (one example)
-            if (event.target instanceof HTMLElement) {
+            if (event.target instanceof Node) {
               if (preventPropagation(event.target)) {
                 event.stopImmediatePropagation()
               }
