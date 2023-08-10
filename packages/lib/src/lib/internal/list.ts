@@ -59,7 +59,7 @@ export function getItemValues(node: HTMLElement, options?: ItemOptions) {
   const text = node.textContent?.trim() ?? ''
   return {
     text,
-    value: options?.value,
+    value: options?.value || text,
     disabled: options?.disabled ?? false
   }
 }
@@ -127,7 +127,7 @@ export const getFocuser = (getState: () => List, focus: (active: number) => void
   focus(node ? state.items.findIndex(item => item.id === node.id && !item.disabled) : -1)
 }
 
-export const getSearch = (getState: () => List, focus: (active: number) => void) => (query: string) => {
+export const getSearch = (getState: () => List, focus: (active: number) => void, prefixOnly: boolean = false) => (query: string) => {
   const state = getState()
   const searchable = state.active === -1
     ? state.items
@@ -135,7 +135,7 @@ export const getSearch = (getState: () => List, focus: (active: number) => void)
       .slice(state.active + 1)
       .concat(state.items.slice(0, state.active + 1))
 
-  const re = new RegExp(`^${query}`, 'i')
+  const re = new RegExp(`${prefixOnly ? '^' : ''}${query}`, 'i')
   const found = searchable.findIndex(x => x.text.match(re) && !x.disabled)
 
   if (found > -1) {

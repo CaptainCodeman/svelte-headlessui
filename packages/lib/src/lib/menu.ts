@@ -77,7 +77,7 @@ export function createMenu(init?: Partial<Menu>) {
   // clear focus
   const none = () => focus(-1)
 
-  const search = getSearch(() => state, focus)
+  const search = getSearch(() => state, focus, true)
 
   // set the focus based on the HTMLElement passed which will be a menuitem element or null
   const focusNode = getFocuser(() => state, focus)
