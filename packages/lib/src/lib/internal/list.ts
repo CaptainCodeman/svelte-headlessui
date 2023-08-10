@@ -34,10 +34,10 @@ export const removeItem = (state: List, node: HTMLElement) => {
 
 export const active = (state: List) => state.active === -1 || state.items.length === 0 ? undefined : state.active >= state.items.length ? state.items[state.active] : state.items[state.active].value
 
-export const activate = (selector: string, focus: (node: HTMLElement | null) => void, select: () => void) => (event: Event) => {
+export const activate = (selector: string, focus: (node: HTMLElement | null) => void, ...actions: Function[]) => (event: Event) => {
   const el = (event.target as Element).closest(selector)
   focus(el as HTMLElement)
-  select()
+  actions.forEach(action => action())
 }
 
 export function onSelect(state: List, node?: HTMLElement) {
@@ -51,7 +51,7 @@ export function onSelect(state: List, node?: HTMLElement) {
     })
     node.dispatchEvent(event)
   }
-  return { expanded: false, selected }
+  return { selected, active: -1 }
 }
 
 export function getItemValues(node: HTMLElement, options?: ItemOptions) {

@@ -8,8 +8,6 @@ import { defaultSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
-import { keyHomeEnd } from "./internal/key-home-end";
-import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
 import { activate, active, defaultList, firstActive, getFocuser, getSearch, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
@@ -24,6 +22,8 @@ import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
 import { getPrefix } from "./internal/utils";
+import { keyDown, keyUp } from "./internal/key-up-down";
+import { keyNavigation } from "./internal/key-navigation";
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Listbox extends Labelable, Expandable, Controllable, List, Selectable {
@@ -100,7 +100,8 @@ export function createListbox(init?: Partial<Listbox>) {
       onClick(toggle),
       onKeydown(
         keySpaceEnter(toggle),
-        keyUpDown(toggle, toggle),
+        keyUp(toggle),
+        keyDown(toggle),
       ),
       focusOnClose(store),
     ])
@@ -118,14 +119,13 @@ export function createListbox(init?: Partial<Listbox>) {
       setRole('listbox'),
       setTabIndex(0),
       onClickOutside(close, target => state.button?.contains(target)),
-      onClick(activate('[role="option"]', focusNode, select)),
+      onClick(activate('[role="option"]', focusNode, select, close)),
       onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),
       onKeydown(
-        keySpaceEnter(select),
+        keySpaceEnter(select, close),
         keyEscape(close),
-        keyHomeEnd(first, last),
-        keyUpDown(previous, next),
+        keyNavigation(first, previous, next, last),
         keyTab(noop),
         keyCharacter(search),
       ),

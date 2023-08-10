@@ -19,5 +19,3 @@ export const PageUp = 'PageUp'
 export const PageDown = 'PageDown'
 
 export const Tab = 'Tab'
-
-export type KeyHandler = (key: string) => boolean

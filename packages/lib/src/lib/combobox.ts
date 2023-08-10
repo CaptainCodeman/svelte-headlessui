@@ -2,17 +2,14 @@ import { derived, writable } from "svelte/store";
 import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
 import { reflectAriaDisabled } from "./internal/aria-disabled";
-import { defaultExpanded, focusOnClose, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
+import { defaultExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { defaultSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyEscape } from "./internal/key-escape";
-import { keyHomeEnd } from "./internal/key-home-end";
-import { keyUpDown } from "./internal/key-up-down";
-import { keyTab } from "./internal/key-tab";
+import { keyTabAllow } from "./internal/key-tab";
 import { activate, active, defaultList, firstActive, getFocuser, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
 import { ensureID } from "./internal/new-id";
-import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
 import { onClickOutside } from "./internal/on-click-outside";
 import { onInput } from "./internal/on-input";
@@ -26,6 +23,7 @@ import { reflectSelectedValueOnClose } from "./internal/value";
 import { tick } from "svelte";
 import { getPrefix } from "./internal/utils";
 import { keyEnter } from "./internal/key-enter";
+import { keyNavigation } from "./internal/key-navigation";
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
@@ -56,28 +54,35 @@ export function createCombobox(init?: Partial<Combobox>) {
   const set = (part: Partial<Combobox>) => store.set(state = { ...state, ...part })
 
   // open the menu and set first item active
-  const open = () => set({ expanded: true, opened: true })
+  const open = () => set({ expanded: true, opened: true, active: state.items.findIndex(x => x.value === state.selected) })
 
   // close the menu
-  const close = () => set({ expanded: false })
+  const close = () => set({ expanded: false, active: -1 })
 
   // toggle open / closed state
   const toggle = () => state.expanded ? close() : open()
 
   // set focused (active) item only if changed
-  const focus = (active: number) => state.active !== active && set({ active, moved: true })
+  const focus = (active: number, expand = false) => {
+    console.log(active, expand, state)
+    state.active !== active && set({ expanded: state.expanded || expand, active })
+  }
 
   // set focus (active) to first
-  const first = () => focus(firstActive(state))
+  const first = () => focus(firstActive(state), true)
 
-  // set focus (active) to previous
-  const previous = () => focus(previousActive(state))
+  // set focus (active) to selected or previous
+  const previous = () => focus(state.active === -1
+    ? state.items.findIndex(x => x.value === state.selected)
+    : previousActive(state), true)
 
-  // set focus (active) to next
-  const next = () => focus(nextActive(state))
+  // set focus (active) to selected or next
+  const next = () => focus(state.active === -1
+    ? state.items.findIndex(x => x.value === state.selected)
+    : nextActive(state), true)
 
   // set focus (active) to last
-  const last = () => focus(lastActive(state))
+  const last = () => focus(lastActive(state), true)
 
   // clear focus
   const none = () => focus(-1)
@@ -141,27 +146,25 @@ export function createCombobox(init?: Partial<Combobox>) {
       // onClick(toggle),
       // selectAllOnFocus(), <--
       onKeydown(
-        keyEnter(select),
+        keyEnter(select, toggle),
         keyEscape(close),
-        keyHomeEnd(first, last),
-        keyUpDown(previous, next),
-        keyTab(noop),
-        // keyCharacter(search),
+        keyNavigation(first, previous, next, last),
+        keyTabAllow(select, close),
       ),
       onInput(filter),
-      focusOnClose(store),
-      () => derived(store, state => state.expanded).subscribe(expanded => {
-        if (expanded) {
-          // when expanded, set active to selected if not set
-          if (state.active === -1) {
-            const index = state.items.findIndex(x => x.value === state.selected)
-            const active = index === -1 ? 0 : index
-            set({ active })
-          }
-          // always reset moved flag
-          set({ moved: false })
-        }
-      }),
+      // focusOnClose(store),
+      // () => derived(store, state => state.expanded).subscribe(expanded => {
+      //   if (expanded) {
+      //     // when expanded, set active to selected if not set
+      //     if (state.active === -1) {
+      //       const index = state.items.findIndex(x => x.value === state.selected)
+      //       const active = index === -1 ? 0 : index
+      //       set({ active })
+      //     }
+      //     // always reset moved flag
+      //     set({ moved: false })
+      //   }
+      // }),
     ])
 
     return {
@@ -178,7 +181,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       setType('button'),
       setRole('button'),
       setHasPopup(),
-      // setTabIndex(-1),
+      setTabIndex(-1),
       // reflectAriaLabel(store),
       reflectAriaExpanded(store),
       reflectAriaControls(store),
