@@ -7,6 +7,7 @@ export interface ItemOptions {
 
 export interface ListItem {
   id: string
+  text: string
   value: any
   disabled: boolean
 }
@@ -55,8 +56,10 @@ export function onSelect(state: List, node?: HTMLElement) {
 }
 
 export function getItemValues(node: HTMLElement, options?: ItemOptions) {
+  const text = node.textContent?.trim() ?? ''
   return {
-    value: options?.value ?? node.textContent?.trim(),
+    text,
+    value: options?.value,
     disabled: options?.disabled ?? false
   }
 }
@@ -111,7 +114,7 @@ export const getUpdater = (node: HTMLElement, getState: () => List, setState: (p
   const values = getItemValues(node, options)
   const item = state.items.find(item => item.id === node.id)
   if (item) {
-    if (item.value === values.value && item.disabled === values.disabled) return
+    if (item.text === values.text && item.value === values.value && item.disabled === values.disabled) return
     Object.assign(item, values)
   } else {
     state.items.push({ id: node.id, ...values })
@@ -133,7 +136,7 @@ export const getSearch = (getState: () => List, focus: (active: number) => void)
       .concat(state.items.slice(0, state.active + 1))
 
   const re = new RegExp(`^${query}`, 'i')
-  const found = searchable.findIndex(x => x.value.match(re) && !x.disabled)
+  const found = searchable.findIndex(x => x.text.match(re) && !x.disabled)
 
   if (found > -1) {
     const index = (found + state.active + 1) % state.items.length
