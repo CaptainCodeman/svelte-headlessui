@@ -2,7 +2,7 @@ import { derived, writable } from "svelte/store";
 import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
 import { reflectAriaDisabled } from "./internal/aria-disabled";
-import { defaultExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
+import { defaultExpanded, reflectAriaExpanded, type Expandable, focusOnClose } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { defaultSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
@@ -64,7 +64,6 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   // set focused (active) item only if changed
   const focus = (active: number, expand = false) => {
-    console.log(active, expand, state)
     state.active !== active && set({ expanded: state.expanded || expand, active })
   }
 
@@ -152,7 +151,6 @@ export function createCombobox(init?: Partial<Combobox>) {
         keyTabAllow(select, close),
       ),
       onInput(filter),
-      // focusOnClose(store),
       // () => derived(store, state => state.expanded).subscribe(expanded => {
       //   if (expanded) {
       //     // when expanded, set active to selected if not set
@@ -165,6 +163,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       //     set({ moved: false })
       //   }
       // }),
+      focusOnClose(store),
     ])
 
     return {
@@ -190,7 +189,6 @@ export function createCombobox(init?: Partial<Combobox>) {
       // keySpaceEnter(toggle),
       // keyPreviousNext(toggle, toggle),
       // ),
-      // focusOnClose(store),
       node => {
         const setFocusToInput = () => state.input?.focus()
         node.addEventListener('focus', setFocusToInput)
@@ -211,7 +209,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       setRole('listbox'),
       setTabIndex(-1),
       onClickOutside(close, target => state.button?.contains(target)),
-      onClick(activate('[role="option"]', focusNode, select)),
+      onClick(activate('[role="option"]', focusNode, select, close)),
       onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),
       // onKeydown(
