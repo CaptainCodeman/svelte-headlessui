@@ -4,9 +4,7 @@ import type { KeyHandler } from "./key-handler"
 export function onKeydown(...handlers: KeyHandler[]): Behavior {
   const handler = (event: KeyboardEvent) => {
     for (const handler of handlers) {
-      if (handler(event)) {
-        return
-      }
+      handler(event)
     }
   }
 

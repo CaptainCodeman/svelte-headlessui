@@ -1,6 +1,4 @@
-export type KeyHandlerAction = (event: KeyboardEvent) => void
-
-export type KeyHandler = (event: KeyboardEvent) => boolean
+export type KeyHandler = (event: KeyboardEvent) => void
 
 export const blockDefaultKeyAction = (event: KeyboardEvent) => {
   event.preventDefault()
@@ -10,13 +8,11 @@ export const blockDefaultKeyAction = (event: KeyboardEvent) => {
 
 export const allowDefaultKeyAction = (_event: KeyboardEvent) => { }
 
-export const keyHandler = (matches: string[], action: KeyHandlerAction = blockDefaultKeyAction) => (...fns: Function[]): KeyHandler => event => {
+export const keyHandler = (matches: string[], action: KeyHandler = blockDefaultKeyAction) => (...fns: Function[]): KeyHandler => event => {
   if (matches.includes(event.key)) {
     fns.forEach(fn => fn())
     if (action) {
       action(event)
     }
-    return true
   }
-  return false
 }

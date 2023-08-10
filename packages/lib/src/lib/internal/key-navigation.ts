@@ -5,18 +5,14 @@ export const keyNavigation = (first: Function, previous: Function, next: Functio
   switch (event.key) {
     case Home:
     case PageUp:
-      first()
-      return true
+      return first()
     case ArrowUp:
-      previous()
-      return true
+      return previous()
     case ArrowDown:
-      next()
-      return true
+      return next()
     case End:
     case PageDown:
-      last()
-      return true
+      return last()
   }
   return false
 }

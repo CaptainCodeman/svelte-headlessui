@@ -27,11 +27,7 @@ export const keyCharacter = (fn: SearchFn): KeyHandler => {
         timeout = 0
         query = ''
       }, 350)
-
-      return true
     }
-
-    return false
   }
 }
 
