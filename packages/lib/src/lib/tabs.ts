@@ -84,19 +84,6 @@ export function createTabs(init?: Partial<Tabs>) {
     ensureID(node, prefix)
     set({ button: node.id })
 
-    // TODO: create a behavior that can be passed an event generator function, use with items select
-    // to raise event from the 'controller'
-    // onSelect = () => {
-    //   if (state.items[state.active].disabled) return
-    //   const selected = active()
-    //   const event = new CustomEvent('select', {
-    //     detail: {
-    //       selected,
-    //     }
-    //   })
-    //   node.dispatchEvent(event)
-    // }
-
     const destroy = applyBehaviors(node, [
       setType('button'),
       setRole('button'),
@@ -104,9 +91,7 @@ export function createTabs(init?: Partial<Tabs>) {
       setTabIndex(0),
       reflectAriaLabel(store),
       reflectAriaControls(store),
-      // onClick(toggle),
       onKeydown(
-        // keySpaceEnter(toggle),
         keyNavigation(first, previous, next, last),
       ),
     ])
@@ -130,8 +115,7 @@ export function createTabs(init?: Partial<Tabs>) {
       onKeydown(
         keySpaceEnter(select),
         keyEscape(close),
-        keyHomeEnd(first, last),
-        keyUpDown(previous, next),
+        keyNavigation(first, previous, next, last),
         keyTab(noop),
         keyCharacter(search),
       ),

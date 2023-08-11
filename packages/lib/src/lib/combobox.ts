@@ -135,15 +135,11 @@ export function createCombobox(init?: Partial<Combobox>) {
     const destroy = applyBehaviors(node, [
       setType('text'),
       setRole('combobox'),
-      // setHasPopup(),
       setTabIndex(0),
       reflectAriaLabel(store),
       reflectAriaExpanded(store),
       reflectAriaControls(store),
       reflectSelectedValueOnClose(store, item => item?.name),
-      // reflectSelectedValue(), <== set input value when a selection is made
-      // onClick(toggle),
-      // selectAllOnFocus(), <--
       onKeydown(
         keyEnter(select, toggle),
         keyEscape(close),
@@ -151,18 +147,6 @@ export function createCombobox(init?: Partial<Combobox>) {
         keyTabAllow(select, close),
       ),
       onInput(filter),
-      // () => derived(store, state => state.expanded).subscribe(expanded => {
-      //   if (expanded) {
-      //     // when expanded, set active to selected if not set
-      //     if (state.active === -1) {
-      //       const index = state.items.findIndex(x => x.value === state.selected)
-      //       const active = index === -1 ? 0 : index
-      //       set({ active })
-      //     }
-      //     // always reset moved flag
-      //     set({ moved: false })
-      //   }
-      // }),
       focusOnClose(store),
     ])
 
@@ -181,14 +165,9 @@ export function createCombobox(init?: Partial<Combobox>) {
       setRole('button'),
       setHasPopup(),
       setTabIndex(-1),
-      // reflectAriaLabel(store),
       reflectAriaExpanded(store),
       reflectAriaControls(store),
       onClick(toggle),
-      // onKeydown(
-      // keySpaceEnter(toggle),
-      // keyPreviousNext(toggle, toggle),
-      // ),
       node => {
         const setFocusToInput = () => state.input?.focus()
         node.addEventListener('focus', setFocusToInput)
@@ -212,14 +191,6 @@ export function createCombobox(init?: Partial<Combobox>) {
       onClick(activate('[role="option"]', focusNode, select, close)),
       onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),
-      // onKeydown(
-      //   keySpaceEnter(select),
-      //   keyEscape(close),
-      //   keyFirstLast(first, last),
-      //   keyPreviousNext(previous, next),
-      //   keyTab(noop),
-      //   keyCharacter(search),
-      // ),
       reflectAriaActivedescendent(store),
     ])
 
