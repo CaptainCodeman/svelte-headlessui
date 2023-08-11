@@ -10,11 +10,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@algolia/client-search": "^4.17.2",
+    "@algolia/client-search": "^4.19.1",
     "@docsearch/css": "^3.5.1",
     "@docsearch/react": "^3.5.1",
-    "@types/react": "^18.2.13",
-    "preact": "^10.15.1",
+    "@types/react": "^18.2.20",
+    "preact": "^10.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "svelte-headlessui": "workspace:*",
@@ -22,12 +22,12 @@
   },
   "devDependencies": {
     "@astrojs/mdx": "^0.19.7",
-    "@astrojs/preact": "^2.2.1",
+    "@astrojs/preact": "^2.2.2",
     "@astrojs/react": "^2.2.1",
-    "@astrojs/svelte": "^3.0.0",
+    "@astrojs/svelte": "^3.1.0",
     "@astrojs/tailwind": "^4.0.0",
-    "@tailwindcss/forms": "^0.5.3",
-    "astro": "^2.7.0",
-    "svelte": "^4.0.0"
+    "@tailwindcss/forms": "^0.5.4",
+    "astro": "^2.10.6",
+    "svelte": "^4.2.0"
   }
 }

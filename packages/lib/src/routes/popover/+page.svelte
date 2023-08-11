@@ -62,7 +62,7 @@
 									class="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
 								>
 									<div class="flex h-10 w-10 shrink-0 items-center justify-center text-white sm:h-12 sm:w-12">
-										<svelte:component this={item.icon} class="w-5 h-5 mr-2" />
+										<svelte:component this={item.icon} />
 									</div>
 									<div class="ml-4">
 										<p class="text-sm font-medium text-gray-900">

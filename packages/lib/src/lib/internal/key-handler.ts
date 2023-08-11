@@ -1,3 +1,5 @@
+import type { Callable } from "./callable"
+
 export type KeyHandler = (event: KeyboardEvent) => void
 
 export const blockDefaultKeyAction = (event: KeyboardEvent) => {
@@ -6,9 +8,10 @@ export const blockDefaultKeyAction = (event: KeyboardEvent) => {
   event.stopImmediatePropagation()
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const allowDefaultKeyAction = (_event: KeyboardEvent) => { }
 
-export const keyHandler = (matches: string[], action: KeyHandler = blockDefaultKeyAction) => (...fns: Function[]): KeyHandler => event => {
+export const keyHandler = (matches: string[], action: KeyHandler = blockDefaultKeyAction) => (...fns: Callable[]): KeyHandler => event => {
   if (matches.includes(event.key)) {
     fns.forEach(fn => fn())
     if (action) {

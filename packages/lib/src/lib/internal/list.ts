@@ -1,4 +1,5 @@
 import type { Behavior } from "./behavior"
+import type { Callable } from "./callable"
 
 export interface ItemOptions {
   value?: any
@@ -35,7 +36,7 @@ export const removeItem = (state: List, node: HTMLElement) => {
 
 export const active = (state: List) => state.active === -1 || state.items.length === 0 ? undefined : state.active >= state.items.length ? state.items[state.active] : state.items[state.active].value
 
-export const activate = (selector: string, focus: (node: HTMLElement | null) => void, ...actions: Function[]) => (event: Event) => {
+export const activate = (selector: string, focus: (node: HTMLElement | null) => void, ...actions: Callable[]) => (event: Event) => {
   const el = (event.target as Element).closest(selector)
   focus(el as HTMLElement)
   actions.forEach(action => action())
