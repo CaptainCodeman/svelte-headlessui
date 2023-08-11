@@ -7,6 +7,7 @@ export interface ItemOptions {
 
 export interface ListItem {
   id: string
+  text: string
   value: any
   disabled: boolean
 }
@@ -34,10 +35,10 @@ export const removeItem = (state: List, node: HTMLElement) => {
 
 export const active = (state: List) => state.active === -1 || state.items.length === 0 ? undefined : state.active >= state.items.length ? state.items[state.active] : state.items[state.active].value
 
-export const activate = (selector: string, focus: (node: HTMLElement | null) => void, select: () => void) => (event: Event) => {
+export const activate = (selector: string, focus: (node: HTMLElement | null) => void, ...actions: Function[]) => (event: Event) => {
   const el = (event.target as Element).closest(selector)
   focus(el as HTMLElement)
-  select()
+  actions.forEach(action => action())
 }
 
 export function onSelect(state: List, node?: HTMLElement) {
@@ -51,12 +52,14 @@ export function onSelect(state: List, node?: HTMLElement) {
     })
     node.dispatchEvent(event)
   }
-  return { expanded: false, selected }
+  return { selected, active: -1 }
 }
 
 export function getItemValues(node: HTMLElement, options?: ItemOptions) {
+  const text = node.textContent?.trim() ?? ''
   return {
-    value: options?.value ?? node.textContent?.trim(),
+    text,
+    value: options?.value || text,
     disabled: options?.disabled ?? false
   }
 }
@@ -111,7 +114,7 @@ export const getUpdater = (node: HTMLElement, getState: () => List, setState: (p
   const values = getItemValues(node, options)
   const item = state.items.find(item => item.id === node.id)
   if (item) {
-    if (item.value === values.value && item.disabled === values.disabled) return
+    if (item.text === values.text && item.value === values.value && item.disabled === values.disabled) return
     Object.assign(item, values)
   } else {
     state.items.push({ id: node.id, ...values })
@@ -124,7 +127,7 @@ export const getFocuser = (getState: () => List, focus: (active: number) => void
   focus(node ? state.items.findIndex(item => item.id === node.id && !item.disabled) : -1)
 }
 
-export const getSearch = (getState: () => List, focus: (active: number) => void) => (query: string) => {
+export const getSearch = (getState: () => List, focus: (active: number) => void, prefixOnly: boolean = false) => (query: string) => {
   const state = getState()
   const searchable = state.active === -1
     ? state.items
@@ -132,8 +135,8 @@ export const getSearch = (getState: () => List, focus: (active: number) => void)
       .slice(state.active + 1)
       .concat(state.items.slice(0, state.active + 1))
 
-  const re = new RegExp(`^${query}`, 'i')
-  const found = searchable.findIndex(x => x.value.match(re) && !x.disabled)
+  const re = new RegExp(`${prefixOnly ? '^' : ''}${query}`, 'i')
+  const found = searchable.findIndex(x => x.text.match(re) && !x.disabled)
 
   if (found > -1) {
     const index = (found + state.active + 1) % state.items.length

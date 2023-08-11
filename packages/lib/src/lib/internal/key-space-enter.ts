@@ -1,11 +1,4 @@
-import { Space, Enter, type KeyHandler } from "./keys"
+import { keyHandler } from "./key-handler"
+import { Space, Enter } from "./keys"
 
-export const keySpaceEnter = (fn: () => void): KeyHandler => key => {
-  switch (key) {
-    case Space:
-    case Enter:
-      fn()
-      return true
-  }
-  return false
-}
+export const keySpaceEnter = keyHandler([Space, Enter])

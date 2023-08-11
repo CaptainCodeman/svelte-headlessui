@@ -1,6 +1,6 @@
 import type { Writable } from "svelte/store"
 import { isCharacter } from "./is-character"
-import type { KeyHandler } from "./keys"
+import type { KeyHandler } from "./key-handler"
 import type { List } from "./list"
 
 export interface Searchable extends List {
@@ -13,7 +13,8 @@ export const keyCharacter = (fn: SearchFn): KeyHandler => {
   let timeout: number
   let query = ''
 
-  return key => {
+  return event => {
+    const { key } = event
     if (isCharacter(key)) {
       if (timeout) {
         clearTimeout(timeout)
@@ -26,11 +27,7 @@ export const keyCharacter = (fn: SearchFn): KeyHandler => {
         timeout = 0
         query = ''
       }, 350)
-
-      return true
     }
-
-    return false
   }
 }
 

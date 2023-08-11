@@ -7,8 +7,6 @@ import { defaultSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
-import { keyHomeEnd } from "./internal/key-home-end";
-import { keyUpDown } from "./internal/key-up-down";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
 import { activate, defaultList, firstActive, getFocuser, getSearch, getUpdater, lastActive, nextActive, onDestroy, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
@@ -23,6 +21,7 @@ import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
 import { getPrefix } from "./internal/utils";
+import { keyNavigation } from "./internal/key-navigation";
 
 export interface Tabs extends Labelable, Controllable, List, Selectable {
   button?: string
@@ -85,19 +84,6 @@ export function createTabs(init?: Partial<Tabs>) {
     ensureID(node, prefix)
     set({ button: node.id })
 
-    // TODO: create a behavior that can be passed an event generator function, use with items select
-    // to raise event from the 'controller'
-    // onSelect = () => {
-    //   if (state.items[state.active].disabled) return
-    //   const selected = active()
-    //   const event = new CustomEvent('select', {
-    //     detail: {
-    //       selected,
-    //     }
-    //   })
-    //   node.dispatchEvent(event)
-    // }
-
     const destroy = applyBehaviors(node, [
       setType('button'),
       setRole('button'),
@@ -105,11 +91,8 @@ export function createTabs(init?: Partial<Tabs>) {
       setTabIndex(0),
       reflectAriaLabel(store),
       reflectAriaControls(store),
-      // onClick(toggle),
       onKeydown(
-        // keySpaceEnter(toggle),
-        keyHomeEnd(first, last),
-        keyUpDown(previous, next),
+        keyNavigation(first, previous, next, last),
       ),
     ])
 
@@ -132,8 +115,7 @@ export function createTabs(init?: Partial<Tabs>) {
       onKeydown(
         keySpaceEnter(select),
         keyEscape(close),
-        keyHomeEnd(first, last),
-        keyUpDown(previous, next),
+        keyNavigation(first, previous, next, last),
         keyTab(noop),
         keyCharacter(search),
       ),

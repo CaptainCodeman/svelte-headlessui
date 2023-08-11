@@ -1,13 +1,5 @@
-import { ArrowUp, ArrowDown, type KeyHandler } from "./keys"
+import { keyHandler } from "./key-handler"
+import { ArrowUp, ArrowDown } from "./keys"
 
-export const keyUpDown = (fnUp: () => void, fnDown: () => void): KeyHandler => key => {
-  switch (key) {
-    case ArrowUp:
-      fnUp()
-      return true
-    case ArrowDown:
-      fnDown()
-      return true
-  }
-  return false
-}
+export const keyUp = keyHandler([ArrowUp])
+export const keyDown = keyHandler([ArrowDown])

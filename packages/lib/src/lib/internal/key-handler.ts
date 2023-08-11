@@ -1,10 +1,18 @@
-import type { KeyHandler } from "./keys"
+export type KeyHandler = (event: KeyboardEvent) => void
 
-export const keyHandler = (match: string) => (fn: () => void): KeyHandler => key => {
-  switch (key) {
-    case match:
-      fn()
-      return true
+export const blockDefaultKeyAction = (event: KeyboardEvent) => {
+  event.preventDefault()
+  event.stopPropagation()
+  event.stopImmediatePropagation()
+}
+
+export const allowDefaultKeyAction = (_event: KeyboardEvent) => { }
+
+export const keyHandler = (matches: string[], action: KeyHandler = blockDefaultKeyAction) => (...fns: Function[]): KeyHandler => event => {
+  if (matches.includes(event.key)) {
+    fns.forEach(fn => fn())
+    if (action) {
+      action(event)
+    }
   }
-  return false
 }
