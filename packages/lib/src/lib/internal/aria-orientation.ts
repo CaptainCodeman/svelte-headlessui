@@ -2,8 +2,10 @@ import type { Behavior } from "./behavior"
 import { derived, type Readable } from 'svelte/store'
 import { setAriaAttributeString } from "./aria-attribute"
 
+export type Orientation = 'horizontal' | 'vertical'
+
 export interface Orientable {
-  orientation: 'horizontal' | 'vertical'
+  orientation: Orientation
 }
 
 export const defaultOrientation: Orientable = {

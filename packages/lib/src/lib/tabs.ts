@@ -1,14 +1,14 @@
-import { derived, writable } from "svelte/store";
+import { derived, writable, type Readable } from "svelte/store";
 import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
 import { reflectAriaDisabled } from "./internal/aria-disabled";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { defaultSelected, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
-import { applyBehaviors } from "./internal/behavior";
+import { applyBehaviors, type Behavior } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { activate, active, defaultList, firstActive, getFocuser, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type List } from "./internal/list";
+import { activate, active, defaultList, firstActive, getFocuser, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type List, getUpdater, type ItemOptions } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
 import { onKeydown } from "./internal/on-keydown";
@@ -20,10 +20,15 @@ import { getPrefix } from "./internal/utils";
 import { keyDown, keyUp } from "./internal/key-up-down";
 import { keyNavigation } from "./internal/key-navigation";
 import { defaultOrientation, reflectAriaOrientation, type Orientable } from "./internal/aria-orientation";
+import { keyHomePageUp } from "./internal/key-home-end";
+import { keyLeft, keyRight } from "./internal/key-left-right";
+import type { Callable } from "./internal/callable";
+import { setAriaAttributeString } from "./internal/aria-attribute";
 
 export interface Tabs extends Labelable, List, Selectable, Orientable {
   tabs: HTMLElement[]
   panels: HTMLElement[]
+  values: any[]
 }
 
 export function createTabs(init?: Partial<Tabs>) {
@@ -34,13 +39,12 @@ export function createTabs(init?: Partial<Tabs>) {
   let state: Tabs = {
     tabs: [],
     panels: [],
+    values: [],
     ...defaultList(),
     ...defaultSelected,
     ...defaultOrientation,
     ...init,
   }
-
-  console.log(state)
 
   // wrap with store for reactivity
   const store = writable(state)
@@ -88,7 +92,7 @@ export function createTabs(init?: Partial<Tabs>) {
       onPointerOut(none),
       onKeydown(
         keySpaceEnter(select),
-        keyNavigation(first, previous, next, last),
+        keyNavigation(first, previous, next, last, state.orientation),
       ),
       reflectAriaActivedescendent(store),
     ])
@@ -98,18 +102,30 @@ export function createTabs(init?: Partial<Tabs>) {
     }
   }
 
-  function tab(node: HTMLElement, value: any) {
+  function tab(node: HTMLElement, options?: ItemOptions) {
     ensureID(node, prefix)
     set({ tabs: [...state.tabs, node] })
+
+    const update = getUpdater(node, () => state, set)
+
+    update(options)
+
+    const value = state.items[state.items.length - 1].value
+    if (state.selected === value) {
+      set({ active: state.tabs.length - 1 })
+    }
+
+    const setTabIndex = setAriaAttributeString('tabindex')
+    const reflectAriaTabIndex = (store: Readable<Tabs>): Behavior => node => derived(store, $store => $store.selected === value ? '0' : '-1').subscribe(setTabIndex(node))
 
     const destroy = applyBehaviors(node, [
       setType('button'),
       setRole('tab'),
       reflectAriaSelected(store, value),
+      reflectAriaTabIndex(store),
       // TODO: controls can be an array
       // reflectAriaControls(store),
       // reflectAriaDisabled(store),
-      setTabIndex(0), // TODO: set tababble when selectedd
       onKeydown(
         keyUp(last),
         keyDown(first),
@@ -158,3 +174,7 @@ export function createTabs(init?: Partial<Tabs>) {
     set,
   }
 }
+function keyEndPageDown(first: () => false | void): import("./internal/key-handler").KeyHandler {
+  throw new Error("Function not implemented.");
+}
+

@@ -53,17 +53,17 @@
   }
 
   const keys = Object.keys(categories)
-	const tabs = createTabs({ selected: 0 })
+	const tabs = createTabs({ selected: 'Recent' })
 
-  $: active_panel = categories[keys[$tabs.selected]]
+  $: active_panel = categories[$tabs.selected]
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
   <div class="w-full max-w-md px-2 py-16 sm:px-0">
     <div use:tabs.list class="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
     {#each keys as key}
-      {@const selected = key === keys[$tabs.selected]}
-      <button use:tabs.tab={key} class="w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 {selected ? 'text-blue-700 bg-white shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'}">{key}</button>
+      {@const selected = key === $tabs.selected}
+      <button use:tabs.tab={{ value: key }} class="w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 {selected ? 'text-blue-700 bg-white shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'}">{key}</button>
     {/each}
     <!--
       <button class="w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-blue-700 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 bg-white shadow" id="headlessui-tabs-tab-1" role="tab" type="button" aria-selected="true" tabindex="0" data-headlessui-state="selected" aria-controls="headlessui-tabs-panel-undefined">Recent</button>
@@ -72,7 +72,7 @@
     -->
     </div>
     <div class="mt-2">
-      <div use:tabs.panel={keys[$tabs.selected]} class="rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2" id="headlessui-tabs-panel-4" role="tabpanel" tabindex="0" data-headlessui-state="selected" aria-labelledby="headlessui-tabs-tab-undefined">
+      <div use:tabs.panel={{ value: keys[$tabs.selected] }} class="rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2" id="headlessui-tabs-panel-4" role="tabpanel" tabindex="0" data-headlessui-state="selected" aria-labelledby="headlessui-tabs-tab-undefined">
         <ul>
         {#each active_panel as post}
           <li class="relative rounded-md p-3 hover:bg-gray-100">
