@@ -53,7 +53,7 @@ export function onSelect(state: List, node?: HTMLElement) {
     })
     node.dispatchEvent(event)
   }
-  return { selected, active: -1 }
+  return { selected }
 }
 
 export function getItemValues(node: HTMLElement, options?: ItemOptions) {

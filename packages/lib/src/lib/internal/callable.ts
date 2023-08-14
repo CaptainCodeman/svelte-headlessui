@@ -1,1 +1,1 @@
-export type Callable = () => void
+export type Callable = () => any

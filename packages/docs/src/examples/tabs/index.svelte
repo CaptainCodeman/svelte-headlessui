@@ -1,22 +1,5 @@
----
-title: Tabs
-description: Tabs
-layout: ../layouts/MainLayout.astro
-image:
-  src: /svelte-headlessui/tabs.png
-  alt: Easily create accessible, fully customizable tab interfaces, with robust focus management and keyboard navigation support.
----
-
-<iframe class="w-full h-[378px] mt-8 mb-4 rounded-xl" src="/svelte-headlessui/example/tabs" frameborder="0" scrolling="no"></iframe>
-<a href="/svelte-headlessui/example/tabs" target="_blank">
-  Open in separate tab
-</a>
-
-## Example
-
-```svelte
 <script lang="ts">
-  import { createTabs } from '$lib/tabs'
+	import { createTabs } from 'svelte-headlessui'
 
   interface Post {
     id: number
@@ -26,8 +9,8 @@ image:
     shareCount: number
   }
 
-  // data driven, but could be static html
-  const categories: Record<string, Post[]> = {
+	// prettier-ignore
+	const categories: Record<string, Post[]> = {
     Recent: [{
       id: 1,
       title: 'Does drinking coffee make you smarter?',
@@ -70,7 +53,7 @@ image:
   }
 
   const keys = Object.keys(categories)
-  const tabs = createTabs({ selected: 'Recent' })
+	const tabs = createTabs({ selected: 'Recent' })
 
   $: active_panel = categories[$tabs.selected]
 </script>
@@ -110,4 +93,3 @@ image:
     </div>
   </div>
 </div>
-```
