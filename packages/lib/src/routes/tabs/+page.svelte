@@ -61,18 +61,17 @@
 <div class="flex w-full flex-col items-center justify-center">
   <div class="w-full max-w-md px-2 py-16 sm:px-0">
     <div use:tabs.list class="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
-    {#each keys as key}
-      {@const selected = key === $tabs.selected}
-      <button use:tabs.tab={{ value: key }} class="w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 {selected ? 'text-blue-700 bg-white shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'}">{key}</button>
+    {#each keys as value}
+      {@const active = $tabs.active === value}
+      {@const selected = $tabs.selected === value}
+      <button use:tabs.tab={{ value }} class="w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 {selected ? 'text-blue-700 bg-white shadow' : active ? 'bg-white/[0.12] text-white' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'}">{value}</button>
     {/each}
-    <!--
-      <button class="w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-blue-700 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 bg-white shadow" id="headlessui-tabs-tab-1" role="tab" type="button" aria-selected="true" tabindex="0" data-headlessui-state="selected" aria-controls="headlessui-tabs-panel-undefined">Recent</button>
-      <button class="w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 text-blue-100 hover:bg-white/[0.12] hover:text-white" id="headlessui-tabs-tab-2" role="tab" type="button" aria-selected="false" tabindex="-1" data-headlessui-state="" aria-controls="headlessui-tabs-panel-undefined">Popular</button>
-      <button class="w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 text-blue-100 hover:bg-white/[0.12] hover:text-white" id="headlessui-tabs-tab-3" role="tab" type="button" aria-selected="false" tabindex="-1" data-headlessui-state="" aria-controls="headlessui-tabs-panel-undefined">Trending</button>
-    -->
     </div>
     <div class="mt-2">
-      <div use:tabs.panel={{ value: keys[$tabs.selected] }} class="rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2" id="headlessui-tabs-panel-4" role="tabpanel" tabindex="0" data-headlessui-state="selected" aria-labelledby="headlessui-tabs-tab-undefined">
+    {#each keys as value}
+      {@const selected = $tabs.selected === value}
+      <div use:tabs.panel={{ value }} class="rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 {selected ? 'block' : 'hidden'}">
+        {#if selected}
         <ul>
         {#each active_panel as post}
           <li class="relative rounded-md p-3 hover:bg-gray-100">
@@ -88,9 +87,9 @@
           </li>
           {/each}
         </ul>
+        {/if}
       </div>
-      <span id="headlessui-tabs-panel-5" role="tabpanel" tabindex="-1" style="position:fixed;top:1px;left:1px;width:1px;height:0;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border-width:0" aria-labelledby="headlessui-tabs-tab-undefined"></span>
-      <span id="headlessui-tabs-panel-6" role="tabpanel" tabindex="-1" style="position:fixed;top:1px;left:1px;width:1px;height:0;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border-width:0" aria-labelledby="headlessui-tabs-tab-undefined"></span>
+    {/each}
     </div>
   </div>
 </div>

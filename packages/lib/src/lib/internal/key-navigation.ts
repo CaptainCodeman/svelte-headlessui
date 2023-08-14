@@ -8,7 +8,7 @@ import { keyDown, keyUp } from "./key-up-down"
 export const keyNavigation = (first: Callable, previous: Callable, next: Callable, last: Callable, orientation: Orientation = 'vertical'): KeyHandler => {
   const handleFirst = keyHomePageUp(first)
   const handlePrevious = orientation === 'vertical' ? keyUp(previous) : keyLeft(previous)
-  const handleNext = orientation === 'vertical' ?keyDown(next) : keyRight(previous)
+  const handleNext = orientation === 'vertical' ? keyDown(next) : keyRight(next)
   const handleLast = keyEndPageDn(last)
 
   return event => {
