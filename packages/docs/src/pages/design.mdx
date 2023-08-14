@@ -10,11 +10,11 @@ Basically, it allows you to wrap some DOM tree with other elements that your com
 
 While these slots are fantastic for composing content as wrappers such as creating a "card" component where the image, title and text are passed in, they can become a little clumsy to use when implementing behaviors.
 
-The typical approach is to create extra components that act as wrappers for all the parts of the UI component being implemented, so that these pieces can be coordinated behind the scenes. But I think this adds bload to the component definitions and is also inefficient.
+The typical approach is to create extra components that act as wrappers for all the parts of the UI component being implemented, so that these pieces can be coordinated behind the scenes. But I think this adds bloat to the component definitions and is also inefficient.
 
 So, instead of using slots, I took advantage of Svelte's `use:action` directive to attach the necessary behaviors to the elements that _you_ define, and a Svelte store is provided to communicate reactivity to your elements - when to hide, what to filer and so on.
 
-Behind the scenes, the behaviors handle UI events and WAI-ARIA attributes.
+Behind the scenes, the behaviors handle UI events and setting appropriate WAI-ARIA attributes.
 
 ## General Pattern
 
