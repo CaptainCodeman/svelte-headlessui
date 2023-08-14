@@ -54,8 +54,6 @@
 
   const keys = Object.keys(categories)
 	const tabs = createTabs({ selected: 'Recent' })
-
-  $: active_panel = categories[$tabs.selected]
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
@@ -73,7 +71,7 @@
       <div use:tabs.panel={{ value }} class="rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 {selected ? 'block' : 'hidden'}">
         {#if selected}
         <ul>
-        {#each active_panel as post}
+        {#each categories[$tabs.selected] as post}
           <li class="relative rounded-md p-3 hover:bg-gray-100">
             <h3 class="text-sm font-medium leading-5">{post.title}</h3>
             <ul class="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">
