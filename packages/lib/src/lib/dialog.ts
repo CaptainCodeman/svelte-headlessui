@@ -36,7 +36,7 @@ export function createDialog(init?: Partial<Dialog>) {
     ensureID(node, prefix)
 
     const destroy = applyBehaviors(node, [
-      setRole('modal'),
+      setRole('dialog'),
       reflectAriaModal(store),
       reflectAriaLabel(store),
       trapFocusOnOpen(store),
