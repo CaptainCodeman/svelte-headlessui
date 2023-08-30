@@ -62,21 +62,6 @@
     "lint": "eslint --max-warnings 0 --report-unused-disable-directives --ignore-path ./.gitignore \"**/*.{js,cjs,mjs,ts,cts,mts,svelte}\"",
     "sourcemap": "source-map-explorer dist/*.js"
   },
-  "tsup": {
-    "entry": [
-      "src/lib/index.ts"
-    ],
-    "format": [
-      "esm"
-    ],
-    "external": [
-      "svelte/store"
-    ],
-    "sourcemap": true,
-    "minify": true,
-    "clean": true,
-    "dts": true
-  },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.1.0",
     "@sveltejs/kit": "^1.22.5",
