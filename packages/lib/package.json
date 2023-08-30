@@ -10,7 +10,25 @@
     "ui",
     "tailwindcss",
     "tailwindui",
-    "renderless"
+    "renderless",
+    "combobox",
+    "autocomplete",
+    "dialog",
+    "modal",
+    "disclosure",
+    "listbox",
+    "select",
+    "menu",
+    "dropdown",
+    "popover",
+    "radio",
+    "radio-group",
+    "switch",
+    "toggle",
+    "toggle-button",
+    "tab",
+    "tabs",
+    "transition"
   ],
   "files": [
     "dist"
