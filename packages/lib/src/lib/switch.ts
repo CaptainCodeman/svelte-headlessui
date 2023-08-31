@@ -10,9 +10,9 @@ import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
 import { setType } from "./internal/set-type";
 import { getPrefix } from "./internal/utils";
+import { defaultPressable, reflectAriaPressed, type Pressable } from "./internal/aria-pressed";
 
-// TODO: rename "toggle" or "toggleSwitch", to avoid `const switch = createSwitch()`
-export interface Switch extends Labelable, Checkable { }
+export interface Switch extends Labelable, Checkable, Pressable { }
 
 export function createSwitch(init?: Partial<Switch>) {
   // prefix for generating unique IDs
@@ -20,6 +20,7 @@ export function createSwitch(init?: Partial<Switch>) {
 
   let state: Switch = {
     ...defaultCheckable,
+    ...defaultPressable,
     ...init,
   }
 
@@ -31,9 +32,29 @@ export function createSwitch(init?: Partial<Switch>) {
 
   const on = () => set({ checked: true })
   const off = () => set({ checked: false })
-  const toggle = () => state.checked ? off() : on()
+  const change = () => state.checked ? off() : on()
 
   function button(node: HTMLElement) {
+    ensureID(node, prefix)
+
+    const destroy = applyBehaviors(node, [
+      setType('button'),
+      setRole('button'),
+      setTabIndex(0),
+      reflectAriaPressed(store),
+      reflectAriaLabel(store),
+      onClick(change),
+      onKeydown(
+        keySpaceEnter(change),
+      )
+    ])
+
+    return {
+      destroy,
+    }
+  }
+
+  function toggle(node: HTMLElement) {
     ensureID(node, prefix)
 
     const destroy = applyBehaviors(node, [
@@ -42,9 +63,9 @@ export function createSwitch(init?: Partial<Switch>) {
       setTabIndex(0),
       reflectAriaLabel(store),
       reflectAriaChecked(store),
-      onClick(toggle),
+      onClick(change),
       onKeydown(
-        keySpaceEnter(toggle),
+        keySpaceEnter(change),
       ),
     ])
 
@@ -56,12 +77,13 @@ export function createSwitch(init?: Partial<Switch>) {
   // expose a subset of our state, derive the selected value
   const { subscribe } = derived(store, $state => {
     const { checked } = $state
-    return { checked }
+    return { checked, pressed: checked }
   })
 
   return {
     subscribe,
     button,
+    toggle,
     set,
   }
 }

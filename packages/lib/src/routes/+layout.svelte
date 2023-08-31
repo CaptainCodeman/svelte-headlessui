@@ -8,7 +8,7 @@
 
 <nav class="p-8">
 	<a href="/">Home</a>
-	<a href="/button">Button (toggle)</a>
+	<a href="/button">Switch (Button)</a>
 	<a href="/combobox">Combobox</a>
 	<a href="/dialog">Dialog</a>
 	<a href="/disclosure">Disclosure</a>
@@ -16,7 +16,7 @@
 	<a href="/menu">Menu</a>
 	<a href="/popover">Popover</a>
 	<a href="/radio-group">Radio Group</a>
-	<a href="/switch">Switch (toggle)</a>
+	<a href="/toggle">Switch (Toggle)</a>
 	<a href="/tabs">Tabs</a>
 </nav>
 
