@@ -1,13 +1,14 @@
 {
   "name": "svelte-headlessui",
   "description": "HeadlessUI components for Svelte",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "type": "module",
   "keywords": [
     "svelte",
     "component",
     "headless",
     "ui",
+    "tailwind",
     "tailwindcss",
     "tailwindui",
     "renderless",
@@ -24,10 +25,13 @@
     "radio",
     "radio-group",
     "switch",
+    "button",
     "toggle",
     "toggle-button",
+    "toggle-switch",
     "tab",
     "tabs",
+    "panels",
     "transition"
   ],
   "files": [
