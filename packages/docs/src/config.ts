@@ -43,7 +43,7 @@ export const SIDEBAR = {
 		{ text: 'Popover', link: 'svelte-headlessui/popover' },
 		{ text: 'Radio Group', link: 'svelte-headlessui/radio-group' },
 		{ text: 'Switch (Button)', link: 'svelte-headlessui/button' },
-		{ text: 'Switch (Toggle)', link: 'svelte-headlessui/switch' },
+		{ text: 'Switch (Toggle)', link: 'svelte-headlessui/toggle' },
 		{ text: 'Tabs', link: 'svelte-headlessui/tabs' },
 		{ text: 'Transition', link: 'svelte-headlessui/transition' },
 	],

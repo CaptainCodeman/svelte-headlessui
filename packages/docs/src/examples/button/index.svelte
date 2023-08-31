@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createButton } from '$lib/button'
+	import { createButton } from 'svelte-headlessui'
 
 	const toggle = createButton({ label: 'Play Music' })
 </script>

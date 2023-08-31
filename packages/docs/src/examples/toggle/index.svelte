@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createSwitch } from '$lib/switch'
+	import { createSwitch } from 'svelte-headlessui'
 
 	const toggle = createSwitch({ label: 'Set Preference' })
 </script>

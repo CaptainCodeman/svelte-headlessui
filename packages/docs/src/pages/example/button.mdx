@@ -1,0 +1,15 @@
+---
+title: Button Example
+description: SvelteHeadlessUI Button Example
+layout: ../../layouts/ExampleLayout.astro
+---
+
+import Button from '@examples/button/index.svelte'
+
+<div class="relative flex flex-col items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-gray-200 to-gray-400">
+	<div class="w-full h-[170px]">
+		<div class="absolute inset-0">
+			<Button client:load />
+		</div>
+	</div>
+</div>

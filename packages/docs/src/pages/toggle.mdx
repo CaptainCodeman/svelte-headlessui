@@ -1,5 +1,22 @@
+---
+title: Switch (Toggle)
+description: Switch (Toggle)
+layout: ../layouts/MainLayout.astro
+image:
+  src: /svelte-headlessui/toggle.png
+  alt: Toggle switches are a pleasant interface for toggling a value between two states, and offer the same semantics and keyboard navigation as native checkbox elements.
+---
+
+<iframe class="w-full h-[170px] mt-8 mb-4 rounded-xl" src="/svelte-headlessui/example/toggle" frameborder="0" scrolling="no"></iframe>
+<a href="/svelte-headlessui/example/toggle" target="_blank">
+	Open in separate tab
+</a>
+
+## Example
+
+```svelte
 <script lang="ts">
-	import { createSwitch } from '$lib/switch'
+	import { createSwitch } from 'svelte-headlessui'
 
 	const toggle = createSwitch({ label: 'Set Preference' })
 </script>
@@ -14,3 +31,4 @@
 	/>
 	</button>
 </div>
+```
