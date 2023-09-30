@@ -10,6 +10,12 @@ openGraph:
     url: /svelte-headlessui/tabs.png
     width: 1440
     height: 758
+twitter:
+  card: summary_large_image
+  site: captaincodeman
+  title: Tabs 🚀 Svelte-HeadlessUI
+  description: Headless Tabs for Svelte
+  image: /svelte-headlessui/tabs.png
 ---
 
 # Tabs

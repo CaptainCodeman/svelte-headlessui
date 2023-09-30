@@ -10,6 +10,12 @@ openGraph:
     url: /svelte-headlessui/dialog.png
     width: 1334
     height: 756
+twitter:
+  card: summary_large_image
+  site: captaincodeman
+  title: Dialog (Modal) 🚀 Svelte-HeadlessUI
+  description: Headless Dialog (Modal) for Svelte
+  image: /svelte-headlessui/dialog.png
 ---
 
 # Dialog (Modal)

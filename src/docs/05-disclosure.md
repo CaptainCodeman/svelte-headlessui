@@ -10,6 +10,12 @@ openGraph:
     url: /svelte-headlessui/disclosure.png
     width: 1334
     height: 756
+twitter:
+  card: summary_large_image
+  site: captaincodeman
+  title: Disclosure 🚀 Svelte-HeadlessUI
+  description: Headless Disclosure for Svelte
+  image: /svelte-headlessui/disclosure.png
 ---
 
 # Disclosure

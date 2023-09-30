@@ -10,6 +10,12 @@ openGraph:
     url: /svelte-headlessui/listbox.png
     width: 1334
     height: 756
+twitter:
+  card: summary_large_image
+  site: captaincodeman
+  title: Listbox (Select) 🚀 Svelte-HeadlessUI
+  description: Headless Listbox (Select) for Svelte
+  image: /svelte-headlessui/listbox.png
 ---
 
 # Listbox (Select)

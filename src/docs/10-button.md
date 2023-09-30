@@ -10,6 +10,12 @@ openGraph:
     url: /svelte-headlessui/button.png
     width: 1440
     height: 340
+twitter:
+  card: summary_large_image
+  site: captaincodeman
+  title: Switch (Button) 🚀 Svelte-HeadlessUI
+  description: Headless Switch (Button) for Svelte
+  image: /svelte-headlessui/button.png
 ---
 
 # Switch (Button)

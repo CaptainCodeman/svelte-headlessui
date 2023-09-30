@@ -2,16 +2,21 @@
 title: Svelte-HeadlessUI
 description: Introduction to Svelte-HeadlessUI
 openGraph:
-  type: 'website'
-  url: 'https://captaincodeman.github.io/svelte-headlessui/'
-  title: 'Svelte-HeadlessUI'
-  description: 'Tailwind HeadlessUI implementation for Svelte'
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/
+  title: Svelte-HeadlessUI
+  description: Tailwind HeadlessUI implementation for Svelte
   images:
   -
-    url: '/svelte-headlessui/menu.png'
-    width: 1334,
-    height: 756,
-    alt: ''
+    url: /svelte-headlessui/menu.png
+    width: 1334
+    height: 756
+twitter:
+  card: summary_large_image
+  site: captaincodeman
+  title: Svelte-HeadlessUI
+  description: Tailwind HeadlessUI implementation for Svelte
+  image: /svelte-headlessui/menu.png
 ---
 
 ![Svelte-HeadlessUI](./logo.svg)

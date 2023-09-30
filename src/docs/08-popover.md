@@ -10,6 +10,12 @@ openGraph:
     url: /svelte-headlessui/popover.png
     width: 1332
     height: 1016
+twitter:
+  card: summary_large_image
+  site: captaincodeman
+  title: Popover 🚀 Svelte-HeadlessUI
+  description: Headless Popover for Svelte
+  image: /svelte-headlessui/popover.png
 ---
 
 # Popover

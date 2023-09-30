@@ -10,6 +10,12 @@ openGraph:
     url: /svelte-headlessui/transition.png
     width: 1332
     height: 756
+twitter:
+  card: summary_large_image
+  site: captaincodeman
+  title: Transition 🚀 Svelte-HeadlessUI
+  description: Headless Transition for Svelte
+  image: /svelte-headlessui/transition.png
 ---
 
 # Transition

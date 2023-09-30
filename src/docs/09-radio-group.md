@@ -10,6 +10,12 @@ openGraph:
     url: /svelte-headlessui/radio-group.png
     width: 1334
     height: 720
+twitter:
+  card: summary_large_image
+  site: captaincodeman
+  title: Radio Group 🚀 Svelte-HeadlessUI
+  description: Headless Radio Group for Svelte
+  image: /svelte-headlessui/radio-group.png
 ---
 
 # Radio Group

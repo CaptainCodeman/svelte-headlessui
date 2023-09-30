@@ -10,6 +10,12 @@ openGraph:
     url: /svelte-headlessui/menu.png
     width: 1334
     height: 756
+twitter:
+  card: summary_large_image
+  site: captaincodeman
+  title: Menu (Dropdown) 🚀 Svelte-HeadlessUI
+  description: Headless Menu (Dropdown) for Svelte
+  image: /svelte-headlessui/menu.png
 ---
 
 # Menu (Dropdown)
