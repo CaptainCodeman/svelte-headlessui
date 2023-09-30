@@ -67,7 +67,7 @@
     "sourcemap": "source-map-explorer dist/*.js"
   },
   "dependencies": {
-    "svelte-doc-kit": "^0.0.3",
+    "svelte-doc-kit": "^0.0.5",
     "svelte-transition": "^0.0.10",
     "capital-case": "^2.0.0",
     "flexsearch": "^0.7.31",
