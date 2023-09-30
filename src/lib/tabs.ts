@@ -64,16 +64,8 @@ export function createTabs(init?: Partial<Tabs>) {
 
   const select = () => set(onSelect(state, state.tabs[state.selected]))
 
-  // clear focus
-  const none = () => focus(state.items.findIndex(item => item.value === state.selected))
-
   // set the focus based on the HTMLElement passed which will be a tab element or null
   const focusNode = getFocuser(() => state, focus)
-
-  function focusTab() {
-    const tab = state.tabs[state.items.findIndex(item => item.value === state.selected)]
-    tab.focus()
-  }
 
   const remove = (node: HTMLElement) => set(removeItem(state, node))
 
@@ -81,7 +73,7 @@ export function createTabs(init?: Partial<Tabs>) {
   function list(node: HTMLElement) {
     ensureID(node, prefixTabs)
 
-    const selectOnNavigate = (store: Readable<Tabs>): Behavior => node => derived(store, $store => $store.auto && $store.active !== state.items.findIndex(item => item.value === state.selected)).subscribe(select)
+    const selectOnNavigate = (store: Readable<Tabs>): Behavior => () => derived(store, $store => $store.auto && $store.active !== state.items.findIndex(item => item.value === state.selected)).subscribe(select)
 
     const destroy = applyBehaviors(node, [
       setRole('tablist'),
@@ -136,7 +128,7 @@ export function createTabs(init?: Partial<Tabs>) {
     }
   }
 
-  function panel(node: HTMLElement, value: any) {
+  function panel(node: HTMLElement) {
     ensureID(node, prefixPanel)
     set({ panels: [...state.panels, node] })
 
@@ -171,8 +163,5 @@ export function createTabs(init?: Partial<Tabs>) {
     panel,
     set,
   }
-}
-function keyEndPageDown(first: () => false | void): import("./internal/key-handler").KeyHandler {
-  throw new Error("Function not implemented.");
 }
 
