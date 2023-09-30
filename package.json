@@ -1,10 +1,95 @@
 {
-  "name": "svelte-headlessui-root",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "Simon Green <simon@captaincodeman.com> (https://github.com/captaincodeman)",
-  "license": "ISC"
+  "name": "svelte-headlessui",
+  "description": "HeadlessUI components for Svelte",
+  "version": "0.0.25",
+  "type": "module",
+  "keywords": [
+    "svelte",
+    "component",
+    "headless",
+    "ui",
+    "tailwind",
+    "tailwindcss",
+    "tailwindui",
+    "renderless",
+    "combobox",
+    "autocomplete",
+    "dialog",
+    "modal",
+    "disclosure",
+    "listbox",
+    "select",
+    "menu",
+    "dropdown",
+    "popover",
+    "radio",
+    "radio-group",
+    "switch",
+    "button",
+    "toggle",
+    "toggle-button",
+    "toggle-switch",
+    "tab",
+    "tabs",
+    "panels",
+    "transition"
+  ],
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "homepage": "https://captaincodeman.github.io/svelte-headlessui/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/captaincodeman/svelte-headlessui.git"
+  },
+  "author": {
+    "name": "Simon Green",
+    "email": "simon@captaincodeman.com",
+    "url": "https://www.captaincodeman.com/"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "package": "svelte-kit sync && tsup && publint",
+    "prepublishOnly": "npm run package",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "eslint --max-warnings 0 --report-unused-disable-directives --ignore-path ./.gitignore \"**/*.{js,cjs,mjs,ts,cts,mts,svelte}\"",
+    "sourcemap": "source-map-explorer dist/*.js"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^2.0.3",
+    "@sveltejs/kit": "^1.25.1",
+    "@tailwindcss/forms": "^0.5.6",
+    "@tailwindcss/typography": "^0.5.10",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.50.0",
+    "eslint-plugin-svelte": "^2.33.2",
+    "highlight.js": "^11.8.0",
+    "postcss": "^8.4.31",
+    "postcss-load-config": "^4.0.1",
+    "publint": "^0.2.3",
+    "source-map-explorer": "^2.5.3",
+    "svelte": "^4.2.1",
+    "svelte-check": "^3.5.2",
+    "svelte-doc-kit": "^0.0.6",
+    "svelte-preprocess": "^5.0.4",
+    "svelte-transition": "^0.0.10",
+    "tailwindcss": "^3.3.3",
+    "tslib": "^2.6.2",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9"
+  }
 }
