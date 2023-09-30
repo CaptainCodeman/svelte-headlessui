@@ -1,10 +1,11 @@
-name: Github Pages Astro CI
+name: Deploy to GitHub Pages
 
 on:
   # Trigger the workflow every time you push to the `main` branch
   # Using a different branch name? Replace `main` with your branch’s name
   push:
     branches: [master]
+
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 
@@ -14,42 +15,56 @@ permissions:
   pages: write
   id-token: write
 
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
 jobs:
   build:
-    # prevents this action from running on forks
-    if: github.repository == 'CaptainCodeman/svelte-headlessui'
-    name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout your repository using git
+      - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v2.2.4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
         with:
-          version: 8.6.x
-      - name: Setup Node.js
+          version: 8
+
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: pnpm
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Build lib
-        run: pnpm --filter svelte-headlessui package
-      - name: Install, build, and upload your site
-        uses: withastro/action@v0
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
         with:
-          path: packages/docs
-          node-version: 18
-          package-manager: pnpm
+          static_site_generator: sveltekit
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Upload Artifacts
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # this should match the `pages` option in your adapter-static options
+          path: 'build/'
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v1
