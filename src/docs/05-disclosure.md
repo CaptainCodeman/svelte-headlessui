@@ -1,10 +1,20 @@
 ---
 title: Disclosure
-description: Disclosure
-image:
-  src: /svelte-headlessui/disclosure.png
-  alt: A simple, accessible foundation for building custom UIs that show and hide content, like togglable accordion panels.
+description: Headless Disclosure for Svelte
+openGraph:
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/disclosure
+  title: Disclosure
+  images:
+  -
+    url: /svelte-headlessui/disclosure.png
+    width: 1334
+    height: 756
 ---
+
+# Disclosure
+
+A simple, accessible foundation for building custom UIs that show and hide content, like togglable accordion panels.
 
 <iframe class="w-full h-[378px] rounded-xl border-none" src="./example/disclosure"></iframe>
 <a href="./example/disclosure" target="_blank">

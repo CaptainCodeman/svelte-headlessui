@@ -1,12 +1,20 @@
 ---
 title: Radio Group
-description: Radio Group
-image:
-  src: /svelte-headlessui/radio-group.png
-  alt: Radio Groups give you the same functionality as native HTML radio inputs, without any of the styling. They're perfect for building out custom UIs for selectors.
+description: Headless Radio Group for Svelte
+openGraph:
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/radio-group
+  title: Radio Group
+  images:
+  -
+    url: /svelte-headlessui/radio-group.png
+    width: 1334
+    height: 720
 ---
 
 # Radio Group
+
+Radio Groups give you the same functionality as native HTML radio inputs, without any of the styling. They're perfect for building out custom UIs for selectors.
 
 <iframe class="w-full h-[360px] rounded-xl border-none" src="./example/radio-group"></iframe>
 <a href="./example/radio-group" target="_blank">

@@ -1,12 +1,20 @@
 ---
 title: Switch (Toggle)
-description: Switch (Toggle)
-image:
-  src: /svelte-headlessui/toggle.png
-  alt: Toggle switches are a pleasant interface for toggling a value between two states, and offer the same semantics and keyboard navigation as native checkbox elements.
+description: Headless Switch (Toggle) for Svelte
+openGraph:
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/toggle
+  title: Switch (Toggle)
+  images:
+  -
+    url: /svelte-headlessui/toggle.png
+    width: 1440
+    height: 340
 ---
 
 # Switch (Toggle)
+
+Toggle switches are a pleasant interface for toggling a value between two states, and offer the same semantics and keyboard navigation as native checkbox elements.
 
 <iframe class="w-full h-[170px] rounded-xl border-none" src="./example/toggle"></iframe>
 <a href="./example/toggle" target="_blank">

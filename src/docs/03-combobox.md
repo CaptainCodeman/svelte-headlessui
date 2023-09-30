@@ -1,12 +1,20 @@
 ---
 title: Combobox (Autocomplete)
-description: Combobox (Autocomplete)
-image:
-  src: /svelte-headlessui/combobox.png
-  alt: Comboboxes are the foundation of accessible autocompletes and command palettes for your app, complete with robust support for keyboard navigation.
+description: Headless Combobox (Autocomplete) for Svelte
+openGraph:
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/combobox
+  title: Combobox (Autocomplete)
+  images:
+  -
+    url: /svelte-headlessui/combobox.png
+    width: 1334
+    height: 756
 ---
 
 # Combobox (Autocomplete)
+
+Comboboxes are the foundation of accessible autocompletes and command palettes for your app, complete with robust support for keyboard navigation.
 
 <iframe class="w-full h-[378px] rounded-xl border-none" src="./example/combobox"></iframe>
 <a href="./example/combobox" target="_blank">

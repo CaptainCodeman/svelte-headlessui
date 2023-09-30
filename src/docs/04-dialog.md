@@ -1,12 +1,20 @@
 ---
 title: Dialog (Modal)
-description: Dialog (Modal)
-image:
-  src: /svelte-headlessui/dialog.png
-  alt: A fully-managed, renderless dialog component jam-packed with accessibility and keyboard features, perfect for building completely custom modal and dialog windows for your next application.
+description: Headless Dialog (Modal) for Svelte
+openGraph:
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/dialog
+  title: Dialog (Modal)
+  images:
+  -
+    url: /svelte-headlessui/dialog.png
+    width: 1334
+    height: 756
 ---
 
 # Dialog (Modal)
+
+A fully-managed, renderless dialog component jam-packed with accessibility and keyboard features, perfect for building completely custom modal and dialog windows for your next application.
 
 <iframe class="w-full h-[378px] rounded-xl border-none" src="./example/dialog"></iframe>
 <a href="./example/dialog" target="_blank">

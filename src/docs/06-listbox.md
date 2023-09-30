@@ -1,12 +1,20 @@
 ---
 title: Listbox (Select)
-description: Listbox (Select)
-image:
-  src: /svelte-headlessui/listbox.png
-  alt: Listboxes are a great foundation for building custom, accessible select menus for your app, complete with robust support for keyboard navigation.
+description: Headless Listbox (Select) for Svelte
+openGraph:
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/listbox
+  title: Listbox (Select)
+  images:
+  -
+    url: /svelte-headlessui/listbox.png
+    width: 1334
+    height: 756
 ---
 
 # Listbox (Select)
+
+Listboxes are a great foundation for building custom, accessible select menus for your app, complete with robust support for keyboard navigation.
 
 <iframe class="w-full h-[378px] rounded-xl border-none" src="./example/listbox"></iframe>
 <a href="./example/listbox" target="_blank">

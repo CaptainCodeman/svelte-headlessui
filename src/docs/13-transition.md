@@ -1,12 +1,20 @@
 ---
 title: Transition
-description: Transition
-image:
-  src: /svelte-headlessui/transition.png
-  alt: The Transition component lets you add enter/leave transitions to conditionally rendered elements, using CSS classes to control the actual transition styles in the different stages of the transition.
+description: Transition CSS Classes for Svelte
+openGraph:
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/transition
+  title: Tabs
+  images:
+  -
+    url: /svelte-headlessui/transition.png
+    width: 1332
+    height: 756
 ---
 
 # Transition
+
+The Transition component lets you add enter/leave transitions to conditionally rendered elements, using CSS classes to control the actual transition styles in the different stages of the transition.
 
 <iframe class="w-full h-[378px] rounded-xl border-none" src="./example/transition"></iframe>
 <a href="./example/transition" target="_blank">

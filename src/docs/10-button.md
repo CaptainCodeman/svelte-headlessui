@@ -1,12 +1,20 @@
 ---
 title: Switch (Button)
-description: Switch (Button)
-image:
-  src: /svelte-headlessui/button.png
-  alt: Buttons are a pleasant interface for toggling a value between two states, and offer the same semantics and keyboard navigation as native checkbox elements.
+description: Headless Switch (Button) for Svelte
+openGraph:
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/button
+  title: Switch (Button)
+  images:
+  -
+    url: /svelte-headlessui/button.png
+    width: 1440
+    height: 340
 ---
 
 # Switch (Button)
+
+Buttons are a pleasant interface for toggling a value between two states, and offer the same semantics and keyboard navigation as native checkbox elements.
 
 <iframe class="w-full h-[170px] rounded-xl border-none" src="./example/button"></iframe>
 <a href="./example/button" target="_blank">

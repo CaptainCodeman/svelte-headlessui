@@ -1,12 +1,20 @@
 ---
 title: Tabs
-description: Tabs
-image:
-  src: /svelte-headlessui/tabs.png
-  alt: Easily create accessible, fully customizable tab interfaces, with robust focus management and keyboard navigation support.
+description: Headless Tabs for Svelte
+openGraph:
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/tabs
+  title: Tabs
+  images:
+  -
+    url: /svelte-headlessui/tabs.png
+    width: 1440
+    height: 758
 ---
 
 # Tabs
+
+Easily create accessible, fully customizable tab interfaces, with robust focus management and keyboard navigation support.
 
 <iframe class="w-full h-[378px] rounded-xl border-none" src="./example/tabs"></iframe>
 <a href="./example/tabs" target="_blank">

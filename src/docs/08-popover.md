@@ -1,12 +1,20 @@
 ---
 title: Popover
-description: Popover
-image:
-  src: /svelte-headlessui/popover.png
-  alt: Popovers are perfect for floating panels with arbitrary content like navigation menus, mobile menus and flyout menus.
+description: Headless Popover for Svelte
+openGraph:
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/popover
+  title: Popover
+  images:
+  -
+    url: /svelte-headlessui/popover.png
+    width: 1332
+    height: 1016
 ---
 
 # Popover
+
+Popovers are perfect for floating panels with arbitrary content like navigation menus, mobile menus and flyout menus.
 
 <iframe class="w-full h-[508px] rounded-xl border-none" src="./example/popover"></iframe>
 <a href="./example/popover" target="_blank">

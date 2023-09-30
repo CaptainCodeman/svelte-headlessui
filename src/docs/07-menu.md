@@ -1,12 +1,20 @@
 ---
 title: Menu (Dropdown)
-description: Menu (Dropdown)
-image:
-  src: /svelte-headlessui/menu.png
-  alt: Menus offer an easy way to build custom, accessible dropdown components with robust support for keyboard navigation.
+description: Headless Menu (Dropdown) for Svelte
+openGraph:
+  type: website
+  url: https://captaincodeman.github.io/svelte-headlessui/menu
+  title: Menu (Dropdown)
+  images:
+  -
+    url: /svelte-headlessui/menu.png
+    width: 1334
+    height: 756
 ---
 
 # Menu (Dropdown)
+
+Menus offer an easy way to build custom, accessible dropdown components with robust support for keyboard navigation.
 
 <iframe class="w-full h-[378px] rounded-xl border-none" src="./example/menu"></iframe>
 <a href="./example/menu" target="_blank">
