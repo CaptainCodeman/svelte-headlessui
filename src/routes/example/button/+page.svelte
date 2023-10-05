@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createSwitch } from 'svelte-headlessui'
 
-	const sw = createSwitch({ label: 'Play Music' })
+	const sw = createSwitch({ label: 'Control Music' })
 </script>
 
 <button

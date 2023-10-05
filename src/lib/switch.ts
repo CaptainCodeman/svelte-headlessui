@@ -30,8 +30,9 @@ export function createSwitch(init?: Partial<Switch>) {
   // update state and notify store of changes for reactivity
   const set = (part: Partial<Switch>) => store.set(state = { ...state, ...part })
 
-  const on = () => set({ checked: true })
-  const off = () => set({ checked: false })
+  const setValue = (value: boolean) => set({ checked: value, pressed: value })
+  const on = () => setValue(true)
+  const off = () => setValue(false)
   const change = () => state.checked ? off() : on()
 
   function button(node: HTMLElement) {
@@ -76,8 +77,8 @@ export function createSwitch(init?: Partial<Switch>) {
 
   // expose a subset of our state, derive the selected value
   const { subscribe } = derived(store, $state => {
-    const { checked } = $state
-    return { checked, pressed: checked }
+    const { checked, pressed } = $state
+    return { checked, pressed }
   })
 
   return {
