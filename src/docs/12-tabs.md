@@ -100,7 +100,7 @@ Easily create accessible, fully customizable tab interfaces, with robust focus m
     <div class="mt-2">
     {#each keys as value}
       {@const selected = $tabs.selected === value}
-      <div use:tabs.panel={{ value }} class="rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 {selected ? 'block' : 'hidden'}">
+      <div use:tabs.panel class="rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 {selected ? 'block' : 'hidden'}">
         {#if selected}
         <ul>
         {#each categories[$tabs.selected] as post}
