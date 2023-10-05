@@ -1,4 +1,3 @@
-@@ -0,0 +1,27 @@
 name: Playwright Tests
 on:
   push:
