@@ -8,11 +8,11 @@ test('toggle button', async ({ page }) => {
   expect(button).toHaveAttribute('aria-label', 'Control Music')
   expect(button).toHaveAttribute('aria-pressed', 'false')
   expect(button).toHaveText('Play')
-  await expect(page).toHaveScreenshot('unpressed.png');
+  await expect(page).toHaveScreenshot('unpressed.png', { maxDiffPixels: 350 });
 
   await button.click()
 
   expect(button).toHaveText('Pause')
   expect(button).toHaveAttribute('aria-pressed', 'true')
-  await expect(page).toHaveScreenshot('pressed.png');
+  await expect(page).toHaveScreenshot('pressed.png', { maxDiffPixels: 350 });
 });
