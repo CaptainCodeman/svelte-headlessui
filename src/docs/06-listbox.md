@@ -46,7 +46,6 @@ Listboxes are a great foundation for building custom, accessible select menus fo
 		{ name: 'Hellen Schmidt' },
 	]
 
-	// TODO: type list so 'selected' isn't 'any'
 	const listbox = createListbox({ label: 'Actions', selected: people[2] })
 
 	function onSelect(e: Event) {
@@ -113,7 +112,6 @@ Pass an array to the `selected` property of `createListbox` to trigger multi-sel
 	import Selector from '$icons/Selector.svelte'
 	import Check from '$icons/Check.svelte'
 	import Deselect from '$icons/Deselect.svelte'
-	import { onMount } from 'svelte'
 
 	// prettier-ignore
 	const people = [
@@ -129,9 +127,7 @@ Pass an array to the `selected` property of `createListbox` to trigger multi-sel
 		{ id: 10, name: 'Emil Schaefer' },
 	]
 
-	// TODO: type list so 'selected' isn't 'any'
 	const listbox = createListbox({ label: 'Actions', selected: [people[2], people[3]] })
-	onMount(listbox.open)
 
 	function onSelect(e: Event) {
 		console.log('select', (e as CustomEvent).detail)
