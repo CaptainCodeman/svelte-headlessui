@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createDisclosure } from 'svelte-headlessui'
-	import ChevronUp from './ChevronUp.svelte'
+	import ChevronUp from '$icons/ChevronUp.svelte'
 
 	const refund = createDisclosure({ label: 'Refund Policy', expanded: true })
 	const support = createDisclosure({ label: 'Technical Support', expanded: true })

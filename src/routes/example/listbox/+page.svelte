@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createListbox } from 'svelte-headlessui'
 	import Transition from 'svelte-transition'
-	import Selector from './Selector.svelte'
-	import Check from './Check.svelte'
+	import Selector from '$icons/Selector.svelte'
+	import Check from '$icons/Check.svelte'
 	import { onMount } from 'svelte'
 
 	// prettier-ignore
@@ -29,7 +29,7 @@
 		<button
 			use:listbox.button
 			on:select={onSelect}
-			class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 text-sm"
+			class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 text-sm"
 		>
 			<span class="block truncate">{$listbox.selected.name}</span>
 			<span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">

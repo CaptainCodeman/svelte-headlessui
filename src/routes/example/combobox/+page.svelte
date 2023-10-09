@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createCombobox } from 'svelte-headlessui'
 	import Transition from 'svelte-transition'
-	import Selector from './Selector.svelte'
-	import Check from './Check.svelte'
+	import Selector from '$icons/Selector.svelte'
+	import Check from '$icons/Check.svelte'
 	import { onMount } from 'svelte'
 
 	// prettier-ignore
