@@ -4,7 +4,7 @@ import { reflectAriaControls, type Controllable } from './internal/aria-controls
 import { reflectAriaDisabled } from "./internal/aria-disabled";
 import { defaultExpanded, focusOnClose, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
-import { defaultSelected, type Selectable } from "./internal/aria-selected";
+import { defaultSelected, reflectAriaMultiuselectable, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
@@ -41,6 +41,8 @@ export function createListbox(init?: Partial<Listbox>) {
     ...defaultSelected,
     ...init,
   }
+
+  state.multi = Array.isArray(state.selected)
 
   // wrap with store for reactivity
   const store = writable(state)
@@ -118,12 +120,12 @@ export function createListbox(init?: Partial<Listbox>) {
     const destroy = applyBehaviors(node, [
       setRole('listbox'),
       setTabIndex(0),
-      onClickOutside(close, target => state.button?.contains(target)),
-      onClick(activate('[role="option"]', focusNode, select, close)),
+      onClickOutside(state.multi ? noop : close, target => state.multi ? false : state.button?.contains(target)),
+      onClick(activate('[role="option"]', focusNode, select, state.multi ? noop : close)),
       onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),
       onKeydown(
-        keySpaceEnter(select, close),
+        keySpaceEnter(select, state.multi ? noop : close),
         keyEscape(close),
         keyNavigation(first, previous, next, last),
         keyTab(noop),
@@ -131,6 +133,7 @@ export function createListbox(init?: Partial<Listbox>) {
       ),
       focusOnExpanded(store),
       reflectAriaActivedescendent(store),
+      reflectAriaMultiuselectable(store),
     ])
 
     return {
@@ -147,15 +150,31 @@ export function createListbox(init?: Partial<Listbox>) {
 
     update(options)
 
+    const value = state.items[state.items.length - 1].value
+
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
       setRole('option'),
       reflectAriaDisabled(store),
+      reflectAriaSelected(store, value),
       onDestroy(remove),
     ])
 
     return {
       update,
+      destroy,
+    }
+  }
+
+  function deselect(node: HTMLElement, value: any) {
+    const destroy = applyBehaviors(node, [
+      onClick((e) => {
+        set({ selected: state.selected.filter((selected: any) => selected !== value) })
+        e.stopImmediatePropagation()
+      }),
+    ])
+
+    return {
       destroy,
     }
   }
@@ -171,6 +190,7 @@ export function createListbox(init?: Partial<Listbox>) {
     button,
     items,
     item,
+    deselect,
     open,
     close,
     set,

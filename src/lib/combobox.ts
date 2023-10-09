@@ -4,7 +4,7 @@ import { reflectAriaControls, type Controllable } from './internal/aria-controls
 import { reflectAriaDisabled } from "./internal/aria-disabled";
 import { defaultExpanded, reflectAriaExpanded, type Expandable, focusOnClose } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
-import { defaultSelected, type Selectable } from "./internal/aria-selected";
+import { defaultSelected, reflectAriaMultiuselectable, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyEscape } from "./internal/key-escape";
 import { keyTabAllow } from "./internal/key-tab";
@@ -24,6 +24,7 @@ import { tick } from "svelte";
 import { getPrefix } from "./internal/utils";
 import { keyEnter } from "./internal/key-enter";
 import { keyNavigation } from "./internal/key-navigation";
+import { noop } from "./internal/noop";
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
@@ -46,6 +47,8 @@ export function createCombobox(init?: Partial<Combobox>) {
     filter: '',
     moved: false,
   }
+
+  state.multi = Array.isArray(state.selected)
 
   // wrap with store for reactivity
   const store = writable(state)
@@ -188,10 +191,11 @@ export function createCombobox(init?: Partial<Combobox>) {
       setRole('listbox'),
       setTabIndex(-1),
       onClickOutside(close, target => state.button?.contains(target)),
-      onClick(activate('[role="option"]', focusNode, select, close)),
+      onClick(activate('[role="option"]', focusNode, select, state.multi ? noop : close)),
       onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),
       reflectAriaActivedescendent(store),
+      reflectAriaMultiuselectable(store),
     ])
 
     return {
@@ -208,10 +212,13 @@ export function createCombobox(init?: Partial<Combobox>) {
 
     update(options)
 
+    const value = state.items[state.items.length - 1].value
+
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
       setRole('option'),
       reflectAriaDisabled(store),
+      reflectAriaSelected(store, value),
       onDestroy(remove),
     ])
 
