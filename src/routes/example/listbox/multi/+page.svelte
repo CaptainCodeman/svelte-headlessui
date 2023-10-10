@@ -66,7 +66,7 @@
 					{@const active = $listbox.active === value}
 					{@const selected = $listbox.selected.includes(value)}
 					<li
-						class="relative cursor-default select-none py-2 pl-4 pr-9 {active ? 'bg-orange-100 text-orange-900' : 'text-gray-900'}"
+						class="relative cursor-default select-none py-2 pl-4 pr-9 focus:outline-none {active ? 'bg-orange-100 text-orange-900' : 'text-gray-900'}"
 						use:listbox.item={{ value }}
 					>
 						<span class="block truncate {selected ? 'font-semibold' : 'font-normal'}">{value.name}</span>

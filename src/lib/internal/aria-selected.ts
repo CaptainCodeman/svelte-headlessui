@@ -14,8 +14,8 @@ export const defaultSelected: Selectable = {
 }
 
 export const setAriaSelected = setAriaAttributeBoolean('aria-selected')
-export const setAriaMultiuselectable = setAriaAttributeBoolean('aria-multiselectable')
+export const setAriaMultiselectable = setAriaAttributeBoolean('aria-multiselectable')
 
 export const reflectAriaSelected = (store: Readable<Selectable>, value: any): Behavior => node => derived(store, $store => $store.multi ? $store.selected.includes(value) : $store.selected === value).subscribe(setAriaSelected(node))
 
-export const reflectAriaMultiuselectable = (store: Readable<Selectable>): Behavior => node => derived(store, $store => $store.multi).subscribe(setAriaMultiuselectable(node))
+export const reflectAriaMultiselectable = (store: Readable<Selectable>): Behavior => node => derived(store, $store => $store.multi).subscribe(setAriaMultiselectable(node))

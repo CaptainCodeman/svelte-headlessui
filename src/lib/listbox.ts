@@ -4,7 +4,7 @@ import { reflectAriaControls, type Controllable } from './internal/aria-controls
 import { reflectAriaDisabled } from "./internal/aria-disabled";
 import { defaultExpanded, focusOnClose, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
-import { defaultSelected, reflectAriaMultiuselectable, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
+import { defaultSelected, reflectAriaMultiselectable, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
@@ -133,7 +133,7 @@ export function createListbox(init?: Partial<Listbox>) {
       ),
       focusOnExpanded(store),
       reflectAriaActivedescendent(store),
-      reflectAriaMultiuselectable(store),
+      reflectAriaMultiselectable(store),
     ])
 
     return {
@@ -170,6 +170,7 @@ export function createListbox(init?: Partial<Listbox>) {
     const destroy = applyBehaviors(node, [
       onClick((e) => {
         set({ selected: state.selected.filter((selected: any) => selected !== value) })
+        // TODO: raise event for changed selection
         e.stopImmediatePropagation()
       }),
     ])

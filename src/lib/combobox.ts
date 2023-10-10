@@ -4,7 +4,7 @@ import { reflectAriaControls, type Controllable } from './internal/aria-controls
 import { reflectAriaDisabled } from "./internal/aria-disabled";
 import { defaultExpanded, reflectAriaExpanded, type Expandable, focusOnClose } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
-import { defaultSelected, reflectAriaMultiuselectable, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
+import { defaultSelected, reflectAriaMultiselectable, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyEscape } from "./internal/key-escape";
 import { keyTabAllow } from "./internal/key-tab";
@@ -195,7 +195,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       onPointerMoveChild('[role="option"]', focusNode),
       onPointerOut(none),
       reflectAriaActivedescendent(store),
-      reflectAriaMultiuselectable(store),
+      reflectAriaMultiselectable(store),
     ])
 
     return {
