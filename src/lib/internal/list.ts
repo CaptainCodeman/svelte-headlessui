@@ -9,6 +9,7 @@ export interface ItemOptions {
 
 export interface ListItem {
   id: string
+  node: HTMLElement
   text: string
   value: any
   disabled: boolean
@@ -125,7 +126,7 @@ export const getUpdater = (node: HTMLElement, getState: () => List, setState: (p
     if (item.text === values.text && item.value === values.value && item.disabled === values.disabled) return
     Object.assign(item, values)
   } else {
-    state.items.push({ id: node.id, ...values })
+    state.items.push({ id: node.id, node, ...values })
   }
   setState({ items: state.items })
 }

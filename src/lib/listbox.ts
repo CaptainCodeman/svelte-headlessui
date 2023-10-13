@@ -60,7 +60,15 @@ export function createListbox(init?: Partial<Listbox>) {
   const toggle = () => state.expanded ? close() : open()
 
   // set focused (active) item only if changed
-  const focus = (active: number) => state.active !== active && set({ active })
+  const focus = (active: number) => {
+    if (state.active !== active) {
+      set({ active })
+      const item = state.items[active]
+      if (item) {
+        item.node.scrollIntoView({ block: 'nearest' })
+      }
+    }
+  }
 
   // set focus (active) to first
   const first = () => focus(firstActive(state))
@@ -123,7 +131,6 @@ export function createListbox(init?: Partial<Listbox>) {
       onClickOutside(() => [state.button, node], close),
       onClick(activate('[role="option"]', focusNode, select, state.multi ? noop : close)),
       onPointerMoveChild('[role="option"]', focusNode),
-      onPointerOut(none),
       onKeydown(
         keySpaceEnter(select, state.multi ? noop : close),
         keyEscape(close),
