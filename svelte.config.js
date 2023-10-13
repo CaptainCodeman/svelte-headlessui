@@ -9,7 +9,8 @@ const config = {
 
 	kit: {
 		alias: {
-			'$docs': './src/docs',
+			$docs: './src/docs',
+			$icons: './src/icons',
 			'svelte-headlessui': './src/lib',
 		},
 

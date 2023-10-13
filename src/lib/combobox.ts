@@ -4,7 +4,7 @@ import { reflectAriaControls, type Controllable } from './internal/aria-controls
 import { reflectAriaDisabled } from "./internal/aria-disabled";
 import { defaultExpanded, reflectAriaExpanded, type Expandable, focusOnClose } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
-import { defaultSelected, type Selectable } from "./internal/aria-selected";
+import { defaultSelected, reflectAriaMultiselectable, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyEscape } from "./internal/key-escape";
 import { keyTabAllow } from "./internal/key-tab";
@@ -24,6 +24,7 @@ import { tick } from "svelte";
 import { getPrefix } from "./internal/utils";
 import { keyEnter } from "./internal/key-enter";
 import { keyNavigation } from "./internal/key-navigation";
+import { noop } from "./internal/noop";
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
@@ -47,6 +48,8 @@ export function createCombobox(init?: Partial<Combobox>) {
     moved: false,
   }
 
+  state.multi = Array.isArray(state.selected)
+
   // wrap with store for reactivity
   const store = writable(state)
 
@@ -64,7 +67,13 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   // set focused (active) item only if changed
   const focus = (active: number, expand = false) => {
-    state.active !== active && set({ expanded: state.expanded || expand, active })
+    if (state.active !== active) {
+      set({ expanded: state.expanded || expand, active })
+      const item = state.items[active]
+      if (item) {
+        item.node.scrollIntoView({ block: 'nearest' })
+      }
+    }
   }
 
   // set focus (active) to first
@@ -82,9 +91,6 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   // set focus (active) to last
   const last = () => focus(lastActive(state), true)
-
-  // clear focus
-  const none = () => focus(-1)
 
   const reset = () => {
     set({ filter: '', expanded: false })
@@ -141,7 +147,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       reflectAriaControls(store),
       reflectSelectedValueOnClose(store, item => item?.name),
       onKeydown(
-        keyEnter(select, toggle),
+        keyEnter(select, state.multi ? noop : toggle),
         keyEscape(close),
         keyNavigation(first, previous, next, last),
         keyTabAllow(select, close),
@@ -187,11 +193,11 @@ export function createCombobox(init?: Partial<Combobox>) {
     const destroy = applyBehaviors(node, [
       setRole('listbox'),
       setTabIndex(-1),
-      onClickOutside(close, target => state.button?.contains(target)),
-      onClick(activate('[role="option"]', focusNode, select, close)),
+      onClickOutside(() => [state.button, node], close),
+      onClick(activate('[role="option"]', focusNode, select, state.multi ? noop : close)),
       onPointerMoveChild('[role="option"]', focusNode),
-      onPointerOut(none),
       reflectAriaActivedescendent(store),
+      reflectAriaMultiselectable(store),
     ])
 
     return {
@@ -208,15 +214,32 @@ export function createCombobox(init?: Partial<Combobox>) {
 
     update(options)
 
+    const value = state.items[state.items.length - 1].value
+
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
       setRole('option'),
       reflectAriaDisabled(store),
+      reflectAriaSelected(store, value),
       onDestroy(remove),
     ])
 
     return {
       update,
+      destroy,
+    }
+  }
+
+  function deselect(node: HTMLElement, value: any) {
+    const destroy = applyBehaviors(node, [
+      onClick((e) => {
+        set({ selected: state.selected.filter((selected: any) => selected !== value) })
+        // TODO: raise event for changed selection
+        e.stopImmediatePropagation()
+      }),
+    ])
+
+    return {
       destroy,
     }
   }
@@ -233,6 +256,7 @@ export function createCombobox(init?: Partial<Combobox>) {
     button,
     items,
     item,
+    deselect,
     reset,
     open,
     close,

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createCombobox } from 'svelte-headlessui'
 	import Transition from 'svelte-transition'
-	import Selector from './Selector.svelte'
-	import Check from './Check.svelte'
+	import Selector from '$icons/Selector.svelte'
+	import Check from '$icons/Check.svelte'
 	import { onMount } from 'svelte'
 
 	// prettier-ignore
@@ -15,7 +15,7 @@
     { name: 'Hellen Schmidt' },
   ]
 
-	const combobox = createCombobox({ label: 'Actions', selected: people[2] })
+	const combobox = createCombobox({ label: 'People', selected: people[2] })
 	onMount(combobox.open)
 
 	function onSelect(e: Event) {

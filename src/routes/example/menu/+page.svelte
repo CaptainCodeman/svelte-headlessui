@@ -2,12 +2,12 @@
 	import { onMount } from 'svelte'
 	import { createMenu } from 'svelte-headlessui'
 	import Transition from 'svelte-transition'
-	import Archive from './Archive.svelte'
-	import ChevronDown from './ChevronDown.svelte'
-	import Delete from './Delete.svelte'
-	import Duplicate from './Duplicate.svelte'
-	import Edit from './Edit.svelte'
-	import Move from './Move.svelte'
+	import Archive from '$icons/Archive.svelte'
+	import ChevronDown from '$icons/ChevronDown.svelte'
+	import Delete from '$icons/Delete.svelte'
+	import Duplicate from '$icons/Duplicate.svelte'
+	import Edit from '$icons/Edit.svelte'
+	import Move from '$icons/Move.svelte'
 
 	const menu = createMenu({ label: 'Actions' })
 	onMount(menu.open)

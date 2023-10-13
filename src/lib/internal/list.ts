@@ -1,3 +1,4 @@
+import type { Selectable } from "./aria-selected"
 import type { Behavior } from "./behavior"
 import type { Callable } from "./callable"
 
@@ -8,6 +9,7 @@ export interface ItemOptions {
 
 export interface ListItem {
   id: string
+  node: HTMLElement
   text: string
   value: any
   disabled: boolean
@@ -42,9 +44,15 @@ export const activate = (selector: string, focus: (node: HTMLElement | null) => 
   actions.forEach(action => action())
 }
 
-export function onSelect(state: List, node?: HTMLElement) {
+export function onSelect(state: List & Selectable, node?: HTMLElement) {
   if (state.active === -1 || state.items[state.active].disabled) return {}
-  const selected = active(state)
+  // set selected item, if in multi-select mode toggle selection
+  const value = active(state)
+  const selected = state.multi
+    ? state.selected.includes(value)
+      ? state.selected.filter((selected: any) => selected !== value)
+      : [...state.selected, value]
+    : value
   if (node) {
     const event = new CustomEvent('select', {
       detail: {
@@ -118,7 +126,7 @@ export const getUpdater = (node: HTMLElement, getState: () => List, setState: (p
     if (item.text === values.text && item.value === values.value && item.disabled === values.disabled) return
     Object.assign(item, values)
   } else {
-    state.items.push({ id: node.id, ...values })
+    state.items.push({ id: node.id, node, ...values })
   }
   setState({ items: state.items })
 }

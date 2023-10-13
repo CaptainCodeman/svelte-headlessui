@@ -4,7 +4,7 @@ import { reflectAriaControls, type Controllable } from './internal/aria-controls
 import { reflectAriaDisabled } from "./internal/aria-disabled";
 import { defaultExpanded, focusOnClose, focusOnExpanded, reflectAriaExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
-import { defaultSelected, type Selectable } from "./internal/aria-selected";
+import { defaultSelected, reflectAriaMultiselectable, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors } from "./internal/behavior";
 import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
@@ -42,6 +42,8 @@ export function createListbox(init?: Partial<Listbox>) {
     ...init,
   }
 
+  state.multi = Array.isArray(state.selected)
+
   // wrap with store for reactivity
   const store = writable(state)
 
@@ -58,7 +60,15 @@ export function createListbox(init?: Partial<Listbox>) {
   const toggle = () => state.expanded ? close() : open()
 
   // set focused (active) item only if changed
-  const focus = (active: number) => state.active !== active && set({ active })
+  const focus = (active: number) => {
+    if (state.active !== active) {
+      set({ active })
+      const item = state.items[active]
+      if (item) {
+        item.node.scrollIntoView({ block: 'nearest' })
+      }
+    }
+  }
 
   // set focus (active) to first
   const first = () => focus(firstActive(state))
@@ -71,9 +81,6 @@ export function createListbox(init?: Partial<Listbox>) {
 
   // set focus (active) to last
   const last = () => focus(lastActive(state))
-
-  // clear focus
-  const none = () => focus(-1)
 
   const search = getSearch(() => state, focus)
 
@@ -118,12 +125,11 @@ export function createListbox(init?: Partial<Listbox>) {
     const destroy = applyBehaviors(node, [
       setRole('listbox'),
       setTabIndex(0),
-      onClickOutside(close, target => state.button?.contains(target)),
-      onClick(activate('[role="option"]', focusNode, select, close)),
+      onClickOutside(() => [state.button, node], close),
+      onClick(activate('[role="option"]', focusNode, select, state.multi ? noop : close)),
       onPointerMoveChild('[role="option"]', focusNode),
-      onPointerOut(none),
       onKeydown(
-        keySpaceEnter(select, close),
+        keySpaceEnter(select, state.multi ? noop : close),
         keyEscape(close),
         keyNavigation(first, previous, next, last),
         keyTab(noop),
@@ -131,6 +137,7 @@ export function createListbox(init?: Partial<Listbox>) {
       ),
       focusOnExpanded(store),
       reflectAriaActivedescendent(store),
+      reflectAriaMultiselectable(store),
     ])
 
     return {
@@ -147,15 +154,32 @@ export function createListbox(init?: Partial<Listbox>) {
 
     update(options)
 
+    const value = state.items[state.items.length - 1].value
+
     const destroy = applyBehaviors(node, [
       setTabIndex(-1),
       setRole('option'),
       reflectAriaDisabled(store),
+      reflectAriaSelected(store, value),
       onDestroy(remove),
     ])
 
     return {
       update,
+      destroy,
+    }
+  }
+
+  function deselect(node: HTMLElement, value: any) {
+    const destroy = applyBehaviors(node, [
+      onClick((e) => {
+        set({ selected: state.selected.filter((selected: any) => selected !== value) })
+        // TODO: raise event for changed selection
+        e.stopImmediatePropagation()
+      }),
+    ])
+
+    return {
       destroy,
     }
   }
@@ -171,6 +195,7 @@ export function createListbox(init?: Partial<Listbox>) {
     button,
     items,
     item,
+    deselect,
     open,
     close,
     set,

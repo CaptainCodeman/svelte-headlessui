@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { createPopover } from 'svelte-headlessui'
-	import ChevronDown from './ChevronDown.svelte'
-	import IconOne from './IconOne.svelte'
-	import IconTwo from './IconTwo.svelte'
-	import IconThree from './IconThree.svelte'
+	import ChevronDown from '$icons/ChevronDown.svelte'
+	import IconOne from '$icons/IconOne.svelte'
+	import IconTwo from '$icons/IconTwo.svelte'
+	import IconThree from '$icons/IconThree.svelte'
 	import Transition from 'svelte-transition'
 	import { onMount } from 'svelte'
 
