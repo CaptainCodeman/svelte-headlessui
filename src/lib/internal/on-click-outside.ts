@@ -1,28 +1,30 @@
 import type { Behavior } from "./behavior"
 import { listener } from "./events"
 
-export function onClickOutside(fn: (event: Event) => void, preventPropagation?: (target: Node) => boolean | undefined): Behavior {
-  return node => {
+export function onClickOutside(getContainers: () => (HTMLElement | undefined)[], fn: (event: Event) => void): Behavior {
+  return () => {
     let initial: Node | null = null
 
     function handler(event: Event) {
-      if ((event as PointerEvent).pointerType === '') return // ignore space as click
-      if (initial && !node.contains(initial)) {
-        if (node.clientWidth) {
-          if (preventPropagation) {
-            // prevent event propagation if clicked element is contained within specified elements
-            // this is to avoid clicking a menu button, which is outside the menu list, and having
-            // the menu close and then immediately re-open (one example)
-            if (event.target instanceof Node) {
-              if (preventPropagation(event.target)) {
-                event.stopImmediatePropagation()
-              }
-            }
-          }
-          event.preventDefault()
-          fn(event)
+      // ignore space as click
+      if ((event as PointerEvent).pointerType === '') return
+
+      // ignore non-primary clicks
+      if (!initial) return
+
+      // get container nodes that we care about being outside of
+      const containers = getContainers().filter(node => node) as HTMLElement[]
+
+      // bail if we're inside one of the containers (i.e. it's not a click outside)
+      for (const node of containers) {
+        if (node.contains(initial)) {
+          return
         }
       }
+
+      fn(event)
+      event.preventDefault()
+
       initial = null
     }
 

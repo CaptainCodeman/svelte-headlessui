@@ -40,7 +40,7 @@ export function createDialog(init?: Partial<Dialog>) {
       reflectAriaModal(store),
       reflectAriaLabel(store),
       trapFocusOnOpen(store),
-      onClickOutside(close),
+      onClickOutside(() => [node], close),
       onKeydown(
         keyEscape(close),
       )

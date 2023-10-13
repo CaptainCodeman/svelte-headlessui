@@ -72,7 +72,7 @@ export function createPopover(init?: Partial<Popover>) {
 
     const destroy = applyBehaviors(node, [
       setRole('menu'),
-      onClickOutside(close, target => state.button?.contains(target)),
+      onClickOutside(() => [state.button, node], close),
       focusOnExpanded(store),
     ])
 
