@@ -41,9 +41,9 @@
 					{#each $listbox.selected as selected (selected.id) }
 					<span class="flex items-center gap-1 rounded bg-orange-50 px-2 py-0.5">
 						<span>{selected.name}</span>
-						<button use:listbox.deselect={selected}>
+						<div use:listbox.deselect={selected}>
 							<Deselect />
-						</button>
+						</div>
 					</span>
 					{:else}
 					<span class="flex items-center gap-1 rounded px-2 py-0.5">
