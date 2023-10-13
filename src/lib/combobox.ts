@@ -67,7 +67,13 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   // set focused (active) item only if changed
   const focus = (active: number, expand = false) => {
-    state.active !== active && set({ expanded: state.expanded || expand, active })
+    if (state.active !== active) {
+      set({ expanded: state.expanded || expand, active })
+      const item = state.items[active]
+      if (item) {
+        item.node.scrollIntoView({ block: 'nearest' })
+      }
+    }
   }
 
   // set focus (active) to first
@@ -85,9 +91,6 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   // set focus (active) to last
   const last = () => focus(lastActive(state), true)
-
-  // clear focus
-  const none = () => focus(-1)
 
   const reset = () => {
     set({ filter: '', expanded: false })
@@ -144,7 +147,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       reflectAriaControls(store),
       reflectSelectedValueOnClose(store, item => item?.name),
       onKeydown(
-        keyEnter(select, toggle),
+        keyEnter(select, state.multi ? noop : toggle),
         keyEscape(close),
         keyNavigation(first, previous, next, last),
         keyTabAllow(select, close),
@@ -193,7 +196,6 @@ export function createCombobox(init?: Partial<Combobox>) {
       onClickOutside(() => [state.button, node], close),
       onClick(activate('[role="option"]', focusNode, select, state.multi ? noop : close)),
       onPointerMoveChild('[role="option"]', focusNode),
-      onPointerOut(none),
       reflectAriaActivedescendent(store),
       reflectAriaMultiselectable(store),
     ])
@@ -228,6 +230,20 @@ export function createCombobox(init?: Partial<Combobox>) {
     }
   }
 
+  function deselect(node: HTMLElement, value: any) {
+    const destroy = applyBehaviors(node, [
+      onClick((e) => {
+        set({ selected: state.selected.filter((selected: any) => selected !== value) })
+        // TODO: raise event for changed selection
+        e.stopImmediatePropagation()
+      }),
+    ])
+
+    return {
+      destroy,
+    }
+  }
+
   // expose a subset of our state, derive the selected value
   const { subscribe } = derived(store, $state => {
     const { expanded, selected, filter } = $state
@@ -240,6 +256,7 @@ export function createCombobox(init?: Partial<Combobox>) {
     button,
     items,
     item,
+    deselect,
     reset,
     open,
     close,

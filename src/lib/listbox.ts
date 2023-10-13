@@ -82,9 +82,6 @@ export function createListbox(init?: Partial<Listbox>) {
   // set focus (active) to last
   const last = () => focus(lastActive(state))
 
-  // clear focus
-  const none = () => focus(-1)
-
   const search = getSearch(() => state, focus)
 
   // set the focus based on the HTMLElement passed which will be a menuitem element or null

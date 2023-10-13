@@ -15,7 +15,7 @@
     { name: 'Hellen Schmidt' },
   ]
 
-	const combobox = createCombobox({ label: 'Actions', selected: people[2] })
+	const combobox = createCombobox({ label: 'People', selected: people[2] })
 	onMount(combobox.open)
 
 	function onSelect(e: Event) {
