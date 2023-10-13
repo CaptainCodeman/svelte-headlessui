@@ -20,7 +20,6 @@
 		{ id: 10, name: 'Emil Schaefer' },
 	]
 
-	// TODO: type list so 'selected' isn't 'any'
 	const listbox = createListbox({ label: 'Actions', selected: [people[2], people[3]] })
 	onMount(listbox.open)
 
@@ -29,7 +28,7 @@
 	}
 </script>
 
-<div class="fixed top-16 w-full max-w-4xl px-4">
+<div class="fixed top-12 w-full max-w-4xl px-4">
 	<div class="relative mt-1">
 		<span class="inline-block w-full rounded-md shadow-sm">
 			<button

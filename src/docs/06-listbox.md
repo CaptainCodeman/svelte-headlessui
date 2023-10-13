@@ -134,7 +134,7 @@ Pass an array to the `selected` property of `createListbox` to trigger multi-sel
 	}
 </script>
 
-<div class="fixed top-16 w-full max-w-4xl px-4">
+<div class="fixed top-12 w-full max-w-4xl px-4">
 	<div class="relative mt-1">
 		<span class="inline-block w-full rounded-md shadow-sm">
 			<button
@@ -146,9 +146,9 @@ Pass an array to the `selected` property of `createListbox` to trigger multi-sel
 					{#each $listbox.selected as selected (selected.id) }
 					<span class="flex items-center gap-1 rounded bg-orange-50 px-2 py-0.5">
 						<span>{selected.name}</span>
-						<button use:listbox.deselect={selected}>
+						<div use:listbox.deselect={selected}>
 							<Deselect />
-						</button>
+						</div>
 					</span>
 					{:else}
 					<span class="flex items-center gap-1 rounded px-2 py-0.5">
@@ -171,7 +171,7 @@ Pass an array to the `selected` property of `createListbox` to trigger multi-sel
 					{@const active = $listbox.active === value}
 					{@const selected = $listbox.selected.includes(value)}
 					<li
-						class="relative cursor-default select-none py-2 pl-4 pr-9 {active ? 'bg-orange-100 text-orange-900' : 'text-gray-900'}"
+						class="relative cursor-default select-none py-2 pl-4 pr-9 focus:outline-none {active ? 'bg-orange-100 text-orange-900' : 'text-gray-900'}"
 						use:listbox.item={{ value }}
 					>
 						<span class="block truncate {selected ? 'font-semibold' : 'font-normal'}">{value.name}</span>
@@ -186,4 +186,5 @@ Pass an array to the `selected` property of `createListbox` to trigger multi-sel
 		</Transition>
 	</div>
 </div>
+
 ```
