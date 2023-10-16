@@ -25,6 +25,7 @@ import { getPrefix } from "./internal/utils";
 import { keyEnter } from "./internal/key-enter";
 import { keyNavigation } from "./internal/key-navigation";
 import { noop } from "./internal/noop";
+import { keyBackspace, keyBackspaceAllow } from "./internal/key-backspace";
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
@@ -82,17 +83,25 @@ export function createCombobox(init?: Partial<Combobox>) {
   const first = () => focus(firstActive(state), true)
 
   // set focus (active) to selected or previous
-  const previous = () => focus(state.active === -1
+  const previous = () => focus(state.active === -1 && (!state.multi || state.selected.length > 0)
     ? state.items.findIndex(x => x.value === (state.multi ? state.selected[state.selected.length - 1] : state.selected))
     : previousActive(state), true)
 
   // set focus (active) to selected or next
-  const next = () => focus(state.active === -1
+  const next = () => focus(state.active === -1 && (!state.multi || state.selected.length > 0)
     ? state.items.findIndex(x => x.value === (state.multi ? state.selected[0] : state.selected))
     : nextActive(state), true)
 
   // set focus (active) to last
   const last = () => focus(lastActive(state), true)
+
+  // delete left on backspace if multi-select and no input
+  const del = () => {
+    if (state.multi && state.filter === '') {
+      set({ selected: state.selected.slice(0, state.selected.length - 1) })
+      set({ active: (state.items.findIndex(x => x.value === state.selected[state.selected.length - 1])) } )
+    }
+  }
 
   const reset = () => {
     set({ filter: '', expanded: false })
@@ -153,6 +162,7 @@ export function createCombobox(init?: Partial<Combobox>) {
         keyEscape(close),
         keyNavigation(first, previous, next, last),
         keyTabAllow(select, close),
+        keyBackspaceAllow(del)
       ),
       onInput(filter),
       focusOnClose(store),
