@@ -99,7 +99,7 @@ export function createCombobox(init?: Partial<Combobox>) {
   const del = () => {
     if (state.multi && state.filter === '') {
       set({ selected: state.selected.slice(0, state.selected.length - 1) })
-      set({ active: (state.items.findIndex(x => x.value === state.selected[state.selected.length - 1])) } )
+      focus(state.items.findIndex(x => x.value === state.selected[state.selected.length - 1]))
     }
   }
 
