@@ -68,7 +68,9 @@ export function createCombobox(init?: Partial<Combobox>) {
   // set focused (active) item only if changed
   const focus = (active: number, expand = false) => {
     if (state.active !== active) {
-      set({ expanded: state.expanded || expand, active })
+      const expanded = state.expanded || expand
+      const opened = state.opened || expand
+      set({ expanded, opened, active })
       const item = state.items[active]
       if (item) {
         item.node.scrollIntoView({ block: 'nearest' })
@@ -81,12 +83,12 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   // set focus (active) to selected or previous
   const previous = () => focus(state.active === -1
-    ? state.items.findIndex(x => x.value === state.selected)
+    ? state.items.findIndex(x => x.value === (state.multi ? state.selected[state.selected.length - 1] : state.selected))
     : previousActive(state), true)
 
   // set focus (active) to selected or next
   const next = () => focus(state.active === -1
-    ? state.items.findIndex(x => x.value === state.selected)
+    ? state.items.findIndex(x => x.value === (state.multi ? state.selected[0] : state.selected))
     : nextActive(state), true)
 
   // set focus (active) to last
