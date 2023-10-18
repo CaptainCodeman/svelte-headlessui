@@ -74,10 +74,10 @@
   "devDependencies": {
     "@playwright/test": "^1.39.0",
     "@sveltejs/adapter-static": "^2.0.3",
-    "@sveltejs/kit": "^1.25.2",
+    "@sveltejs/kit": "^1.26.0",
     "@tailwindcss/forms": "^0.5.6",
     "@tailwindcss/typography": "^0.5.10",
-    "@types/node": "^20.8.6",
+    "@types/node": "^20.8.7",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "autoprefixer": "^10.4.16",
@@ -97,6 +97,6 @@
     "tslib": "^2.6.2",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2",
-    "vite": "^4.4.11"
+    "vite": "^4.5.0"
   }
 }
