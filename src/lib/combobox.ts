@@ -107,6 +107,8 @@ export function createCombobox(init?: Partial<Combobox>) {
     set({ filter: '', expanded: false })
   }
 
+  const setFocusToInput = () => state.input?.focus()
+
   const filter = async (value: string) => {
     // current active item
     const current = state.active === -1
@@ -187,7 +189,6 @@ export function createCombobox(init?: Partial<Combobox>) {
       reflectAriaControls(store),
       onClick(toggle),
       node => {
-        const setFocusToInput = () => state.input?.focus()
         node.addEventListener('focus', setFocusToInput)
         return () => node.removeEventListener('focus', setFocusToInput)
       }
@@ -206,7 +207,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       setRole('listbox'),
       setTabIndex(-1),
       onClickOutside(() => [state.button, node], close),
-      onClick(activate('[role="option"]', focusNode, select, state.multi ? noop : close)),
+      onClick(activate('[role="option"]', focusNode, select, state.multi ? setFocusToInput : close)),
       onPointerMoveChild('[role="option"]', focusNode),
       reflectAriaActivedescendent(store),
       reflectAriaMultiselectable(store),
