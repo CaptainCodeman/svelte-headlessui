@@ -33,8 +33,8 @@ But also:
 - ✅ Designed to integrate easily with Svelte and SvelteKit
 - ✅ Only 14kB minified / 4kB minified + gzipped
 
-![minified](https://img.shields.io/bundlephobia/min/svelte-headlessui/0.0.28?style=for-the-badge)
-![minified zipped](https://img.shields.io/bundlephobia/minzip/svelte-headlessui/0.0.28?style=for-the-badge)
+![minified](https://img.shields.io/bundlephobia/min/svelte-headlessui/0.0.29?style=for-the-badge)
+![minified zipped](https://img.shields.io/bundlephobia/minzip/svelte-headlessui/0.0.29?style=for-the-badge)
 
 ## Installation
 
