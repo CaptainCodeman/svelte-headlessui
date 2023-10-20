@@ -23,7 +23,6 @@ export function onClickOutside(getContainers: () => (HTMLElement | undefined)[],
       }
 
       fn(event)
-      event.preventDefault()
 
       initial = null
     }

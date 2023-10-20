@@ -167,6 +167,7 @@ export function createCombobox(init?: Partial<Combobox>) {
         keyBackspaceAllow(del)
       ),
       onInput(filter),
+      onClick(toggle),
       focusOnClose(store),
     ])
 
@@ -206,7 +207,7 @@ export function createCombobox(init?: Partial<Combobox>) {
     const destroy = applyBehaviors(node, [
       setRole('listbox'),
       setTabIndex(-1),
-      onClickOutside(() => [state.button, node], close),
+      onClickOutside(() => [state.input, state.button, node], close),
       onClick(activate('[role="option"]', focusNode, select, state.multi ? setFocusToInput : close)),
       onPointerMoveChild('[role="option"]', focusNode),
       reflectAriaActivedescendent(store),
