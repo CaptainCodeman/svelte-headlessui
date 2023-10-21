@@ -1,4 +1,4 @@
-import { derived, writable } from "svelte/store";
+import { derived, writable } from "./internal/store";
 import { defaultCheckable, reflectAriaChecked, type Checkable } from "./internal/aria-checked";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { applyBehaviors } from "./internal/behavior";

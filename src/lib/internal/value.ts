@@ -1,5 +1,5 @@
 import type { Behavior } from "./behavior"
-import { derived, type Readable } from 'svelte/store'
+import { derived, type Readable } from './store'
 import type { Selectable } from "./aria-selected"
 import type { Expandable } from "./aria-expanded"
 

@@ -1,4 +1,4 @@
-import { derived, type Readable } from 'svelte/store'
+import { derived, type Readable } from './store'
 import { setAriaAttributeString } from './aria-attribute'
 import type { Behavior } from './behavior'
 import type { List } from './list'

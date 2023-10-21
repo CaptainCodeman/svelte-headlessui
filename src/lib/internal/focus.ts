@@ -1,4 +1,4 @@
-import { derived, type Readable } from "svelte/store"
+import { derived, type Readable } from "./store"
 import { Tab } from "./keys"
 import type { Expandable } from "./aria-expanded"
 import type { Behavior } from "./behavior"

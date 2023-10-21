@@ -1,4 +1,4 @@
-import { derived, writable } from "svelte/store";
+import { derived, writable } from "./internal/store";
 import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
 import { reflectAriaDisabled } from "./internal/aria-disabled";

@@ -1,4 +1,4 @@
-import type { Writable } from "svelte/store"
+import type { Writable } from "./store"
 import { isCharacter } from "./is-character"
 import type { KeyHandler } from "./key-handler"
 import type { List } from "./list"

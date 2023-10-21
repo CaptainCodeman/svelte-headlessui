@@ -1,4 +1,4 @@
-import { derived, writable } from "svelte/store";
+import { derived, writable } from "./internal/store";
 import { defaultExpanded, type Expandable } from "./internal/aria-expanded";
 import { reflectAriaModal } from "./internal/aria-modal";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
