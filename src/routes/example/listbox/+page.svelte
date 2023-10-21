@@ -20,7 +20,7 @@
 	onMount(listbox.open)
 
 	function onSelect(e: Event) {
-		console.log('select', (e as CustomEvent).detail)
+		console.log('select', (e as CustomEvent).detail.selected)
 	}
 </script>
 

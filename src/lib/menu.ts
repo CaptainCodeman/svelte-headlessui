@@ -10,7 +10,7 @@ import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { activate, active, defaultList, firstActive, getFocuser, getSearch, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
+import { activate, active, defaultList, firstActive, getFocuser, getSearch, getUpdater, lastActive, nextActive, onDestroy, selectActive, previousActive, removeItem, type ItemOptions, type List, raiseSelectOnChange } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -72,7 +72,7 @@ export function createMenu(init?: Partial<Menu>) {
   // set focus (active) to last
   const last = () => focus(lastActive(state), true)
 
-  const select = () => set(onSelect(state, state.button))
+  const select = () => set(selectActive(state))
 
   // clear focus
   const none = () => focus(-1)
@@ -104,6 +104,7 @@ export function createMenu(init?: Partial<Menu>) {
         keyDown(first),
       ),
       focusOnClose(store),
+      raiseSelectOnChange(store),
     ])
 
     return {

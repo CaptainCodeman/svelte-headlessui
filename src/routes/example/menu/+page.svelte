@@ -13,7 +13,7 @@
 	onMount(menu.open)
 
 	function onSelect(e: Event) {
-		console.log('select', (e as CustomEvent).detail)
+		console.log('select', (e as CustomEvent).detail.selected)
 	}
 
 	// prettier-ignore

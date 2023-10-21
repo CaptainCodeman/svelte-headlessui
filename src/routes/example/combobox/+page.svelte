@@ -19,7 +19,7 @@
 	onMount(combobox.open)
 
 	function onSelect(e: Event) {
-		console.log('select', (e as CustomEvent).detail)
+		console.log('select', (e as CustomEvent).detail.selected)
 	}
 
 	$: filtered = people.filter(person => person.name.toLowerCase().replace(/\s+/g, '').includes($combobox.filter.toLowerCase().replace(/\s+/g, '')))

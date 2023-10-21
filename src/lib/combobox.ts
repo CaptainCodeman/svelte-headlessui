@@ -1,14 +1,14 @@
-import { derived, writable } from "./internal/store";
+import { derived, writable, type Readable } from "./internal/store";
 import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
 import { reflectAriaDisabled } from "./internal/aria-disabled";
 import { defaultExpanded, reflectAriaExpanded, type Expandable, focusOnClose } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { defaultSelected, reflectAriaMultiselectable, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
-import { applyBehaviors } from "./internal/behavior";
+import { applyBehaviors, type Behavior } from "./internal/behavior";
 import { keyEscape } from "./internal/key-escape";
 import { keyTabAllow } from "./internal/key-tab";
-import { activate, active, defaultList, firstActive, getFocuser, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
+import { activate, active, defaultList, firstActive, getFocuser, getUpdater, lastActive, nextActive, onDestroy, selectActive, previousActive, removeItem, type ItemOptions, type List, raiseSelectOnChange } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
 import { onClickOutside } from "./internal/on-click-outside";
@@ -145,7 +145,7 @@ export function createCombobox(init?: Partial<Combobox>) {
 
   const remove = (node: HTMLElement) => set(removeItem(state, node))
 
-  const select = () => set(onSelect(state, state.input))
+  const select = () => set(selectActive(state))
 
   function input(node: HTMLElement) {
     ensureID(node, prefix)
@@ -169,6 +169,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       onInput(filter),
       onClick(toggle),
       focusOnClose(store),
+      raiseSelectOnChange(store),
     ])
 
     return {

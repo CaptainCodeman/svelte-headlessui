@@ -10,7 +10,7 @@ import { keyCharacter } from "./internal/key-character";
 import { keyEscape } from "./internal/key-escape";
 import { keySpaceEnter } from "./internal/key-space-enter";
 import { keyTab } from "./internal/key-tab";
-import { activate, active, defaultList, firstActive, getFocuser, getSearch, getUpdater, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type ItemOptions, type List } from "./internal/list";
+import { activate, active, defaultList, firstActive, getFocuser, getSearch, getUpdater, lastActive, nextActive, onDestroy, selectActive, previousActive, removeItem, type ItemOptions, type List, raiseSelectOnChange } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
@@ -89,7 +89,7 @@ export function createListbox(init?: Partial<Listbox>) {
 
   const remove = (node: HTMLElement) => set(removeItem(state, node))
 
-  const select = () => set(onSelect(state, state.button))
+  const select = () => set(selectActive(state))
 
   // menubutton
   function button(node: HTMLElement) {
@@ -111,6 +111,7 @@ export function createListbox(init?: Partial<Listbox>) {
         keyDown(toggle),
       ),
       focusOnClose(store),
+      raiseSelectOnChange(store),
     ])
 
     return {

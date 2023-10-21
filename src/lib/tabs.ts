@@ -5,7 +5,7 @@ import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { defaultSelected, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
 import { applyBehaviors, type Behavior } from "./internal/behavior";
 import { keySpaceEnter } from "./internal/key-space-enter";
-import { activate, active, defaultList, firstActive, getFocuser, lastActive, nextActive, onDestroy, onSelect, previousActive, removeItem, type List, getUpdater, type ItemOptions } from "./internal/list";
+import { activate, active, defaultList, firstActive, getFocuser, lastActive, nextActive, onDestroy, selectActive, previousActive, removeItem, type List, getUpdater, type ItemOptions, raiseSelectOnChange } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
 import { onKeydown } from "./internal/on-keydown";
@@ -62,7 +62,7 @@ export function createTabs(init?: Partial<Tabs>) {
   // set focus (active) to last
   const last = () => focus(lastActive(state))
 
-  const select = () => set(onSelect(state, state.tabs[state.selected]))
+  const select = () => set(selectActive(state))
 
   // set the focus based on the HTMLElement passed which will be a tab element or null
   const focusNode = getFocuser(() => state, focus)
@@ -89,6 +89,7 @@ export function createTabs(init?: Partial<Tabs>) {
       ),
       reflectAriaActivedescendent(store),
       selectOnNavigate(store),
+      raiseSelectOnChange(store),
     ])
 
     return {

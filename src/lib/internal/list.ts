@@ -1,4 +1,4 @@
-import { derived, type Readable } from "./store"
+import { dedupe, derived, type Readable } from "./store"
 import type { Selectable } from "./aria-selected"
 import type { Behavior } from "./behavior"
 import type { Callable } from "./callable"
@@ -45,7 +45,18 @@ export const activate = (selector: string, focus: (node: HTMLElement | null) => 
   actions.forEach(action => action())
 }
 
-export function onSelect(state: List & Selectable, node?: HTMLElement) {
+export const raiseSelectOnChange = (store: Readable<Selectable>): Behavior => node => {
+  return dedupe(derived(store, $store => $store.selected)).subscribe(selected => {
+    const event = new CustomEvent('select', {
+      detail: {
+        selected,
+      }
+    })
+    node.dispatchEvent(event)
+  })
+}
+
+export function selectActive(state: List & Selectable) {
   if (state.active === -1 || state.items[state.active].disabled) return {}
   // set selected item, if in multi-select mode toggle selection
   const value = active(state)
@@ -54,14 +65,6 @@ export function onSelect(state: List & Selectable, node?: HTMLElement) {
       ? state.selected.filter((selected: any) => selected !== value)
       : [...state.selected, value]
     : value
-  if (node) {
-    const event = new CustomEvent('select', {
-      detail: {
-        selected,
-      }
-    })
-    node.dispatchEvent(event)
-  }
   return { selected }
 }
 
