@@ -1,11 +1,11 @@
-import { derived, writable, type Readable } from "./internal/store";
+import { derived, writable } from "./internal/store";
 import { reflectAriaActivedescendent } from "./internal/aria-activedescendent";
 import { reflectAriaControls, type Controllable } from './internal/aria-controls';
 import { reflectAriaDisabled } from "./internal/aria-disabled";
 import { defaultExpanded, reflectAriaExpanded, type Expandable, focusOnClose } from "./internal/aria-expanded";
 import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
 import { defaultSelected, reflectAriaMultiselectable, reflectAriaSelected, type Selectable } from "./internal/aria-selected";
-import { applyBehaviors, type Behavior } from "./internal/behavior";
+import { applyBehaviors } from "./internal/behavior";
 import { keyEscape } from "./internal/key-escape";
 import { keyTabAllow } from "./internal/key-tab";
 import { activate, active, defaultList, firstActive, getFocuser, getUpdater, lastActive, nextActive, onDestroy, selectActive, previousActive, removeItem, type ItemOptions, type List, raiseSelectOnChange } from "./internal/list";
@@ -14,7 +14,7 @@ import { onClick } from "./internal/on-click";
 import { onClickOutside } from "./internal/on-click-outside";
 import { onInput } from "./internal/on-input";
 import { onKeydown } from "./internal/on-keydown";
-import { onPointerMoveChild, onPointerOut } from "./internal/on-pointer-move";
+import { onPointerMoveChild } from "./internal/on-pointer-move";
 import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";
@@ -25,7 +25,7 @@ import { getPrefix } from "./internal/utils";
 import { keyEnter } from "./internal/key-enter";
 import { keyNavigation } from "./internal/key-navigation";
 import { noop } from "./internal/noop";
-import { keyBackspace, keyBackspaceAllow } from "./internal/key-backspace";
+import { keyBackspaceAllow } from "./internal/key-backspace";
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {

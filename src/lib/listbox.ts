@@ -16,7 +16,7 @@ import { noop } from "./internal/noop";
 import { onClick } from "./internal/on-click";
 import { onClickOutside } from "./internal/on-click-outside";
 import { onKeydown } from "./internal/on-keydown";
-import { onPointerMoveChild, onPointerOut } from "./internal/on-pointer-move";
+import { onPointerMoveChild } from "./internal/on-pointer-move";
 import { setHasPopup } from "./internal/set-has-popup";
 import { setRole } from "./internal/set-role";
 import { setTabIndex } from "./internal/set-tab-index";

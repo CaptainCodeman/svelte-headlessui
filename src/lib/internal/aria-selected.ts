@@ -4,7 +4,7 @@ import type { Behavior } from './behavior'
 
 // TODO: enforce that it has to extend list (?)
 export interface Selectable {
-  selected: any | any[]
+  selected: any
   multi: boolean
 }
 
