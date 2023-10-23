@@ -37,7 +37,7 @@ export const removeItem = (state: List, node: HTMLElement) => {
   }
 }
 
-export const active = (state: List) => state.active === -1 || state.items.length === 0 ? undefined : state.active >= state.items.length ? state.items[state.active] : state.items[state.active].value
+export const active = (state: List) => state.active === -1 || state.items.length === 0 ? undefined : state.active >= state.items.length ? state.items[state.active] : state.items[state.active]?.value
 
 export const activate = (selector: string, focus: (node: HTMLElement | null) => void, ...actions: Callable[]) => (event: Event) => {
   const el = (event.target as Element).closest(selector)
@@ -91,6 +91,20 @@ export const previousActive = (state: List) => {
   return state.active
 }
 
+export const previousActiveSelectable = (state: List & Selectable) => {
+  // make last selected item active
+  if (state.active === -1 && (!state.multi || state.selected.length > 0)) {
+    const index = state.items.findIndex(x => x.value === (state.multi ? state.selected[state.selected.length - 1] : state.selected))
+
+    // handles selected items being removed from available list (fallthrough to selecting last active item)
+    if (index > -1) {
+      return index
+    }
+  }
+
+  return previousActive(state)
+}
+
 // return index of next non-disabled item
 export const nextActive = (state: List) => {
   let x = state.active
@@ -100,6 +114,20 @@ export const nextActive = (state: List) => {
     }
   }
   return state.active
+}
+
+export const nextActiveSelectable = (state: List & Selectable) => {
+  // make first selected item active
+  if (state.active === -1 && (!state.multi || state.selected.length > 0)) {
+    const index = state.items.findIndex(x => x.value === (state.multi ? state.selected[0] : state.selected))
+
+    // handles selected items being removed from available list (fallthrough to selecting first active item
+    if (index > -1) {
+      return index
+    }
+  }
+
+  return nextActive(state)
 }
 
 // return index of next non-disabled item

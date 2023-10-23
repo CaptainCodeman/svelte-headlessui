@@ -8,7 +8,7 @@ import { defaultSelected, reflectAriaMultiselectable, reflectAriaSelected, type 
 import { applyBehaviors } from "./internal/behavior";
 import { keyEscape } from "./internal/key-escape";
 import { keyTabAllow } from "./internal/key-tab";
-import { activate, active, defaultList, firstActive, getFocuser, getUpdater, lastActive, nextActive, onDestroy, selectActive, previousActive, removeItem, type ItemOptions, type List, raiseSelectOnChange } from "./internal/list";
+import { activate, active, defaultList, firstActive, getFocuser, getUpdater, lastActive, nextActiveSelectable, onDestroy, selectActive, previousActiveSelectable, removeItem, type ItemOptions, type List, raiseSelectOnChange } from "./internal/list";
 import { ensureID } from "./internal/new-id";
 import { onClick } from "./internal/on-click";
 import { onClickOutside } from "./internal/on-click-outside";
@@ -58,7 +58,7 @@ export function createCombobox(init?: Partial<Combobox>) {
   const set = (part: Partial<Combobox>) => store.set(state = { ...state, ...part })
 
   // open the menu and set first item active
-  const open = () => set({ expanded: true, opened: true, active: state.items.findIndex(x => x.value === state.selected) })
+  const open = () => set({ expanded: true, opened: true, active: nextActiveSelectable(state) })
 
   // close the menu
   const close = () => set({ expanded: false, active: -1 })
@@ -83,14 +83,10 @@ export function createCombobox(init?: Partial<Combobox>) {
   const first = () => focus(firstActive(state), true)
 
   // set focus (active) to selected or previous
-  const previous = () => focus(state.active === -1 && (!state.multi || state.selected.length > 0)
-    ? state.items.findIndex(x => x.value === (state.multi ? state.selected[state.selected.length - 1] : state.selected))
-    : previousActive(state), true)
+  const previous = () => focus(previousActiveSelectable(state), true)
 
   // set focus (active) to selected or next
-  const next = () => focus(state.active === -1 && (!state.multi || state.selected.length > 0)
-    ? state.items.findIndex(x => x.value === (state.multi ? state.selected[0] : state.selected))
-    : nextActive(state), true)
+  const next = () => focus(nextActiveSelectable(state), true)
 
   // set focus (active) to last
   const last = () => focus(lastActive(state), true)
@@ -98,8 +94,13 @@ export function createCombobox(init?: Partial<Combobox>) {
   // delete left on backspace if multi-select and no input
   const del = () => {
     if (state.multi && state.filter === '') {
+      const value = state.selected[state.selected.length - 1]
       set({ selected: state.selected.slice(0, state.selected.length - 1) })
-      focus(state.items.findIndex(x => x.value === state.selected[state.selected.length - 1]))
+      // to support removing selected items from the list / refocusing when deleted
+      tick().then(() => {
+        let index = state.items.findIndex(x => x.value === value)
+        focus(index)
+      })
     }
   }
 
@@ -250,7 +251,6 @@ export function createCombobox(init?: Partial<Combobox>) {
     const destroy = applyBehaviors(node, [
       onClick((e) => {
         set({ selected: state.selected.filter((selected: any) => selected !== value) })
-        // TODO: raise event for changed selection
         e.stopImmediatePropagation()
       }),
     ])

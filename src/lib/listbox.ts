@@ -175,7 +175,6 @@ export function createListbox(init?: Partial<Listbox>) {
     const destroy = applyBehaviors(node, [
       onClick((e) => {
         set({ selected: state.selected.filter((selected: any) => selected !== value) })
-        // TODO: raise event for changed selection
         e.stopImmediatePropagation()
       }),
     ])
