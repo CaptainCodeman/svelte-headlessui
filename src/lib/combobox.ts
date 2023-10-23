@@ -167,7 +167,8 @@ export function createCombobox(init?: Partial<Combobox>) {
         keyBackspaceAllow(del)
       ),
       onInput(filter),
-      onClick(toggle),
+      // NOTE: button might be a container of the input, or sibling of the input, depending on multi-select
+      onClick(state.multi ? noop : toggle),
       focusOnClose(store),
       raiseSelectOnChange(store),
     ])
