@@ -74,7 +74,7 @@ export function createCombobox(init?: Partial<Combobox>) {
       set({ expanded, opened, active })
       const item = state.items[active]
       if (item) {
-        item.node.focus();
+        item.node.scrollIntoView({ block: 'nearest' })
       }
     }
   }
