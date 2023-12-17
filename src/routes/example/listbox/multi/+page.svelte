@@ -63,10 +63,10 @@
 			>
 				{#each people as value (value.id)}
 					<li
-						class="relative cursor-default select-none py-2 pl-4 pr-9 text-gray-900 focus:outline-none focus:bg-orange-100 focus:text-orange-900 group"
+						class="relative cursor-default select-none py-2 pl-4 pr-9 font-normal aria-selected:font-medium text-gray-900 focus:outline-none focus:bg-orange-100 focus:text-orange-900 group"
 						use:listbox.item={{ value }}
 					>
-						<span class="block truncate font-normal group-aria-selected:font-semibold">{value.name}</span>
+						<span class="block truncate">{value.name}</span>
 							<span class="absolute invisible group-aria-selected:visible inset-y-0 right-0 flex items-center pr-3 text-orange-600">
 								<Check class="h-5 w-5" />
 							</span>
