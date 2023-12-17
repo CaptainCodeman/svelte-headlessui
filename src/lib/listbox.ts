@@ -65,7 +65,7 @@ export function createListbox(init?: Partial<Listbox>) {
       set({ active })
       const item = state.items[active]
       if (item) {
-        item.node.scrollIntoView({ block: 'nearest' })
+        item.node.focus()
       }
     }
   }

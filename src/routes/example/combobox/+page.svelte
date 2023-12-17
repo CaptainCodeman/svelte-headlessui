@@ -54,18 +54,14 @@
 				class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 			>
 				{#each filtered as value}
-					{@const active = $combobox.active === value}
-					{@const selected = $combobox.selected === value}
 					<li
-						class="relative cursor-default select-none py-2 pl-10 pr-4 {active ? 'bg-teal-600 text-white' : 'text-gray-900'}"
+						class="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 focus:outline-none focus:bg-teal-600 focus:text-white group"
 						use:combobox.item={{ value }}
 					>
-						<span class="block truncate {selected ? 'font-medium' : 'font-normal'}">{value.name}</span>
-						{#if selected}
-							<span class="absolute inset-y-0 left-0 flex items-center pl-3 {active ? 'text-white' : 'text-teal-600'}">
-								<Check class="h-5 w-5" />
-							</span>
-						{/if}
+						<span class="block truncate font-normal group-aria-selected:font-medium">{value.name}</span>
+						<span class="absolute invisible group-aria-selected:visible inset-y-0 left-0 flex items-center pl-3 text-teal-600 group-focus:text-white">
+							<Check class="h-5 w-5" />
+						</span>
 					</li>
 				{:else}
 					<li class="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900">

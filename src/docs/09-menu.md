@@ -91,7 +91,7 @@ Menus offer an easy way to build custom, accessible dropdown components with rob
 								{@const active = $menu.active === option.text}
 								<button
 									use:menu.item
-									class="group flex rounded-md items-center w-full px-2 py-2 text-sm {active ? 'bg-violet-500 text-white' : 'text-gray-900'}"
+									class="group flex rounded-md items-center w-full px-2 py-2 text-sm text-gray-900 focus:outline-none focus:bg-violet-500 focus:text-white"
 								>
 									<svelte:component this={option.icon} class="w-5 h-5 mr-2" {active} />
 									{option.text}

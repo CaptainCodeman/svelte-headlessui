@@ -73,18 +73,14 @@ Listboxes are a great foundation for building custom, accessible select menus fo
 					class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 				>
 					{#each people as value, i}
-						{@const active = $listbox.active === value}
-						{@const selected = $listbox.selected === value}
 						<li
-							class="relative cursor-default select-none py-2 pl-10 pr-4 {active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'}"
+							class="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 focus:outline-none focus:bg-amber-100 focus:text-amber-900 group"
 							use:listbox.item={{ value }}
 						>
-							<span class="block truncate {selected ? 'font-medium' : 'font-normal'}">{value.name}</span>
-							{#if selected}
-								<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-									<Check class="h-5 w-5" />
-								</span>
-							{/if}
+							<span class="block truncate font-normal group-aria-selected:font-medium">{value.name}</span>
+							<span class="absolute invisible group-aria-selected:visible inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+								<Check class="h-5 w-5" />
+							</span>
 						</li>
 					{/each}
 				</ul>
