@@ -63,8 +63,8 @@ devDependencies:
     specifier: ^3.6.2
     version: 3.6.2(postcss-load-config@5.0.2)(postcss@8.4.32)(svelte@4.2.8)
   svelte-doc-kit:
-    specifier: ^0.0.7
-    version: 0.0.7(@sveltejs/kit@2.0.1)(highlight.js@11.9.0)(svelte@4.2.8)(typescript@5.3.3)
+    specifier: ^0.0.9
+    version: 0.0.9(@sveltejs/kit@2.0.1)(highlight.js@11.9.0)(svelte@4.2.8)(typescript@5.3.3)
   svelte-preprocess:
     specifier: ^5.1.2
     version: 5.1.2(postcss-load-config@5.0.2)(postcss@8.4.32)(svelte@4.2.8)(typescript@5.3.3)
@@ -642,12 +642,6 @@ packages:
 
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
-    dev: true
-
-  /@types/mdast@3.0.15:
-    resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
-    dependencies:
-      '@types/unist': 2.0.10
     dev: true
 
   /@types/mdast@4.0.3:
@@ -1823,11 +1817,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       binary-extensions: 2.2.0
-    dev: true
-
-  /is-buffer@2.0.5:
-    resolution: {integrity: sha512-i2R6zNFDwgEHJyQUtJEk0XFi1i0dPFn/oqjK3/vPCcDeJvW5NQ83V8QbicfF1SupOaB0h8ntgBC2YiE7dfyctQ==}
-    engines: {node: '>=4'}
     dev: true
 
   /is-core-module@2.13.1:
@@ -3306,12 +3295,10 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /strip-markdown@5.0.1:
-    resolution: {integrity: sha512-IvoKZrXtWAnlEjRfDlT3yRtGRvpX3RSg+nwAHONmshpSCoxgjZV2xX9ZYvEmwupmYobJtws9oDdTwLUu/5PoMQ==}
+  /strip-markdown@6.0.0:
+    resolution: {integrity: sha512-mSa8FtUoX3ExJYDkjPUTC14xaBAn4Ik5GPQD45G5E2egAmeV3kHgVSTfIoSDggbF6Pk9stahVgqsLCNExv6jHw==}
     dependencies:
-      '@types/mdast': 3.0.15
-      '@types/unist': 2.0.10
-      unified: 10.1.2
+      '@types/mdast': 4.0.3
     dev: true
 
   /sucrase@3.34.0:
@@ -3367,11 +3354,11 @@ packages:
       - sugarss
     dev: true
 
-  /svelte-doc-kit@0.0.7(@sveltejs/kit@2.0.1)(highlight.js@11.9.0)(svelte@4.2.8)(typescript@5.3.3):
-    resolution: {integrity: sha512-6eEfmzXknv1h5mxr2JkG8FCjiVr00OGgRrFozWSuPmVHVv5NYtxMeBhSD/EL3SHdVNpro0rRz3zc2Lc5MNv6Pg==}
+  /svelte-doc-kit@0.0.9(@sveltejs/kit@2.0.1)(highlight.js@11.9.0)(svelte@4.2.8)(typescript@5.3.3):
+    resolution: {integrity: sha512-idAweTt3HaMPtgv2+tzFy/OyL5dOMmh9xNrz4rK7J1nYMbNdAKTBt35tyfhrxM8YMeV2IldSL5sSC6D5sPQoNw==}
     peerDependencies:
-      '@sveltejs/kit': ^1.25.1
-      highlight.js: ^11.8.0
+      '@sveltejs/kit': ^2.0.0
+      highlight.js: ^11.9.0
       svelte: ^4.0.0
     dependencies:
       '@sveltejs/kit': 2.0.1(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
@@ -3394,7 +3381,7 @@ packages:
       remark-parse: 11.0.0
       remark-rehype: 11.0.0
       remark-stringify: 11.0.0
-      strip-markdown: 5.0.1
+      strip-markdown: 6.0.0
       svelte: 4.2.8
       svelte-meta-tags: 3.1.0(svelte@4.2.8)(typescript@5.3.3)
       unified: 11.0.4
@@ -3697,18 +3684,6 @@ packages:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
     dev: true
 
-  /unified@10.1.2:
-    resolution: {integrity: sha512-pUSWAi/RAnVy1Pif2kAoeWNBa3JVrx0MId2LASj8G+7AiHWoKZNTomq6LG326T68U7/e263X6fTdcXIy7XnF7Q==}
-    dependencies:
-      '@types/unist': 2.0.10
-      bail: 2.0.2
-      extend: 3.0.2
-      is-buffer: 2.0.5
-      is-plain-obj: 4.1.0
-      trough: 2.1.0
-      vfile: 5.3.7
-    dev: true
-
   /unified@11.0.4:
     resolution: {integrity: sha512-apMPnyLjAX+ty4OrNap7yumyVAMlKx5IWU2wlzzUdYJO9A8f1p9m/gywF/GM2ZDFcjQPrx59Mc90KwmxsoklxQ==}
     dependencies:
@@ -3738,12 +3713,6 @@ packages:
     resolution: {integrity: sha512-fucsC7HjXvkB5R3kTCO7kUjRdrS0BJt3M/FPxmHMBOm8JQi2BsHAHFsy27E0EolP8rp0NzXsJ+jNPyDWvOJZPA==}
     dependencies:
       '@types/unist': 3.0.2
-    dev: true
-
-  /unist-util-stringify-position@3.0.3:
-    resolution: {integrity: sha512-k5GzIBZ/QatR8N5X2y+drfpWG8IDBzdnVj6OInRNWm1oXrzydiaAT2OQiA8DPRRZyAKb9b6I2a6PxYklZD0gKg==}
-    dependencies:
-      '@types/unist': 2.0.10
     dev: true
 
   /unist-util-stringify-position@4.0.0:
@@ -3802,27 +3771,11 @@ packages:
       yaml: 2.3.4
     dev: true
 
-  /vfile-message@3.1.4:
-    resolution: {integrity: sha512-fa0Z6P8HUrQN4BZaX05SIVXic+7kE3b05PWAtPuYP9QLHsLKYR7/AlLW3NtOrpXRLeawpDLMsVkmk5DG0NXgWw==}
-    dependencies:
-      '@types/unist': 2.0.10
-      unist-util-stringify-position: 3.0.3
-    dev: true
-
   /vfile-message@4.0.2:
     resolution: {integrity: sha512-jRDZ1IMLttGj41KcZvlrYAaI3CfqpLpfpf+Mfig13viT6NKvRzWZ+lXz0Y5D60w6uJIBAOGq9mSHf0gktF0duw==}
     dependencies:
       '@types/unist': 3.0.2
       unist-util-stringify-position: 4.0.0
-    dev: true
-
-  /vfile@5.3.7:
-    resolution: {integrity: sha512-r7qlzkgErKjobAmyNIkkSpizsFPYiUPuJb5pNW1RB4JcYVZhs4lIbVqk8XPk033CV/1z8ss5pkax8SuhGpcG8g==}
-    dependencies:
-      '@types/unist': 2.0.10
-      is-buffer: 2.0.5
-      unist-util-stringify-position: 3.0.3
-      vfile-message: 3.1.4
     dev: true
 
   /vfile@6.0.1:
