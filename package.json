@@ -75,7 +75,7 @@
   "devDependencies": {
     "@playwright/test": "^1.40.1",
     "@sveltejs/adapter-static": "^3.0.0",
-    "@sveltejs/kit": "2.0.0",
+    "@sveltejs/kit": "^2.0.2",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
@@ -93,7 +93,7 @@
     "svelte": "^4.2.8",
     "svelte-check": "^3.6.2",
     "svelte-doc-kit": "^0.0.9",
-    "svelte-preprocess": "^5.1.2",
+    "svelte-preprocess": "^5.1.3",
     "svelte-transition": "^0.0.10",
     "tailwindcss": "^3.3.6",
     "tslib": "^2.6.2",
