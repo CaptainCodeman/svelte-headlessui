@@ -10,10 +10,10 @@ devDependencies:
     version: 1.40.1
   '@sveltejs/adapter-static':
     specifier: ^3.0.0
-    version: 3.0.0(@sveltejs/kit@2.0.1)
+    version: 3.0.0(@sveltejs/kit@2.0.0)
   '@sveltejs/kit':
-    specifier: ^2.0.1
-    version: 2.0.1(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
+    specifier: 2.0.0
+    version: 2.0.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
   '@sveltejs/vite-plugin-svelte':
     specifier: ^3.0.1
     version: 3.0.1(svelte@4.2.8)(vite@5.0.10)
@@ -64,7 +64,7 @@ devDependencies:
     version: 3.6.2(postcss-load-config@5.0.2)(postcss@8.4.32)(svelte@4.2.8)
   svelte-doc-kit:
     specifier: ^0.0.9
-    version: 0.0.9(@sveltejs/kit@2.0.1)(highlight.js@11.9.0)(svelte@4.2.8)(typescript@5.3.3)
+    version: 0.0.9(@sveltejs/kit@2.0.0)(highlight.js@11.9.0)(svelte@4.2.8)(typescript@5.3.3)
   svelte-preprocess:
     specifier: ^5.1.2
     version: 5.1.2(postcss-load-config@5.0.2)(postcss@8.4.32)(svelte@4.2.8)(typescript@5.3.3)
@@ -529,16 +529,16 @@ packages:
     dev: true
     optional: true
 
-  /@sveltejs/adapter-static@3.0.0(@sveltejs/kit@2.0.1):
+  /@sveltejs/adapter-static@3.0.0(@sveltejs/kit@2.0.0):
     resolution: {integrity: sha512-nNsm8XChhJgQdeVegdXU+EnpznSUlsIjlLJa9SNmvSVN3rcPtB2BAnGuS/EWCtgPLkVcy9V2kW5knronqmF+KQ==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
     dependencies:
-      '@sveltejs/kit': 2.0.1(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
+      '@sveltejs/kit': 2.0.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
     dev: true
 
-  /@sveltejs/kit@2.0.1(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10):
-    resolution: {integrity: sha512-Pu/YJ5pPy8UgC1LlrlGpL7UK25CKganlLqqO7oYdFGt7eSa+Y2ouJomwiGHatV3uHvVOPGEkcb4O4QtyZQDuGw==}
+  /@sveltejs/kit@2.0.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10):
+    resolution: {integrity: sha512-/GFxvit+q7PztRbgGTFXhVB6jvb0fZSeWuz5f4siQ2r/5BVhxYh7++Bw3/ZUjiOuyoZFiNBmOPcRNQbkzEce0g==}
     engines: {node: '>=18.13'}
     hasBin: true
     requiresBuild: true
@@ -3354,14 +3354,14 @@ packages:
       - sugarss
     dev: true
 
-  /svelte-doc-kit@0.0.9(@sveltejs/kit@2.0.1)(highlight.js@11.9.0)(svelte@4.2.8)(typescript@5.3.3):
+  /svelte-doc-kit@0.0.9(@sveltejs/kit@2.0.0)(highlight.js@11.9.0)(svelte@4.2.8)(typescript@5.3.3):
     resolution: {integrity: sha512-idAweTt3HaMPtgv2+tzFy/OyL5dOMmh9xNrz4rK7J1nYMbNdAKTBt35tyfhrxM8YMeV2IldSL5sSC6D5sPQoNw==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
       highlight.js: ^11.9.0
       svelte: ^4.0.0
     dependencies:
-      '@sveltejs/kit': 2.0.1(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
+      '@sveltejs/kit': 2.0.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
       change-case: 5.3.0
       flexsearch: 0.7.31
       hastscript: 8.0.0
