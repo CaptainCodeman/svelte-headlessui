@@ -22,10 +22,6 @@ const config = {
 			handleHttpError: 'warn',
 			handleMissingId: 'warn',
 		},
-
-		paths: {
-			relative: false,
-		},
 	},
 }
 
