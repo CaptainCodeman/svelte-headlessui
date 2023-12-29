@@ -1,7 +1,7 @@
 {
   "name": "svelte-headlessui",
   "description": "HeadlessUI components for Svelte",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "type": "module",
   "keywords": [
     "svelte",
