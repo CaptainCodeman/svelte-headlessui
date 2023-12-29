@@ -52,7 +52,7 @@ export function createMenu(init?: Partial<Menu>) {
   const open = () => set({ expanded: true, opened: true })
 
   // close the menu
-  const close = () => set({ expanded: false, active: -1 })
+  const close = () => set({ expanded: false, active: -1, selected: null })
 
   // toggle open / closed state
   const toggle = () => state.expanded ? close() : open()

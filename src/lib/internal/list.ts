@@ -47,12 +47,14 @@ export const activate = (selector: string, focus: (node: HTMLElement | null) => 
 
 export const raiseSelectOnChange = (store: Readable<Selectable>): Behavior => node => {
   return dedupe(derived(store, $store => $store.selected)).subscribe(selected => {
-    const event = new CustomEvent('select', {
-      detail: {
-        selected,
-      }
-    })
-    node.dispatchEvent(event)
+    if (selected) {
+      const event = new CustomEvent('select', {
+        detail: {
+          selected,
+        }
+      })
+      node.dispatchEvent(event)
+    }
   })
 }
 
