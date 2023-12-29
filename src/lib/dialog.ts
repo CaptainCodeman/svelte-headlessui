@@ -10,6 +10,7 @@ import { onKeydown } from "./internal/on-keydown";
 import { setRole } from "./internal/set-role";
 import { getPrefix } from "./internal/utils";
 import { trapFocusOnOpen } from "./internal/focus";
+import { setTabIndex } from "./internal/set-tab-index";
 
 export interface Dialog extends Expandable, Labelable { }
 
@@ -37,6 +38,7 @@ export function createDialog(init?: Partial<Dialog>) {
 
     const destroy = applyBehaviors(node, [
       setRole('dialog'),
+      setTabIndex(-1),
       reflectAriaModal(store),
       reflectAriaLabel(store),
       trapFocusOnOpen(store),
