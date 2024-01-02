@@ -92,18 +92,14 @@ Pass an array to the `selected` property of `createListbox` to trigger multi-sel
 				class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 			>
 				{#each people as value (value.id)}
-					{@const active = $listbox.active === value}
-					{@const selected = $listbox.selected.includes(value)}
 					<li
-						class="relative cursor-default select-none py-2 pl-4 pr-9 focus:outline-none {active ? 'bg-orange-100 text-orange-900' : 'text-gray-900'}"
+						class="relative cursor-default select-none py-2 pl-4 pr-9 text-gray-900 focus:outline-none focus:bg-orange-100 focus:text-orange-900 group"
 						use:listbox.item={{ value }}
 					>
-						<span class="block truncate {selected ? 'font-semibold' : 'font-normal'}">{value.name}</span>
-						{#if selected}
-							<span class="absolute inset-y-0 right-0 flex items-center pr-3 text-orange-600">
-								<Check class="h-5 w-5" />
-							</span>
-						{/if}
+						<span class="block truncate font-normal group-aria-selected:font-semibold">{value.name}</span>
+						<span class="absolute invisible group-aria-selected:visible inset-y-0 right-0 flex items-center pr-3 text-orange-600">
+							<Check class="h-5 w-5" />
+						</span>
 					</li>
 				{/each}
 			</ul>

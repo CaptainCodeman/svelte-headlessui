@@ -58,7 +58,15 @@ export function createMenu(init?: Partial<Menu>) {
   const toggle = () => state.expanded ? close() : open()
 
   // set focused (active) item (open if not expanded) only if changed
-  const focus = (active: number, expand = false) => state.active !== active && set({ expanded: state.expanded || expand, active })
+  const focus = (active: number, expand = false) => {
+    if (state.active !== active) {
+      set({ expanded: state.expanded || expand, active })
+      const item = state.items[active];
+      if (item) {
+        item.node.focus()
+      }
+    }
+  }
 
   // set focus (active) to first
   const first = () => focus(firstActive(state), true)

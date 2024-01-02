@@ -86,17 +86,14 @@ Comboboxes are the foundation of accessible autocompletes and command palettes f
 				>
 					{#each filtered as value}
 						{@const active = $combobox.active === value}
-						{@const selected = $combobox.selected === value}
 						<li
-							class="relative cursor-default select-none py-2 pl-10 pr-4 {active ? 'bg-teal-600 text-white' : 'text-gray-900'}"
+							class="relative cursor-default select-none py-2 pl-10 pr-4 focus:outline-none font-normal aria-selected:font-medium {active ? 'bg-teal-600 text-white' : 'text-gray-900'} group"
 							use:combobox.item={{ value }}
 						>
-							<span class="block truncate {selected ? 'font-medium' : 'font-normal'}">{value.name}</span>
-							{#if selected}
-								<span class="absolute inset-y-0 left-0 flex items-center pl-3 {active ? 'text-white' : 'text-teal-600'}">
-									<Check class="h-5 w-5" />
-								</span>
-							{/if}
+							<span class="block truncate">{value.name}</span>
+							<span class="absolute invisible group-aria-selected:visible inset-y-0 left-0 flex items-center pl-3 {active ? 'text-white' : 'text-teal-600'}">
+								<Check class="h-5 w-5" />
+							</span>
 						</li>
 					{:else}
 						<li class="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900">
