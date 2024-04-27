@@ -1,6 +1,17 @@
-<svg class={$$props.class} width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg
+	class={$$props.class}
+	width="48"
+	height="48"
+	viewBox="0 0 48 48"
+	fill="none"
+	xmlns="http://www.w3.org/2000/svg"
+>
 	<rect width="48" height="48" rx="8" fill="#FFEDD5" />
-	<path d="M24 11L35.2583 17.5V30.5L24 37L12.7417 30.5V17.5L24 11Z" stroke="#FB923C" stroke-width="2" />
+	<path
+		d="M24 11L35.2583 17.5V30.5L24 37L12.7417 30.5V17.5L24 11Z"
+		stroke="#FB923C"
+		stroke-width="2"
+	/>
 	<path
 		fill-rule="evenodd"
 		clip-rule="evenodd"

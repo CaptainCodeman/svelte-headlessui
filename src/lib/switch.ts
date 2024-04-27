@@ -1,90 +1,86 @@
-import { derived, writable } from "./internal/store";
-import { defaultCheckable, reflectAriaChecked, type Checkable } from "./internal/aria-checked";
-import { reflectAriaLabel, type Labelable } from "./internal/aria-label";
-import { applyBehaviors } from "./internal/behavior";
-import { keySpaceEnter } from "./internal/key-space-enter";
-import { ensureID } from "./internal/new-id";
-import { onClick } from "./internal/on-click";
-import { onKeydown } from "./internal/on-keydown";
-import { setRole } from "./internal/set-role";
-import { setTabIndex } from "./internal/set-tab-index";
-import { setType } from "./internal/set-type";
-import { getPrefix } from "./internal/utils";
-import { defaultPressable, reflectAriaPressed, type Pressable } from "./internal/aria-pressed";
+import { derived, writable } from './internal/store'
+import { defaultCheckable, reflectAriaChecked, type Checkable } from './internal/aria-checked'
+import { reflectAriaLabel, type Labelable } from './internal/aria-label'
+import { applyBehaviors } from './internal/behavior'
+import { keySpaceEnter } from './internal/key-space-enter'
+import { ensureID } from './internal/new-id'
+import { onClick } from './internal/on-click'
+import { onKeydown } from './internal/on-keydown'
+import { setRole } from './internal/set-role'
+import { setTabIndex } from './internal/set-tab-index'
+import { setType } from './internal/set-type'
+import { getPrefix } from './internal/utils'
+import { defaultPressable, reflectAriaPressed, type Pressable } from './internal/aria-pressed'
 
-export interface Switch extends Labelable, Checkable, Pressable { }
+export interface Switch extends Labelable, Checkable, Pressable {}
 
 export function createSwitch(init?: Partial<Switch>) {
-  // prefix for generating unique IDs
-  const prefix = getPrefix('switch')
+	// prefix for generating unique IDs
+	const prefix = getPrefix('switch')
 
-  let state: Switch = {
-    ...defaultCheckable,
-    ...defaultPressable,
-    ...init,
-  }
+	let state: Switch = {
+		...defaultCheckable,
+		...defaultPressable,
+		...init,
+	}
 
-  // wrap with store for reactivity
-  const store = writable(state)
+	// wrap with store for reactivity
+	const store = writable(state)
 
-  // update state and notify store of changes for reactivity
-  const set = (part: Partial<Switch>) => store.set(state = { ...state, ...part })
+	// update state and notify store of changes for reactivity
+	const set = (part: Partial<Switch>) => store.set((state = { ...state, ...part }))
 
-  const setValue = (value: boolean) => set({ checked: value, pressed: value })
-  const on = () => setValue(true)
-  const off = () => setValue(false)
-  const change = () => state.checked ? off() : on()
+	const setValue = (value: boolean) => set({ checked: value, pressed: value })
+	const on = () => setValue(true)
+	const off = () => setValue(false)
+	const change = () => (state.checked ? off() : on())
 
-  function button(node: HTMLElement) {
-    ensureID(node, prefix)
+	function button(node: HTMLElement) {
+		ensureID(node, prefix)
 
-    const destroy = applyBehaviors(node, [
-      setType('button'),
-      setRole('button'),
-      setTabIndex(0),
-      reflectAriaPressed(store),
-      reflectAriaLabel(store),
-      onClick(change),
-      onKeydown(
-        keySpaceEnter(change),
-      )
-    ])
+		const destroy = applyBehaviors(node, [
+			setType('button'),
+			setRole('button'),
+			setTabIndex(0),
+			reflectAriaPressed(store),
+			reflectAriaLabel(store),
+			onClick(change),
+			onKeydown(keySpaceEnter(change)),
+		])
 
-    return {
-      destroy,
-    }
-  }
+		return {
+			destroy,
+		}
+	}
 
-  function toggle(node: HTMLElement) {
-    ensureID(node, prefix)
+	function toggle(node: HTMLElement) {
+		ensureID(node, prefix)
 
-    const destroy = applyBehaviors(node, [
-      setType('button'),
-      setRole('switch'),
-      setTabIndex(0),
-      reflectAriaLabel(store),
-      reflectAriaChecked(store),
-      onClick(change),
-      onKeydown(
-        keySpaceEnter(change),
-      ),
-    ])
+		const destroy = applyBehaviors(node, [
+			setType('button'),
+			setRole('switch'),
+			setTabIndex(0),
+			reflectAriaLabel(store),
+			reflectAriaChecked(store),
+			onClick(change),
+			onKeydown(keySpaceEnter(change)),
+		])
 
-    return {
-      destroy
-    }
-  }
+		return {
+			destroy,
+		}
+	}
 
-  // expose a subset of our state, derive the selected value
-  const { subscribe } = derived(store, $state => {
-    const { checked, pressed } = $state
-    return { checked, pressed }
-  })
+	// expose a subset of our state, derive the selected value
+	const { subscribe } = derived(store, ($state) => {
+		const { checked, pressed } = $state
+		return { checked, pressed }
+	})
 
-  return {
-    subscribe,
-    button,
-    toggle,
-    set,
-  }
+	return {
+		subscribe,
+		button,
+		toggle,
+		set,
+	}
 }

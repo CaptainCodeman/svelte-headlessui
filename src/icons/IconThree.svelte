@@ -1,4 +1,11 @@
-<svg class={$$props.class} width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg
+	class={$$props.class}
+	width="48"
+	height="48"
+	viewBox="0 0 48 48"
+	fill="none"
+	xmlns="http://www.w3.org/2000/svg"
+>
 	<rect width="48" height="48" rx="8" fill="#FFEDD5" />
 	<rect x="13" y="32" width="2" height="4" fill="#FDBA74" />
 	<rect x="17" y="28" width="2" height="8" fill="#FDBA74" />

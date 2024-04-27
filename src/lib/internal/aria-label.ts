@@ -1,11 +1,14 @@
-import type { Behavior } from "./behavior"
+import type { Behavior } from './behavior'
 import { derived, type Readable } from './store'
-import { setAriaAttributeString } from "./aria-attribute"
+import { setAriaAttributeString } from './aria-attribute'
 
 export interface Labelable {
-  label?: string
+	label?: string
 }
 
 export const setAriaLabel = setAriaAttributeString('aria-label')
 
-export const reflectAriaLabel = (store: Readable<Labelable>): Behavior => node => derived(store, $store => $store.label).subscribe(setAriaLabel(node))
+export const reflectAriaLabel =
+	(store: Readable<Labelable>): Behavior =>
+	(node) =>
+		derived(store, ($store) => $store.label).subscribe(setAriaLabel(node))

@@ -1,5 +1,5 @@
-import { allowDefaultKeyAction, keyHandler } from "./key-handler"
-import { Backspace } from "./keys"
+import { allowDefaultKeyAction, keyHandler } from './key-handler'
+import { Backspace } from './keys'
 
 export const keyBackspace = keyHandler([Backspace])
 

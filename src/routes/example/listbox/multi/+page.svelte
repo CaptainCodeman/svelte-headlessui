@@ -34,20 +34,18 @@
 			<button
 				use:listbox.button
 				on:select={onSelect}
-				class="focus:shadow-outline-orange relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-2 pr-10 text-left transition duration-150 ease-in-out focus:border-orange-300 focus:outline-none text-sm sm:leading-5"
+				class="focus:shadow-outline-orange relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-2 pr-10 text-left text-sm transition duration-150 ease-in-out focus:border-orange-300 focus:outline-none sm:leading-5"
 			>
 				<div class="flex flex-wrap gap-2">
-					{#each $listbox.selected as selected (selected.id) }
-					<span class="flex items-center gap-1 rounded bg-orange-50 px-2 py-0.5">
-						<span>{selected.name}</span>
-						<div use:listbox.deselect={selected}>
-							<Deselect />
-						</div>
-					</span>
+					{#each $listbox.selected as selected (selected.id)}
+						<span class="flex items-center gap-1 rounded bg-orange-50 px-2 py-0.5">
+							<span>{selected.name}</span>
+							<div use:listbox.deselect={selected}>
+								<Deselect />
+							</div>
+						</span>
 					{:else}
-					<span class="flex items-center gap-1 rounded px-2 py-0.5">
-						Empty
-					</span>
+						<span class="flex items-center gap-1 rounded px-2 py-0.5"> Empty </span>
 					{/each}
 				</div>
 				<span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -56,7 +54,12 @@
 			</button>
 		</span>
 
-		<Transition show={$listbox.expanded} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
+		<Transition
+			show={$listbox.expanded}
+			leave="transition ease-in duration-100"
+			leaveFrom="opacity-100"
+			leaveTo="opacity-0"
+		>
 			<ul
 				use:listbox.items
 				class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
@@ -65,10 +68,14 @@
 					{@const active = $listbox.active === value}
 					{@const selected = $listbox.selected.includes(value)}
 					<li
-						class="relative cursor-default select-none py-2 pl-4 pr-9 focus:outline-none {active ? 'bg-orange-100 text-orange-900' : 'text-gray-900'}"
+						class="relative cursor-default select-none py-2 pl-4 pr-9 focus:outline-none {active
+							? 'bg-orange-100 text-orange-900'
+							: 'text-gray-900'}"
 						use:listbox.item={{ value }}
 					>
-						<span class="block truncate {selected ? 'font-semibold' : 'font-normal'}">{value.name}</span>
+						<span class="block truncate {selected ? 'font-semibold' : 'font-normal'}"
+							>{value.name}</span
+						>
 						{#if selected}
 							<span class="absolute inset-y-0 right-0 flex items-center pr-3 text-orange-600">
 								<Check class="h-5 w-5" />

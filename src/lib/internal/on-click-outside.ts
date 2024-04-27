@@ -1,43 +1,46 @@
-import type { Behavior } from "./behavior"
-import { listener } from "./events"
+import type { Behavior } from './behavior'
+import { listener } from './events'
 
-export function onClickOutside(getContainers: () => (HTMLElement | undefined)[], fn: (event: Event) => void): Behavior {
-  return () => {
-    let initial: Node | null = null
+export function onClickOutside(
+	getContainers: () => (HTMLElement | undefined)[],
+	fn: (event: Event) => void,
+): Behavior {
+	return () => {
+		let initial: Node | null = null
 
-    function handler(event: Event) {
-      // ignore space as click
-      if ((event as PointerEvent).pointerType === '') return
+		function handler(event: Event) {
+			// ignore space as click
+			if ((event as PointerEvent).pointerType === '') return
 
-      // ignore non-primary clicks
-      if (!initial) return
+			// ignore non-primary clicks
+			if (!initial) return
 
-      // get container nodes that we care about being outside of
-      const containers = getContainers().filter(node => node) as HTMLElement[]
+			// get container nodes that we care about being outside of
+			const containers = getContainers().filter((node) => node) as HTMLElement[]
 
-      // bail if we're inside one of the containers (i.e. it's not a click outside)
-      for (const node of containers) {
-        if (node.contains(initial)) {
-          return
-        }
-      }
+			// bail if we're inside one of the containers (i.e. it's not a click outside)
+			for (const node of containers) {
+				if (node.contains(initial)) {
+					return
+				}
+			}
 
-      fn(event)
+			fn(event)
 
-      initial = null
-    }
+			initial = null
+		}
 
-    function setInitial(event: PointerEvent) {
-      if (event.isPrimary) {
-        initial = event.target as Node
-      }
-    }
+		function setInitial(event: PointerEvent) {
+			if (event.isPrimary) {
+				initial = event.target as Node
+			}
+		}
 
-    const listeners = [
-      listener(document.documentElement, 'pointerdown', setInitial, true),
-      listener(document.documentElement, 'click', handler, true),
-    ]
+		const listeners = [
+			listener(document.documentElement, 'pointerdown', setInitial, true),
+			listener(document.documentElement, 'click', handler, true),
+		]
 
-    return () => listeners.forEach(listener => listener())
-  }
+		return () => listeners.forEach((listener) => listener())
+	}
 }

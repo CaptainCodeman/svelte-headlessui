@@ -38,7 +38,7 @@
 			class="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
 		>
 			Options
-			<ChevronDown class="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100" />
+			<ChevronDown class="-mr-1 ml-2 h-5 w-5 text-violet-200 hover:text-violet-100" />
 		</button>
 
 		<Transition
@@ -60,9 +60,11 @@
 							{@const active = $menu.active === option.text}
 							<button
 								use:menu.item
-								class="group flex rounded-md items-center w-full px-2 py-2 text-sm {active ? 'bg-violet-500 text-white' : 'text-gray-900'}"
+								class="group flex w-full items-center rounded-md px-2 py-2 text-sm {active
+									? 'bg-violet-500 text-white'
+									: 'text-gray-900'}"
 							>
-								<svelte:component this={option.icon} class="w-5 h-5 mr-2" {active} />
+								<svelte:component this={option.icon} class="mr-2 h-5 w-5" {active} />
 								{option.text}
 							</button>
 						{/each}

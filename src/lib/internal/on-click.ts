@@ -1,3 +1,4 @@
-import { listener } from "./events"
+import { listener } from './events'
 
-export const onClick = (fn: (event: Event) => void) => (node: HTMLElement) => listener(node, 'click', fn)
+export const onClick = (fn: (event: Event) => void) => (node: HTMLElement) =>
+	listener(node, 'click', fn)

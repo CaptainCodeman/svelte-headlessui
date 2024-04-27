@@ -5,4 +5,10 @@ import type { List } from './list'
 
 export const setAriaDisabled = setAriaAttributeBoolean('aria-disabled')
 
-export const reflectAriaDisabled = (store: Readable<List>): Behavior => node => derived(store, $store => $store.items.find(item => item.id === node.id)?.disabled).subscribe(setAriaDisabled(node))
+export const reflectAriaDisabled =
+	(store: Readable<List>): Behavior =>
+	(node) =>
+		derived(
+			store,
+			($store) => $store.items.find((item) => item.id === node.id)?.disabled,
+		).subscribe(setAriaDisabled(node))

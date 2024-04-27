@@ -1,5 +1,5 @@
-import { allowDefaultKeyAction, keyHandler } from "./key-handler"
-import { Tab } from "./keys"
+import { allowDefaultKeyAction, keyHandler } from './key-handler'
+import { Tab } from './keys'
 
 export const keyTab = keyHandler([Tab])
 

@@ -5,4 +5,7 @@ import type { Expandable } from './aria-expanded'
 
 export const setAriaModal = setAriaAttributeBoolean('aria-modal')
 
-export const reflectAriaModal = (store: Readable<Expandable>): Behavior => node => derived(store, $store => $store.expanded).subscribe(setAriaModal(node))
+export const reflectAriaModal =
+	(store: Readable<Expandable>): Behavior =>
+	(node) =>
+		derived(store, ($store) => $store.expanded).subscribe(setAriaModal(node))

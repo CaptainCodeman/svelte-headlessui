@@ -3,13 +3,16 @@ import { setAriaAttributeBoolean } from './aria-attribute'
 import type { Behavior } from './behavior'
 
 export interface Pressable {
-  pressed: boolean
+	pressed: boolean
 }
 
 export const defaultPressable: Pressable = {
-  pressed: false
+	pressed: false,
 }
 
 export const setAriaPressed = setAriaAttributeBoolean('aria-pressed')
 
-export const reflectAriaPressed = (store: Readable<Pressable>): Behavior => node => derived(store, $store => $store.pressed).subscribe(setAriaPressed(node))
+export const reflectAriaPressed =
+	(store: Readable<Pressable>): Behavior =>
+	(node) =>
+		derived(store, ($store) => $store.pressed).subscribe(setAriaPressed(node))
