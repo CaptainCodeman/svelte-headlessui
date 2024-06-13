@@ -11,6 +11,7 @@ import { setRole } from './internal/set-role'
 import { getPrefix } from './internal/utils'
 import { trapFocusOnOpen } from './internal/focus'
 import { setTabIndex } from './internal/set-tab-index'
+import { cancellableClose } from './internal/cancellable-close'
 
 export interface Dialog extends Expandable, Labelable {}
 
@@ -36,11 +37,7 @@ export function createDialog(init?: Partial<Dialog>) {
 	function modal(node: HTMLElement) {
 		ensureID(node, prefix)
 
-		function cancellableClose() {
-			if (node.dispatchEvent(new Event('close', { bubbles: true, cancelable: true }))) {
-				close()
-			}
-		}
+		const tryClose = cancellableClose(node, close)
 
 		const destroy = applyBehaviors(node, [
 			setRole('dialog'),
@@ -48,8 +45,8 @@ export function createDialog(init?: Partial<Dialog>) {
 			reflectAriaModal(store),
 			reflectAriaLabel(store),
 			trapFocusOnOpen(store),
-			onClickOutside(() => [node], cancellableClose),
-			onKeydown(keyEscape(cancellableClose)),
+			onClickOutside(() => [node], tryClose),
+			onKeydown(keyEscape(tryClose)),
 		])
 
 		return {
