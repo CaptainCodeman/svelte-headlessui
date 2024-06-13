@@ -5,8 +5,5 @@ export function newID() {
 }
 
 export function ensureID(node: HTMLElement, prefix: string) {
-	if (!node.id) {
-		node.id = `${prefix}:${newID()}`
-	}
-	return node
+	node.id = `${prefix}:${newID()}`
 }
