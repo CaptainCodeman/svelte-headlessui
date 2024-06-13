@@ -47,6 +47,7 @@ import { setType } from './internal/set-type'
 import { getPrefix } from './internal/utils'
 import { keyDown, keyUp } from './internal/key-up-down'
 import { keyNavigation } from './internal/key-navigation'
+import { cancellableClose } from './internal/cancellable-close'
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Menu extends Labelable, Expandable, Controllable, List, Selectable {
@@ -136,16 +137,18 @@ export function createMenu(init?: Partial<Menu>) {
 		ensureID(node, prefix)
 		set({ controls: node.id })
 
+		const tryClose = cancellableClose(node, close)
+
 		const destroy = applyBehaviors(node, [
 			setRole('menu'),
 			setTabIndex(0),
-			onClickOutside(() => [state.button, node], close),
-			onClick(activate('[role="menuitem"]', focusNode, select, close)),
+			onClickOutside(() => [state.button, node], tryClose),
+			onClick(activate('[role="menuitem"]', focusNode, select, tryClose)),
 			onPointerMoveChild('[role="menuitem"]', focusNode),
 			onPointerOut(none),
 			onKeydown(
-				keySpaceEnter(select, close),
-				keyEscape(close),
+				keySpaceEnter(select, tryClose),
+				keyEscape(tryClose),
 				keyNavigation(first, previous, next, last),
 				keyTab(noop),
 				keyCharacter(search),
