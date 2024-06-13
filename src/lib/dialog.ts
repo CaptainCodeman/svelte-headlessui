@@ -36,14 +36,20 @@ export function createDialog(init?: Partial<Dialog>) {
 	function modal(node: HTMLElement) {
 		ensureID(node, prefix)
 
+		function cancellableClose() {
+			if (node.dispatchEvent(new Event('close', { bubbles: true, cancelable: true }))) {
+				close()
+			}
+		}
+
 		const destroy = applyBehaviors(node, [
 			setRole('dialog'),
 			setTabIndex(-1),
 			reflectAriaModal(store),
 			reflectAriaLabel(store),
 			trapFocusOnOpen(store),
-			onClickOutside(() => [node], close),
-			onKeydown(keyEscape(close)),
+			onClickOutside(() => [node], cancellableClose),
+			onKeydown(keyEscape(cancellableClose)),
 		])
 
 		return {

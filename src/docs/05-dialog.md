@@ -99,3 +99,11 @@ A fully-managed, renderless dialog component jam-packed with accessibility and k
   </div>
 </div>
 ```
+
+If the `Esc` key is pressed or the backdrop clicked, the dialog element will raise a `close` event which can be cancelled if required to prevent accidental closure:
+
+```svelte
+<div class="relative z-10" on:close={(e) => e.preventDefault()>
+	...
+</div>
+```
