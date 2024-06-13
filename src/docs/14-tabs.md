@@ -30,7 +30,7 @@ Easily create accessible, fully customizable tab interfaces, with robust focus m
 
 ```svelte
 <script lang="ts">
-  import { createTabs } from '$lib/tabs'
+  import { createTabs } from 'svelte-headlessui'
 
   interface Post {
     id: number
