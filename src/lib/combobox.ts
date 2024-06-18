@@ -234,7 +234,7 @@ export function createCombobox(init?: Partial<Combobox>) {
 		const destroy = applyBehaviors(node, [
 			setRole('listbox'),
 			setTabIndex(-1),
-			onClickOutside(() => [state.input, state.button, node], close),
+			onClickOutside(() => (state.expanded ? [state.input, state.button, node] : null), close),
 			onClick(
 				activate('[role="option"]', focusNode, select, state.multi ? setFocusToInput : close),
 			),

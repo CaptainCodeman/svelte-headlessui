@@ -45,7 +45,7 @@ export function createDialog(init?: Partial<Dialog>) {
 			reflectAriaModal(store),
 			reflectAriaLabel(store),
 			trapFocusOnOpen(store),
-			onClickOutside(() => [node], tryClose),
+			onClickOutside(() => (state.expanded ? [node] : null), tryClose),
 			onKeydown(keyEscape(tryClose)),
 		])
 

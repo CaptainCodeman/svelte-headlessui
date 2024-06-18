@@ -142,7 +142,7 @@ export function createMenu(init?: Partial<Menu>) {
 		const destroy = applyBehaviors(node, [
 			setRole('menu'),
 			setTabIndex(0),
-			onClickOutside(() => [state.button, node], tryClose),
+			onClickOutside(() => (state.expanded ? [state.button, node] : null), tryClose),
 			onClick(activate('[role="menuitem"]', focusNode, select, tryClose)),
 			onPointerMoveChild('[role="menuitem"]', focusNode),
 			onPointerOut(none),

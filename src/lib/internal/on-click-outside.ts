@@ -2,7 +2,7 @@ import type { Behavior } from './behavior'
 import { listener } from './events'
 
 export function onClickOutside(
-	getContainers: () => (HTMLElement | undefined)[],
+	getContainers: () => (HTMLElement | undefined)[] | null,
 	fn: (event: Event) => void,
 ): Behavior {
 	return () => {
@@ -16,12 +16,13 @@ export function onClickOutside(
 			if (!initial) return
 
 			// get container nodes that we care about being outside of
-			const containers = getContainers().filter((node) => node) as HTMLElement[]
-
-			// bail if we're inside one of the containers (i.e. it's not a click outside)
-			for (const node of containers) {
-				if (node.contains(initial)) {
-					return
+			const containers = getContainers()
+			if (containers) {
+				// bail if we're inside one of the containers (i.e. it's not a click outside)
+				for (const node of containers) {
+					if (node && node.contains(initial)) {
+						return
+					}
 				}
 			}
 
