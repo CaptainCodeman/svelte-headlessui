@@ -15,19 +15,15 @@ export function onClickOutside(
 			// ignore non-primary clicks
 			if (!initial) return
 
-			// get container nodes that we care about being outside of
+			// get container nodes that we care about being outside of (null if not enabled)
 			const containers = getContainers()
-			if (containers) {
-				// bail if we're inside one of the containers (i.e. it's not a click outside)
-				for (const node of containers) {
-					if (node && node.contains(initial)) {
-						return
-					}
-				}
+
+			// if there are some, and we're not inside any of them, make the call
+			if (containers && !containers.some((node) => (node ? node.contains(initial) : false))) {
+				fn(event)
 			}
 
-			fn(event)
-
+			// clear for next time
 			initial = null
 		}
 

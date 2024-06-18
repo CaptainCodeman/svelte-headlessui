@@ -143,7 +143,7 @@ export function createMenu(init?: Partial<Menu>) {
 			setRole('menu'),
 			setTabIndex(0),
 			onClickOutside(() => (state.expanded ? [state.button, node] : null), tryClose),
-			onClick(activate('[role="menuitem"]', focusNode, select, tryClose)),
+			onClick(activate('[role="menuitem"]', focusNode, select, state.expanded ? tryClose : noop)),
 			onPointerMoveChild('[role="menuitem"]', focusNode),
 			onPointerOut(none),
 			onKeydown(
