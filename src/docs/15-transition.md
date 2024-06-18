@@ -77,4 +77,4 @@ NOTE: the transition element is published as a separate package `svelte-transiti
 
 ## TailwindUI
 
-If you're using TailwindUI the suggested transition classes are defined as HTML comments. Use this [handy conversion tool](https://quick-898.github.io/svelte-transition-converter/) to convert the comments into the equivalent `<Transition />` element.
+If you're using TailwindUI the suggested transition classes are defined as HTML comments. Use the [conversion tool](https://captaincodeman.github.io/svelte-transition/) to convert the comments into the equivalent `<Transition />` element syntax.
