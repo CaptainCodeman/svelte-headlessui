@@ -57,7 +57,7 @@ import { blockDefaultAction } from './internal/events'
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
-	input?: HTMLElement
+	input?: HTMLInputElement
 	button?: HTMLElement
 	filter: string
 	moved: boolean // whether we have moved active or not (to reset when filtering)
@@ -138,6 +138,14 @@ export function createCombobox(init?: Partial<Combobox>) {
 
 	const setFocusToInput = () => state.input?.focus()
 
+	const setSelecttionToEnd = () => {
+		if (state.input) {
+			state.input.selectionStart = state.input.value.length
+			state.input.selectionEnd = state.input.value.length
+			state.input.focus()
+		}
+	}
+
 	const filter = async (value: string) => {
 		// current active item
 		const current = state.active === -1 ? state.selected : state.items[state.active].value
@@ -176,7 +184,7 @@ export function createCombobox(init?: Partial<Combobox>) {
 
 	const select = () => set(selectActive(state))
 
-	function input(node: HTMLElement) {
+	function input(node: HTMLInputElement) {
 		ensureID(node, prefix)
 		set({ input: node })
 
@@ -241,7 +249,17 @@ export function createCombobox(init?: Partial<Combobox>) {
 			setTabIndex(-1),
 			onClickOutside(() => (state.expanded ? [state.input, state.button, node] : null), close),
 			onClick(
-				activate('[role="option"]', focusNode, select, state.multi ? setFocusToInput : close),
+				activate(
+					'[role="option"]',
+					focusNode,
+					select,
+					state.multi
+						? setFocusToInput
+						: () => {
+								close()
+								setSelecttionToEnd()
+							},
+				),
 			),
 			onPointerMoveChild('[role="option"]', focusNode),
 			reflectAriaActivedescendent(store),
