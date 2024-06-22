@@ -59,6 +59,7 @@ export const raiseChangeOnSelect =
 			const event = new CustomEvent('change', {
 				detail: {
 					selected,
+					bubbles: true,
 				},
 			})
 			node.dispatchEvent(event)
