@@ -20,7 +20,7 @@ import {
 	type List,
 	getUpdater,
 	type ItemOptions,
-	raiseSelectOnChange,
+	raiseChangeOnSelect,
 } from './internal/list'
 import { ensureID } from './internal/new-id'
 import { onClick } from './internal/on-click'
@@ -117,7 +117,7 @@ export function createTabs(init?: Partial<Tabs>) {
 			),
 			reflectAriaActivedescendent(store),
 			selectOnNavigate(store),
-			raiseSelectOnChange(store),
+			raiseChangeOnSelect(store),
 		])
 
 		return {
@@ -152,7 +152,7 @@ export function createTabs(init?: Partial<Tabs>) {
 					store,
 					($store) => $store.panels[$store.tabs.findIndex((tab) => tab === node)]?.id,
 				).subscribe(setAriaControls(node))
-		const focusOnSelect =
+		const focusonChange =
 			(store: Readable<Tabs>): Behavior =>
 			(node) =>
 				derived(store, ($store) => $store.selected === value).subscribe(setFocus(node))
@@ -163,7 +163,7 @@ export function createTabs(init?: Partial<Tabs>) {
 			reflectAriaSelected(store, value),
 			reflectAriaTabIndex(store),
 			reflectControls(store),
-			focusOnSelect(store),
+			focusonChange(store),
 		])
 
 		return {

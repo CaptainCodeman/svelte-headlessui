@@ -33,7 +33,7 @@ import {
 	removeItem,
 	type ItemOptions,
 	type List,
-	raiseSelectOnChange,
+	raiseChangeOnSelect,
 } from './internal/list'
 import { ensureID } from './internal/new-id'
 import { onClick } from './internal/on-click'
@@ -52,6 +52,8 @@ import { keyEnter } from './internal/key-enter'
 import { keyNavigation } from './internal/key-navigation'
 import { noop } from './internal/noop'
 import { keyBackspaceAllow } from './internal/key-backspace'
+import { onChange } from './internal/on-change'
+import { blockDefaultAction } from './internal/events'
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
@@ -140,7 +142,9 @@ export function createCombobox(init?: Partial<Combobox>) {
 		// current active item
 		const current = state.active === -1 ? state.selected : state.items[state.active].value
 
-		set({ filter: value, expanded: true, opened: true }) // keep expanded or expand if filter is set
+		// keep expanded or expand if filter is set
+		// clear selected if input is cleared
+		set({ filter: value, expanded: true, opened: true, selected: value ? state.selected : null })
 
 		await tick()
 
@@ -192,10 +196,11 @@ export function createCombobox(init?: Partial<Combobox>) {
 				keyBackspaceAllow(del),
 			),
 			onInput(filter),
+			onChange(blockDefaultAction),
 			// NOTE: button might be a container of the input, or sibling of the input, depending on multi-select
 			onClick(state.multi ? noop : toggle),
 			focusOnClose(store),
-			raiseSelectOnChange(store),
+			raiseChangeOnSelect(store),
 		])
 
 		return {

@@ -32,7 +32,7 @@ import {
 	removeItem,
 	type ItemOptions,
 	type List,
-	raiseSelectOnChange,
+	raiseChangeOnSelect,
 } from './internal/list'
 import { ensureID } from './internal/new-id'
 import { noop } from './internal/noop'
@@ -125,7 +125,7 @@ export function createMenu(init?: Partial<Menu>) {
 			onClick(toggle),
 			onKeydown(keySpaceEnter(toggle), keyUp(last), keyDown(first)),
 			focusOnClose(store),
-			raiseSelectOnChange(store),
+			raiseChangeOnSelect(store),
 		])
 
 		return {

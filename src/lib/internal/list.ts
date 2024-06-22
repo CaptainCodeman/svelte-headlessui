@@ -52,18 +52,16 @@ export const activate =
 		actions.forEach((action) => action())
 	}
 
-export const raiseSelectOnChange =
+export const raiseChangeOnSelect =
 	(store: Readable<Selectable>): Behavior =>
 	(node) => {
 		return dedupe(derived(store, ($store) => $store.selected)).subscribe((selected) => {
-			if (selected) {
-				const event = new CustomEvent('select', {
-					detail: {
-						selected,
-					},
-				})
-				node.dispatchEvent(event)
-			}
+			const event = new CustomEvent('change', {
+				detail: {
+					selected,
+				},
+			})
+			node.dispatchEvent(event)
 		})
 	}
 
