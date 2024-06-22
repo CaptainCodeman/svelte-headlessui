@@ -19,7 +19,7 @@
 	const listbox = createListbox({ label: 'Actions', selected: people[2] })
 	onMount(listbox.open)
 
-	function onSelect(e: Event) {
+	function onChange(e: Event) {
 		console.log('select', (e as CustomEvent).detail.selected)
 	}
 </script>
@@ -28,7 +28,7 @@
 	<div class="relative mt-1">
 		<button
 			use:listbox.button
-			on:select={onSelect}
+			on:change={onChange}
 			class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left text-sm shadow-md focus:outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300"
 		>
 			<span class="block truncate">{$listbox.selected.name}</span>

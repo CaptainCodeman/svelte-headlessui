@@ -23,7 +23,7 @@
 	const listbox = createListbox({ label: 'Actions', selected: [people[2], people[3]] })
 	onMount(listbox.open)
 
-	function onSelect(e: Event) {
+	function onChange(e: Event) {
 		console.log('select', (e as CustomEvent).detail.selected)
 	}
 </script>
@@ -33,7 +33,7 @@
 		<span class="inline-block w-full rounded-md shadow-sm">
 			<button
 				use:listbox.button
-				on:select={onSelect}
+				on:change={onChange}
 				class="focus:shadow-outline-orange relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-2 pr-10 text-left text-sm transition duration-150 ease-in-out focus:border-orange-300 focus:outline-none sm:leading-5"
 			>
 				<div class="flex flex-wrap gap-2">

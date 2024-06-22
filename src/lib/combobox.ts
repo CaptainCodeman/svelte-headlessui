@@ -33,7 +33,7 @@ import {
 	removeItem,
 	type ItemOptions,
 	type List,
-	raiseSelectOnChange,
+	raiseChangeOnSelect,
 } from './internal/list'
 import { ensureID } from './internal/new-id'
 import { onClick } from './internal/on-click'
@@ -52,10 +52,12 @@ import { keyEnter } from './internal/key-enter'
 import { keyNavigation } from './internal/key-navigation'
 import { noop } from './internal/noop'
 import { keyBackspaceAllow } from './internal/key-backspace'
+import { onChange } from './internal/on-change'
+import { blockDefaultAction } from './internal/events'
 
 // TODO: add "value" selector, to pick text value off list item objects
 export interface Combobox extends Labelable, Expandable, Controllable, List, Selectable {
-	input?: HTMLElement
+	input?: HTMLInputElement
 	button?: HTMLElement
 	filter: string
 	moved: boolean // whether we have moved active or not (to reset when filtering)
@@ -136,11 +138,21 @@ export function createCombobox(init?: Partial<Combobox>) {
 
 	const setFocusToInput = () => state.input?.focus()
 
+	const setSelecttionToEnd = () => {
+		if (state.input) {
+			state.input.selectionStart = state.input.value.length
+			state.input.selectionEnd = state.input.value.length
+			state.input.focus()
+		}
+	}
+
 	const filter = async (value: string) => {
 		// current active item
 		const current = state.active === -1 ? state.selected : state.items[state.active].value
 
-		set({ filter: value, expanded: true, opened: true }) // keep expanded or expand if filter is set
+		// keep expanded or expand if filter is set
+		// clear selected if input is cleared
+		set({ filter: value, expanded: true, opened: true, selected: value ? state.selected : null })
 
 		await tick()
 
@@ -172,7 +184,7 @@ export function createCombobox(init?: Partial<Combobox>) {
 
 	const select = () => set(selectActive(state))
 
-	function input(node: HTMLElement) {
+	function input(node: HTMLInputElement) {
 		ensureID(node, prefix)
 		set({ input: node })
 
@@ -192,10 +204,11 @@ export function createCombobox(init?: Partial<Combobox>) {
 				keyBackspaceAllow(del),
 			),
 			onInput(filter),
+			onChange(blockDefaultAction),
 			// NOTE: button might be a container of the input, or sibling of the input, depending on multi-select
 			onClick(state.multi ? noop : toggle),
 			focusOnClose(store),
-			raiseSelectOnChange(store),
+			raiseChangeOnSelect(store),
 		])
 
 		return {
@@ -236,7 +249,17 @@ export function createCombobox(init?: Partial<Combobox>) {
 			setTabIndex(-1),
 			onClickOutside(() => (state.expanded ? [state.input, state.button, node] : null), close),
 			onClick(
-				activate('[role="option"]', focusNode, select, state.multi ? setFocusToInput : close),
+				activate(
+					'[role="option"]',
+					focusNode,
+					select,
+					state.multi
+						? setFocusToInput
+						: () => {
+								close()
+								setSelecttionToEnd()
+							},
+				),
 			),
 			onPointerMoveChild('[role="option"]', focusNode),
 			reflectAriaActivedescendent(store),

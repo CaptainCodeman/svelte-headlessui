@@ -8,3 +8,11 @@ export const listener = <K extends keyof HTMLElementEventMap>(
 	node.addEventListener(type, handler, capture)
 	return () => node.removeEventListener(type, handler, capture)
 }
+
+export const blockDefaultAction = (event: Event) => {
+	if (event.isTrusted) {
+		event.preventDefault()
+		event.stopPropagation()
+		event.stopImmediatePropagation()
+	}
+}

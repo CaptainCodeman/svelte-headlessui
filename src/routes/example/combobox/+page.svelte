@@ -18,7 +18,7 @@
 	const combobox = createCombobox({ label: 'People', selected: people[2] })
 	onMount(combobox.open)
 
-	function onSelect(e: Event) {
+	function onChange(e: Event) {
 		console.log('select', (e as CustomEvent).detail.selected)
 	}
 
@@ -37,9 +37,9 @@
 		>
 			<input
 				use:combobox.input
-				on:select={onSelect}
+				on:change={onChange}
 				class="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-				value={$combobox.selected.name}
+				value={$combobox.selected?.name ?? ''}
 			/>
 			<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
 			<button

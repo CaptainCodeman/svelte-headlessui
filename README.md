@@ -17,6 +17,10 @@ But also:
 - ✅ Designed to integrate beautifully with Svelte and SvelteKit
 - ✅ Less than 14kB minified / 4kB minified gzipped
 
+## BREAKING CHANGE (v0.0.39)
+
+The latest 0.0.39 release switches to using "change" instead of "select" as the event fired when the selected item changes for semantic correctness and to better match native inputs. Be sure to change listeners from `on:select` to `on:change`!
+
 ## Installation
 
 Install using your package manager of choice, e.g.

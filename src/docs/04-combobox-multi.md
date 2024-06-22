@@ -52,7 +52,7 @@ Pass an array to the `selected` property of `createCombobox` to trigger multi-se
 
   const combobox = createCombobox({ label: 'People', selected: [people[2], people[3]] })
 
-  function onSelect(e: Event) {
+  function onChange(e: Event) {
     console.log('select', (e as CustomEvent).detail)
   }
 
@@ -69,7 +69,7 @@ Pass an array to the `selected` property of `createCombobox` to trigger multi-se
     <span class="inline-block w-full rounded-md shadow-sm">
       <button
         use:combobox.button
-        on:select={onSelect}
+        on:change={onChange}
         class="focus:shadow-outline-teal relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-2 pr-10 text-left text-sm transition duration-150 ease-in-out focus:border-teal-300 focus:outline-none sm:leading-5"
       >
         <div class="flex flex-wrap gap-2">
@@ -85,7 +85,7 @@ Pass an array to the `selected` property of `createCombobox` to trigger multi-se
           {/each}
           <input
             use:combobox.input
-            on:select={onSelect}
+            on:change={onChange}
             placeholder="Search&hellip;"
             class="w-auto border-none py-1 text-sm leading-5 text-gray-900 focus:ring-0"
           />

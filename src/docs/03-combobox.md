@@ -47,8 +47,8 @@ Comboboxes are the foundation of accessible autocompletes and command palettes f
 
   const combobox = createCombobox({ label: 'Actions', selected: people[2] })
 
-  function onSelect(e: Event) {
-    console.log('select', (e as CustomEvent).detail)
+  function onChange(e: Event) {
+    console.log('select', (e as CustomEvent).detail.selected)
   }
 
   $: filtered = people.filter((person) =>
@@ -67,7 +67,7 @@ Comboboxes are the foundation of accessible autocompletes and command palettes f
       >
         <input
           use:combobox.input
-          on:select={onSelect}
+          on:change={onChange}
           class="w-full border-none py-2 pl-3 pr-10 leading-5 text-gray-900 focus:ring-0"
           value={$combobox.selected.name}
         />

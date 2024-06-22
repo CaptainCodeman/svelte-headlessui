@@ -37,7 +37,7 @@ import {
 	removeItem,
 	type ItemOptions,
 	type List,
-	raiseSelectOnChange,
+	raiseChangeOnSelect,
 } from './internal/list'
 import { ensureID } from './internal/new-id'
 import { noop } from './internal/noop'
@@ -140,7 +140,7 @@ export function createListbox(init?: Partial<Listbox>) {
 			onClick(toggle),
 			onKeydown(keySpaceEnter(toggle), keyUp(toggle), keyDown(toggle)),
 			focusOnClose(store),
-			raiseSelectOnChange(store),
+			raiseChangeOnSelect(store),
 		])
 
 		return {
