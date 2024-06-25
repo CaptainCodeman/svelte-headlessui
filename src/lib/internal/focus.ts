@@ -24,7 +24,7 @@ const focusableSelector = [
 	'input:not([disabled])',
 	'select:not([disabled])',
 	'textarea:not([disabled])',
-]
+].join(',')
 
 function onKeyDown(event: KeyboardEvent) {
 	if (event.key !== Tab) return
@@ -33,7 +33,7 @@ function onKeyDown(event: KeyboardEvent) {
 	const element = event.target as HTMLElement
 	if (!container.contains(element)) return
 
-	const focusable = [...container.querySelectorAll(focusableSelector.join(','))]
+	const focusable = [...container.querySelectorAll(focusableSelector)]
 	const first = focusable[0]
 	const last = focusable[focusable.length - 1]
 
@@ -50,14 +50,27 @@ function onKeyDown(event: KeyboardEvent) {
 	}
 }
 
+const selectableSelector = ['textarea', 'input'].join(',')
+function isSelectableElement(
+	element: Element | null,
+): element is HTMLInputElement | HTMLTextAreaElement {
+	return element?.matches?.(selectableSelector) ?? false
+}
+
 export const trapFocusOnOpen =
 	(store: Readable<Expandable>): Behavior =>
 	(node) =>
 		derived(store, ($store) => $store.expanded).subscribe((expanded) => {
 			if (expanded) {
-				const focusable = node.querySelector(focusableSelector.join(','))
+				const focusable = node.querySelector(focusableSelector) as HTMLElement | null
 				if (focusable) {
-					requestAnimationFrame(() => (focusable as HTMLElement).focus())
+					requestAnimationFrame(() => {
+						focusable.focus()
+						// if input or textarea, select text as though we'd tabbed to it
+						if (isSelectableElement(focusable)) {
+							focusable.select()
+						}
+					})
 				}
 				node.addEventListener('keydown', onKeyDown)
 			} else {
