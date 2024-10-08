@@ -151,8 +151,9 @@ export function createCombobox(init?: Partial<Combobox>) {
 		const current = state.active === -1 ? state.selected : state.items[state.active].value
 
 		// keep expanded or expand if filter is set
-		// clear selected if input is cleared
-		set({ filter: value, expanded: true, opened: true, selected: value ? state.selected : null })
+		// clear selected if input is cleared (only for single select)
+		const selected = state.multi || value ? state.selected : null
+		set({ filter: value, expanded: true, opened: true, selected })
 
 		await tick()
 
