@@ -12,7 +12,7 @@ export const defaultOrientation: Orientable = {
 	orientation: 'horizontal',
 }
 
-export const setAriaOrientation = setAriaAttributeString('aria-oriantation')
+export const setAriaOrientation = setAriaAttributeString('aria-orientation')
 
 export const reflectAriaOrientation =
 	(store: Readable<Orientable>): Behavior =>
