@@ -1,7 +1,7 @@
 {
 	"name": "svelte-headlessui",
 	"description": "HeadlessUI components for Svelte",
-	"version": "0.0.45",
+	"version": "0.0.46",
 	"type": "module",
 	"keywords": [
 		"svelte",
@@ -49,7 +49,7 @@
 	"homepage": "https://captaincodeman.github.io/svelte-headlessui/",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/captaincodeman/svelte-headlessui.git"
+		"url": "git+https://github.com/captaincodeman/svelte-headlessui.git"
 	},
 	"author": {
 		"name": "Simon Green",
