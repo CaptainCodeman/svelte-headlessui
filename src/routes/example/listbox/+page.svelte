@@ -28,8 +28,8 @@
 	<div class="relative mt-1">
 		<button
 			use:listbox.button
-			on:change={onChange}
-			class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left text-sm shadow-md focus:outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300"
+			onchange={onChange}
+			class="relative w-full cursor-default rounded-lg bg-white py-2 pr-10 pl-3 text-left text-sm shadow-md focus:outline-hidden focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300"
 		>
 			<span class="block truncate">{$listbox.selected.name}</span>
 			<span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -45,13 +45,13 @@
 		>
 			<ul
 				use:listbox.items
-				class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+				class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm ring-1 shadow-lg ring-black/5 focus:outline-hidden"
 			>
 				{#each people as value, i}
 					{@const active = $listbox.active === value}
 					{@const selected = $listbox.selected === value}
 					<li
-						class="relative cursor-default select-none py-2 pl-10 pr-4 {active
+						class="relative cursor-default py-2 pr-4 pl-10 select-none {active
 							? 'bg-amber-100 text-amber-900'
 							: 'text-gray-900'}"
 						use:listbox.item={{ value }}

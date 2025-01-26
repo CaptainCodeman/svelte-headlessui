@@ -2,13 +2,13 @@
 	import { Layout } from 'svelte-doc-kit'
 	import 'highlight.js/styles/github-dark.css'
 
-	export let data
+	let { data, children } = $props()
 </script>
 
 <Layout {data}>
-	<slot></slot>
+	{@render children?.()}
 
-	<svelte:fragment slot="links">
+	{#snippet links()}
 		<a href="https://npmjs.org/svelte-headlessui">
 			<svg
 				class="h-6 w-6 fill-[#CB3837]"
@@ -31,5 +31,5 @@
 				/></svg
 			>
 		</a>
-	</svelte:fragment>
+	{/snippet}
 </Layout>

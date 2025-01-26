@@ -22,23 +22,25 @@
 		console.log('select', (e as CustomEvent).detail.selected)
 	}
 
-	$: filtered = people.filter((person) =>
-		person.name
-			.toLowerCase()
-			.replace(/\s+/g, '')
-			.includes($combobox.filter.toLowerCase().replace(/\s+/g, '')),
+	let filtered = $derived(
+		people.filter((person) =>
+			person.name
+				.toLowerCase()
+				.replace(/\s+/g, '')
+				.includes($combobox.filter.toLowerCase().replace(/\s+/g, '')),
+		),
 	)
 </script>
 
 <div class="fixed top-16 w-72">
 	<div class="relative mt-1">
 		<div
-			class="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left text-sm shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300"
+			class="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left text-sm shadow-md focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300"
 		>
 			<input
 				use:combobox.input
-				on:change={onChange}
-				class="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
+				onchange={onChange}
+				class="w-full border-none py-2 pr-10 pl-3 text-sm leading-5 text-gray-900 focus:ring-0"
 				value={$combobox.selected?.name ?? ''}
 			/>
 			<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
@@ -60,13 +62,13 @@
 		>
 			<ul
 				use:combobox.items
-				class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+				class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm ring-1 shadow-lg ring-black/5 focus:outline-hidden"
 			>
 				{#each filtered as value}
 					{@const active = $combobox.active === value}
 					{@const selected = $combobox.selected === value}
 					<li
-						class="relative cursor-default select-none py-2 pl-10 pr-4 {active
+						class="relative cursor-default py-2 pr-4 pl-10 select-none {active
 							? 'bg-teal-600 text-white'
 							: 'text-gray-900'}"
 						use:combobox.item={{ value }}

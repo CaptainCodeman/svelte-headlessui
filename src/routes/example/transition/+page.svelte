@@ -1,7 +1,11 @@
 <script lang="ts">
 	import Transition from 'svelte-transition'
 
-	export let show = true
+	interface Props {
+		show?: boolean
+	}
+
+	let { show = $bindable(true) }: Props = $props()
 
 	function resetIsShowing() {
 		show = false
@@ -20,13 +24,13 @@
 		leaveFrom="opacity-100 rotate-0 scale-100"
 		leaveTo="opacity-0 scale-95"
 	>
-		<div class="h-full w-full rounded-md bg-white shadow-lg" />
+		<div class="h-full w-full rounded-md bg-white shadow-lg"></div>
 	</Transition>
 </div>
 <button
-	on:click={resetIsShowing}
+	onclick={resetIsShowing}
 	disabled={!show}
-	class="mt-8 flex transform items-center rounded-full bg-black bg-opacity-20 px-3 py-2 text-sm font-medium text-white transition hover:scale-105 hover:bg-opacity-30 focus:outline-none active:bg-opacity-40"
+	class="mt-8 flex transform items-center rounded-full bg-black/20 px-3 py-2 text-sm font-medium text-white transition hover:scale-105 hover:bg-black/30 focus:outline-hidden active:bg-black/40"
 >
 	<svg viewBox="0 0 20 20" fill="none" class="h-5 w-5 opacity-70">
 		<path

@@ -63,11 +63,11 @@
 			{@const selected = $tabs.selected === value}
 			<button
 				use:tabs.tab={{ value }}
-				class="w-full rounded-lg py-2.5 text-sm font-medium leading-5 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 {selected
-					? 'bg-white text-blue-700 shadow'
+				class="w-full rounded-lg py-2.5 text-sm leading-5 font-medium ring-white/60 ring-offset-2 ring-offset-blue-400 focus:ring-2 focus:outline-hidden {selected
+					? 'bg-white text-blue-700 shadow-sm'
 					: active
-						? 'bg-white/[0.12] text-white'
-						: 'text-blue-100 hover:bg-white/[0.12] hover:text-white'}">{value}</button
+						? 'bg-white/15 text-white'
+						: 'text-blue-100 hover:bg-white/15 hover:text-white'}">{value}</button
 			>
 		{/each}
 	</div>
@@ -76,7 +76,7 @@
 			{@const selected = $tabs.selected === value}
 			<div
 				use:tabs.panel
-				class="rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 {selected
+				class="rounded-xl bg-white p-3 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:ring-2 focus:outline-hidden {selected
 					? 'block'
 					: 'hidden'}"
 			>
@@ -84,19 +84,20 @@
 					<ul>
 						{#each categories[$tabs.selected] as post}
 							<li class="relative rounded-md p-3 hover:bg-gray-100">
-								<h3 class="text-sm font-medium leading-5">{post.title}</h3>
-								<ul class="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">
+								<h3 class="text-sm leading-5 font-medium">{post.title}</h3>
+								<ul class="mt-1 flex space-x-1 text-xs leading-4 font-normal text-gray-500">
 									<li>{post.date}</li>
 									<li>&middot;</li>
 									<li>{post.commentCount} comments</li>
 									<li>&middot;</li>
 									<li>{post.shareCount} shares</li>
 								</ul>
-								<!-- svelte-ignore a11y-invalid-attribute -->
-								<!-- svelte-ignore a11y-missing-content -->
+								<!-- svelte-ignore a11y_invalid_attribute -->
+								<!-- svelte-ignore a11y_missing_content -->
+								<!-- svelte-ignore a11y_consider_explicit_label -->
 								<a
 									href="#"
-									class="absolute inset-0 rounded-md ring-blue-400 focus:z-10 focus:outline-none focus:ring-2"
+									class="absolute inset-0 rounded-md ring-blue-400 focus:z-10 focus:ring-2 focus:outline-hidden"
 								></a>
 							</li>
 						{/each}

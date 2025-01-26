@@ -30,22 +30,22 @@
 
 <div class="fixed top-12 w-full max-w-4xl px-4">
 	<div class="relative mt-1">
-		<span class="inline-block w-full rounded-md shadow-sm">
+		<span class="inline-block w-full rounded-md shadow-xs">
 			<button
 				use:listbox.button
-				on:change={onChange}
-				class="focus:shadow-outline-orange relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-2 pr-10 text-left text-sm transition duration-150 ease-in-out focus:border-orange-300 focus:outline-none sm:leading-5"
+				onchange={onChange}
+				class="focus:shadow-outline-orange relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pr-10 pl-2 text-left text-sm transition duration-150 ease-in-out focus:border-orange-300 focus:outline-hidden sm:leading-5"
 			>
 				<div class="flex flex-wrap gap-2">
 					{#each $listbox.selected as selected (selected.id)}
-						<span class="flex items-center gap-1 rounded bg-orange-50 px-2 py-0.5">
+						<span class="flex items-center gap-1 rounded-sm bg-orange-50 px-2 py-0.5">
 							<span>{selected.name}</span>
 							<div use:listbox.deselect={selected}>
 								<Deselect />
 							</div>
 						</span>
 					{:else}
-						<span class="flex items-center gap-1 rounded px-2 py-0.5"> Empty </span>
+						<span class="flex items-center gap-1 rounded-sm px-2 py-0.5"> Empty </span>
 					{/each}
 				</div>
 				<span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -62,13 +62,13 @@
 		>
 			<ul
 				use:listbox.items
-				class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+				class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm ring-1 shadow-lg ring-black/5 focus:outline-hidden"
 			>
 				{#each people as value (value.id)}
 					{@const active = $listbox.active === value}
 					{@const selected = $listbox.selected.includes(value)}
 					<li
-						class="relative cursor-default select-none py-2 pl-4 pr-9 focus:outline-none {active
+						class="relative cursor-default py-2 pr-9 pl-4 select-none focus:outline-hidden {active
 							? 'bg-orange-100 text-orange-900'
 							: 'text-gray-900'}"
 						use:listbox.item={{ value }}

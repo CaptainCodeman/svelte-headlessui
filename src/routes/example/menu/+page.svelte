@@ -34,8 +34,8 @@
 	<div class="relative inline-block text-left">
 		<button
 			use:menu.button
-			on:change={onChange}
-			class="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+			onchange={onChange}
+			class="inline-flex w-full justify-center rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white/75"
 		>
 			Options
 			<ChevronDown class="-mr-1 ml-2 h-5 w-5 text-violet-200 hover:text-violet-100" />
@@ -52,7 +52,7 @@
 		>
 			<div
 				use:menu.items
-				class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+				class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden"
 			>
 				{#each groups as group}
 					<div class="px-1 py-1">
@@ -64,7 +64,7 @@
 									? 'bg-violet-500 text-white'
 									: 'text-gray-900'}"
 							>
-								<svelte:component this={option.icon} class="mr-2 h-5 w-5" {active} />
+								<option.icon class="mr-2 h-5 w-5" {active} />
 								{option.text}
 							</button>
 						{/each}

@@ -27,36 +27,38 @@
 		console.log('select', (e as CustomEvent).detail.selected)
 	}
 
-	$: filtered = people.filter((person) =>
-		person.name
-			.toLowerCase()
-			.replace(/\s+/g, '')
-			.includes($combobox.filter.toLowerCase().replace(/\s+/g, '')),
+	let filtered = $derived(
+		people.filter((person) =>
+			person.name
+				.toLowerCase()
+				.replace(/\s+/g, '')
+				.includes($combobox.filter.toLowerCase().replace(/\s+/g, '')),
+		),
 	)
 </script>
 
 <div class="fixed top-8 w-full max-w-4xl px-4">
 	<div class="relative mt-1">
-		<span class="inline-block w-full rounded-md shadow-sm">
+		<span class="inline-block w-full rounded-md shadow-xs">
 			<button
 				use:combobox.button
-				on:change={onChange}
-				class="focus:shadow-outline-teal relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-2 pr-10 text-left text-sm transition duration-150 ease-in-out focus:border-teal-300 focus:outline-none sm:leading-5"
+				onchange={onChange}
+				class="focus:shadow-outline-teal relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pr-10 pl-2 text-left text-sm transition duration-150 ease-in-out focus:border-teal-300 focus:outline-hidden sm:leading-5"
 			>
 				<div class="flex flex-wrap gap-2">
 					{#each $combobox.selected as selected (selected.id)}
-						<span class="flex items-center gap-1 rounded bg-blue-50 px-2 py-0.5">
+						<span class="flex items-center gap-1 rounded-sm bg-blue-50 px-2 py-0.5">
 							<span>{selected.name}</span>
 							<div use:combobox.deselect={selected}>
 								<Deselect />
 							</div>
 						</span>
 					{:else}
-						<span class="flex items-center gap-1 rounded px-2 py-0.5"> Empty </span>
+						<span class="flex items-center gap-1 rounded-sm px-2 py-0.5"> Empty </span>
 					{/each}
 					<input
 						use:combobox.input
-						on:change={onChange}
+						onchange={onChange}
 						placeholder="Search&hellip;"
 						class="w-auto border-none py-1 text-sm leading-5 text-gray-900 focus:ring-0"
 					/>
@@ -75,13 +77,13 @@
 		>
 			<ul
 				use:combobox.items
-				class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+				class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm ring-1 shadow-lg ring-black/5 focus:outline-hidden"
 			>
 				{#each filtered as value}
 					{@const active = $combobox.active === value}
 					{@const selected = $combobox.selected.includes(value)}
 					<li
-						class="relative cursor-default select-none py-2 pl-4 pr-9 focus:outline-none {active
+						class="relative cursor-default py-2 pr-9 pl-4 select-none focus:outline-hidden {active
 							? 'bg-teal-600 text-white'
 							: 'text-gray-900'}"
 						use:combobox.item={{ value }}

@@ -11,7 +11,7 @@
 		<div>
 			<button
 				use:refund.button
-				class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+				class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-hidden focus-visible:ring-3 focus-visible:ring-purple-500/75"
 			>
 				<span>What is your refund policy?</span>
 				<ChevronUp
@@ -19,7 +19,7 @@
 				/>
 			</button>
 			{#if $refund.expanded}
-				<div use:refund.panel class="px-4 pb-2 pt-4 text-sm text-gray-500">
+				<div use:refund.panel class="px-4 pt-4 pb-2 text-sm text-gray-500">
 					If you're unhappy with your purchase for any reason, email us within 90 days and we'll
 					refund you in full, no questions asked.
 				</div>
@@ -28,7 +28,7 @@
 		<div class="mt-2">
 			<button
 				use:support.button
-				class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+				class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-hidden focus-visible:ring-3 focus-visible:ring-purple-500/75"
 			>
 				<span>Do you offer technical support?</span>
 				<ChevronUp
@@ -36,7 +36,7 @@
 				/>
 			</button>
 			{#if $support.expanded}
-				<div use:support.panel class="px-4 pb-2 pt-4 text-sm text-gray-500">No.</div>
+				<div use:support.panel class="px-4 pt-4 pb-2 text-sm text-gray-500">No.</div>
 			{/if}
 		</div>
 	</div>
