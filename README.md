@@ -19,7 +19,7 @@ But also:
 
 ## BREAKING CHANGE (v0.0.39)
 
-The latest 0.0.39 release switches to using "change" instead of "select" as the event fired when the selected item changes for semantic correctness and to better match native inputs. Be sure to change listeners from `on:select` to `on:change`!
+The 0.0.39 release switched to using "change" instead of "select" as the event fired when the selected item changes for semantic correctness and to better match native inputs. Be sure to change listeners from `onselect` to `onchange`!
 
 ## Installation
 
@@ -37,4 +37,4 @@ You may be interested in evaluating [@rgossiaux/svelte-headlessui](https://svelt
 
 ## Logo
 
-Special thanks to [Shoob](https://github.com/hshoob) for the logo!
+Special thanks to [Shoob](https://github.com/hshoob) for the awesome logo!
